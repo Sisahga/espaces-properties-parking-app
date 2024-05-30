@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+:root {
+  --primary-orange: #FF6600;
+  --white: #F8F8FF;
+  --blue: #0B2275;
+  --light-blue: #4A90E2;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--white);
+}
+
+.my-text-orange {
+  color: var(--primary-orange);
+}
+.my-text-blue {
+  color: var(--blue);
+}
+.my-text-light-blue {
+  color: var(--light-blue);
+}
