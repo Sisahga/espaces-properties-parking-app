@@ -12,7 +12,7 @@ app.use(express.json());
 
 // --- USER Routes ---
 
-app.post("/api/users", async (req, res) => {
+app.post("/api/user/register", async (req, res) => {
   try {
     const { name, email, phone } = req.body;
     const newUser = await pool.query(
