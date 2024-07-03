@@ -1,9 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Inputmask from "inputmask";
+import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
   const phoneInputRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const iMask = new Inputmask("999-999-9999");
@@ -16,6 +18,34 @@ const SignupForm = () => {
     const email = formData.get("email");
     const name = formData.get("name");
     const phone = formData.get("phone");
+
+    console.log(email, name, phone);
+    const registerUserResponse = await fetch(
+      "http://localhost:8080/api/user/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, name, phone }),
+      }
+    );
+
+    if (registerUserResponse.ok) {
+      console.log("User registered successfully!");
+      const user = await registerUserResponse.json();
+      const userId = user.u_id;
+      localStorage.setItem("authenticated", "Y");
+      localStorage.setItem("uid", userId);
+      localStorage.setItem("isAdmin", "N");
+
+      navigate("/");
+    } else {
+      if (registerUserResponse.status === 400) {
+        alert("User with email " + email + " already exists.");
+      }
+      console.error("Failed to register user.");
+    }
   };
 
   return (

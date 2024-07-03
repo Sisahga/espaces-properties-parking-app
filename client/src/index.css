@@ -24,3 +24,28 @@ body {
 .my-text-light-blue {
   color: var(--light-blue);
 }
+
+.bs-light {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.e-toolbar-item.e-views.e-month.e-active-view .e-tbar-btn-text,
+.e-toolbar-item.e-views.e-week.e-active-view .e-tbar-btn-text,
+.e-header-cells.e-current-day {
+  color: var(--primary-orange) !important;
+}
+
+.e-schedule .e-month-view .e-current-date .e-date-header {
+  background: var(--primary-orange) !important;
+}
+
+.clientActionTab {
+  background-color: var(--blue);
+  color: #fff;
+  padding: 0.25rem;
+  width: 180px;
+  transition: 0.15s all ease-in-out;
+}
+.clientActionTab:hover {
+  opacity: 0.9;
+}
