@@ -33,6 +33,11 @@ const Signup = () => {
             <SignupForm />
           </div>
         </div>
+
+        {/* Company TM */}
+        <div className="mt-4">
+          <p className="text-sm font-thin">&copy; MacMee Inc. - 2024</p>
+        </div>
       </div>
     </div>
   );
