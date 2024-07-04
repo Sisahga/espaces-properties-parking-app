@@ -46,6 +46,13 @@ body {
   width: 180px;
   transition: 0.15s all ease-in-out;
 }
-.clientActionTab:hover {
+.buttonBig {
+  background-color: var(--blue);
+  color: #fff;
+  padding: 0.5rem 0.25rem;
+  width: 100%;
+  transition: 0.15s all ease-in-out;
+}
+.clientActionTab:hover, .buttonBig:hover {
   opacity: 0.8;
 }

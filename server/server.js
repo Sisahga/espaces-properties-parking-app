@@ -189,7 +189,7 @@ app.get("/api/parking/payment/retrieve-complete/:id", async (req, res) => {
 
     const transactionDetails = {
       id: session.id,
-      subtotal: session.subtotal / 100,
+      subtotal: session.amount_subtotal / 100,
       total: session.amount_total / 100,
       currency: session.currency,
       paymentStatus: session.payment_status,
