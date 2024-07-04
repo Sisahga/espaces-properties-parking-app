@@ -47,5 +47,5 @@ body {
   transition: 0.15s all ease-in-out;
 }
 .clientActionTab:hover {
-  opacity: 0.9;
+  opacity: 0.8;
 }

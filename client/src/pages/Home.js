@@ -63,8 +63,12 @@ const Home = () => {
           </div>
           <ClientScheduler />
           <div className="flex gap-4 mt-4">
-            <button className="clientActionTab rounded">My Bookings</button>
-            <button className="clientActionTab rounded">Settings</button>
+            <button className="clientActionTab rounded bs-light">
+              My Bookings
+            </button>
+            <button className="clientActionTab rounded bs-light">
+              Settings
+            </button>
           </div>
         </div>
       ) : (

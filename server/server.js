@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const pool = require("./db");
 require("dotenv").config();
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // --- Middleware ---
 app.use(cors());
@@ -10,8 +11,9 @@ app.use(express.json());
 
 // === ROUTES ===
 
-// --- USER Routes ---
+// ---< USER ROUTES >---
 
+// -----> Register User
 app.post("/api/user/register", async (req, res) => {
   try {
     const { name, email, phone } = req.body;
@@ -29,12 +31,13 @@ app.post("/api/user/register", async (req, res) => {
       [name, email, phone]
     );
     console.log(newUser.rows[0]);
-    res.json(newUser.rows[0]);
+    res.status(201).json(newUser.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
 });
 
+// -----> Login User
 app.post("/api/user/login", async (req, res) => {
   try {
     const { email } = req.body;
@@ -46,12 +49,13 @@ app.post("/api/user/login", async (req, res) => {
     if (user.rows.length === 0) {
       return res.status(400).json("User not found.");
     }
-    res.json(user.rows[0]);
+    res.status(200).json(user.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
 });
 
+// -----> Retrieve User
 app.get("/api/user/retrieve/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -59,13 +63,115 @@ app.get("/api/user/retrieve/:id", async (req, res) => {
     if (user.rows.length === 0) {
       return res.status(400).json("User not found.");
     }
-    res.json(user.rows[0]);
+    res.status(200).json(user.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
 });
 
-// --- End of USER Routes ---
+// ---< End of USER ROUTES >---
+
+// ---< SCHEDULER ROUTES >---
+
+// -----> Create New Booking
+app.post("/api/parking/booking/create", async (req, res) => {
+  try {
+    const {
+      uid,
+      subject,
+      startTime,
+      endTime,
+      isAllDay,
+      description,
+      licensePlate,
+      vehicleMake,
+    } = req.body;
+    const newBooking = await pool.query(
+      "INSERT INTO bookings (u_id, subject, starttime, endtime, isallday, description, licenseplate, vehiclemake) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      [
+        uid,
+        subject,
+        startTime,
+        endTime,
+        isAllDay,
+        description,
+        licensePlate,
+        vehicleMake,
+      ]
+    );
+    console.log(newBooking.rows[0]);
+    res.status(200).json(newBooking.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// -----> Retrieve All Bookings
+app.get("/api/parking/booking/retrieve", async (req, res) => {
+  try {
+    const allBookings = await pool.query("SELECT * FROM bookings");
+    res.status(200).json(allBookings.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// -----> Delete Booking
+app.delete("/api/parking/booking/delete/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteBooking = await pool.query(
+      "DELETE FROM bookings WHERE id = $1",
+      [id]
+    );
+    res.status(200).json("Booking deleted.");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// ---< End of SCHEDULER ROUTES >---
+
+// ---< PAYMENT ROUTES >---
+
+var parkingPrice = {
+  name: "Daily Parking Space at Espace Properties",
+  priceInCents: 2500,
+};
+
+// -----> STRIPE Payment
+app.post("/api/parking/payment/create-checkout-session", async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "cad",
+            product_data: {
+              name: parkingPrice.name,
+              description:
+                "Rate of $" +
+                (parkingPrice.priceInCents / 100).toFixed(2) +
+                " per day. Booking for " +
+                req.body.description,
+            },
+            unit_amount: parkingPrice.priceInCents,
+          },
+          quantity: req.body.quantity,
+        },
+      ],
+      success_url: `${process.env.CLIENT_URL}/stripe-pay-success`,
+      cancel_url: `${process.env.CLIENT_URL}/stripe-pay-cancel`,
+    });
+    res.json({ url: session.url });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ---< End of PAYMENT ROUTES >---
 
 // === END OF ROUTES ===
 
