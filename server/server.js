@@ -142,6 +142,7 @@ var parkingPrice = {
 // -----> STRIPE Payment
 app.post("/api/parking/payment/create-checkout-session", async (req, res) => {
   try {
+    const dayWord = req.body.quantity > 1 ? "days" : "day";
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
@@ -150,23 +151,63 @@ app.post("/api/parking/payment/create-checkout-session", async (req, res) => {
           price_data: {
             currency: "cad",
             product_data: {
-              name: parkingPrice.name,
+              name: parkingPrice.name + " * " + req.body.description,
               description:
                 "Rate of $" +
                 (parkingPrice.priceInCents / 100).toFixed(2) +
-                " per day. Booking for " +
-                req.body.description,
+                " per day. " +
+                req.body.quantity +
+                " " +
+                dayWord +
+                " booked.",
             },
             unit_amount: parkingPrice.priceInCents,
           },
           quantity: req.body.quantity,
         },
       ],
-      success_url: `${process.env.CLIENT_URL}/stripe-pay-success`,
+      success_url: `${process.env.CLIENT_URL}/stripe-pay-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_URL}/stripe-pay-cancel`,
     });
     res.json({ url: session.url });
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/parking/payment/retrieve-complete/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const session = await stripe.checkout.sessions.retrieve(id, {
+      expand: ["payment_intent.payment_method"],
+    });
+    const lineItems = await stripe.checkout.sessions.listLineItems(id);
+
+    console.log("Session: ", session);
+    console.log("Line Items: ", lineItems);
+
+    const transactionDetails = {
+      id: session.id,
+      subtotal: session.subtotal / 100,
+      total: session.amount_total / 100,
+      currency: session.currency,
+      paymentStatus: session.payment_status,
+      paymentMethod: session.payment_intent.payment_method.type,
+      cardType: session.payment_intent.payment_method.card.brand,
+      paymentCardEnding: session.payment_intent.payment_method.card.last4,
+      quantity: lineItems.data[0].quantity,
+      customerName: session.customer_details.name,
+      customerEmail: session.customer_details.email,
+      customerBillTo:
+        session.customer_details.address.country +
+        ", " +
+        session.customer_details.address.postal_code,
+      slotBooked: lineItems.data[0].description.split(" * ")[1],
+    };
+    res.status(200).json(transactionDetails);
+  } catch (error) {
+    console.error(error.message);
     res.status(500).json({ error: error.message });
   }
 });
