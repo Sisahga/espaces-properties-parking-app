@@ -11,6 +11,7 @@ import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n } from "@syncfusion/ej2-base";
 import cars from "../../cars.json";
+import SpinnerGif from "../Spinner";
 
 // Define a custom locale
 L10n.load({
@@ -105,6 +106,9 @@ const ClientScheduler = () => {
         args.cancel = true;
         return;
       }
+
+      // Prevent the default action, since it will redirect to payment screen anyway.
+      args.cancel = true;
 
       const newBooking = {
         uid: localStorage.getItem("uid"),
@@ -244,6 +248,7 @@ const ClientScheduler = () => {
 
   return (
     <div className="mt-4" style={{ overflowY: "scroll", maxHeight: "80vh" }}>
+      <SpinnerGif />
       <ScheduleComponent
         className="rounded"
         style={{ overflowY: "scroll", maxHeight: "100%" }}

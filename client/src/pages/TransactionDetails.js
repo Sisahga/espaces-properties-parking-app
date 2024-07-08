@@ -89,14 +89,17 @@ const TransactionDetails = () => {
           <p>
             <b className="my-text-blue">Payment Method</b>
           </p>
-          <p className="uppercase">{transactionDetails.paymentMethod}</p>
+          <div>
+            <span className="uppercase">{transactionDetails.cardType}</span>{" "}
+            ending in {transactionDetails.paymentCardEnding}
+          </div>
         </div>
-        <div className="flex justify-between">
+        {/* <div className="flex justify-between">
           <p>
             <b className="my-text-blue">Subtotal</b>
           </p>
           <p>$ {transactionDetails.subtotal.toFixed(2)}</p>
-        </div>
+        </div> */}
         <div className="flex justify-between">
           <p>
             <b className="my-text-blue">Total</b>
@@ -109,7 +112,7 @@ const TransactionDetails = () => {
           </p>
           <p className="uppercase">{transactionDetails.currency}</p>
         </div>
-        <div className="flex justify-between">
+        {/* <div className="flex justify-between">
           <p>
             <b className="my-text-blue">Card</b>
           </p>
@@ -117,7 +120,7 @@ const TransactionDetails = () => {
             <span className="uppercase">{transactionDetails.cardType}</span>{" "}
             ending in {transactionDetails.paymentCardEnding}
           </p>
-        </div>
+        </div> */}
         <div className="flex justify-between">
           <p>
             <b className="my-text-blue">Parking Bill</b>
