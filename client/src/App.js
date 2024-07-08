@@ -8,7 +8,7 @@ import TransactionDetails from "./pages/TransactionDetails";
 function App() {
   return (
     <>
-      <div className="overlay"></div>
+      <div id="overlay"></div>
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/signup" element={<Signup />}></Route>

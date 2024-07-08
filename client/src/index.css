@@ -57,7 +57,7 @@ body {
   opacity: 0.8;
 }
 
-.overlay {
+#overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -68,4 +68,19 @@ body {
   align-items: center;
   z-index: 2; /* Ensure it appears above other content */
   display: none;
+}
+
+#spinnerComponent {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  flex-direction: column;
+  z-index: 3;
+  background-color: #fff;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
 }

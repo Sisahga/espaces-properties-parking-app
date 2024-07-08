@@ -107,9 +107,6 @@ const ClientScheduler = () => {
         return;
       }
 
-      // Prevent the default action, since it will redirect to payment screen anyway.
-      args.cancel = true;
-
       const newBooking = {
         uid: localStorage.getItem("uid"),
         subject: data.Subject,
@@ -129,6 +126,13 @@ const ClientScheduler = () => {
       const formattedEndDate = formatDate(newBooking.endTime);
       console.log("Formatted Start Date: ", formattedStartDate);
       console.log("Formatted End Date: ", formattedEndDate);
+
+      // Prevent the default action, since it will redirect to payment screen anyway.
+      args.cancel = true;
+      const overlay = document.getElementById("overlay");
+      overlay.style.display = "flex";
+      const spinner = document.getElementById("spinnerComponent");
+      spinner.style.display = "flex";
 
       const stripeResponse = await fetch(
         "http://localhost:8080/api/parking/payment/create-checkout-session",
@@ -248,7 +252,7 @@ const ClientScheduler = () => {
 
   return (
     <div className="mt-4" style={{ overflowY: "scroll", maxHeight: "80vh" }}>
-      <SpinnerGif />
+      <SpinnerGif loadingText={"You are being redirected to checkout..."} />
       <ScheduleComponent
         className="rounded"
         style={{ overflowY: "scroll", maxHeight: "100%" }}
