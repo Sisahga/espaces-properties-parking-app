@@ -28,8 +28,6 @@ L10n.load({
 const ClientScheduler = () => {
   const scheduleObj = useRef(null);
   const [bookings, setBookings] = useState([]);
-  const [carryoverRender, setCarryoverRender] = useState(false);
-  const [carryoverRenderIndex, setCarryoverRenderIndex] = useState(0);
 
   async function retrieveBookings() {
     try {
@@ -130,6 +128,28 @@ const ClientScheduler = () => {
     return true;
   }
 
+  function handleBeforeAppointmentChange(args) {
+    const appointments = scheduleObj.current.getEvents();
+    const newAppointment = args.data;
+    const existingAppointments = appointments.filter((appointment) => {
+      return (
+        appointment !== args.data &&
+        ((newAppointment.StartTime >= appointment.StartTime &&
+          newAppointment.StartTime < appointment.EndTime) ||
+          (newAppointment.EndTime > appointment.StartTime &&
+            newAppointment.EndTime <= appointment.EndTime) ||
+          (newAppointment.StartTime <= appointment.StartTime &&
+            newAppointment.EndTime >= appointment.EndTime))
+      );
+    });
+
+    if (existingAppointments.length > 0) {
+      args.cancel = true;
+      alert("Cannot overlap with existing events.");
+      return true;
+    } else return false;
+  }
+
   // === EVENT RENDERED EVENT ===
   const onEventRendered = (args) => {
     console.log("Event Rendered: ", args);
@@ -181,23 +201,22 @@ const ClientScheduler = () => {
           grandparentElement.classList.add("nonClientEvent");
         }
         grandparentElement.children[0].classList.add("clientEventText");
-        if (diffDays > 0) {
-          var nextElement = grandparentElement.nextElementSibling;
-          console.log("CARRYOVER: ", carryoverRender);
-          for (var i = 0; i < diffDays; i++) {
-            // if (nextElement) {
-            //   console.log("Getting Next Element: ", nextElement);
-            //   if (isClientEvent) {
-            //     nextElement.classList.add("clientEvent");
-            //   } else {
-            //     nextElement.classList.add("nonClientEvent");
-            //   }
-            //   nextElement.setAttribute("eventguid", guid);
-            //   nextElement.children[0].classList.add("clientEventText");
-            //   nextElement = nextElement.nextElementSibling;
-            // }
-          }
-        }
+        // if (diffDays > 0) {
+        //   var nextElement = grandparentElement.nextElementSibling;
+        //   for (var i = 0; i < diffDays; i++) {
+        //     if (nextElement) {
+        //       console.log("Getting Next Element: ", nextElement);
+        //       if (isClientEvent) {
+        //         nextElement.classList.add("clientEvent");
+        //       } else {
+        //         nextElement.classList.add("nonClientEvent");
+        //       }
+        //       nextElement.setAttribute("eventguid", guid);
+        //       nextElement.children[0].classList.add("clientEventText");
+        //       nextElement = nextElement.nextElementSibling;
+        //     }
+        //   }
+        // }
       }
     }, 0);
   };
@@ -256,6 +275,13 @@ const ClientScheduler = () => {
         return;
       }
 
+      const overlapExists = handleBeforeAppointmentChange(args);
+      if (overlapExists) {
+        alert("Cannot overlap with existing events.");
+        args.cancel = true;
+        return;
+      }
+
       const validBooking = validateFields(data);
 
       if (!validBooking) {
@@ -293,13 +319,25 @@ const ClientScheduler = () => {
       const spinner = document.getElementById("spinnerComponent");
       spinner.style.display = "flex";
 
-      // await fetch("http://localhost:8080/api/parking/booking/create", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(newBooking),
-      // });
+      const dbResponse = await fetch(
+        "http://localhost:8080/api/parking/booking/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newBooking),
+        }
+      );
+      var bookingID;
+      if (!dbResponse.ok) {
+        const error = await dbResponse.json();
+        console.error("Error:", error.error);
+      } else {
+        const booking = await dbResponse.json();
+        bookingID = booking.id;
+        console.log("Booking: ", booking);
+      }
 
       const stripeResponse = await fetch(
         "http://localhost:8080/api/parking/payment/create-checkout-session",
@@ -311,6 +349,7 @@ const ClientScheduler = () => {
           body: JSON.stringify({
             quantity: daysBooked,
             description: formattedStartDate + " - " + formattedEndDate,
+            bookingID: bookingID,
           }),
         }
       );

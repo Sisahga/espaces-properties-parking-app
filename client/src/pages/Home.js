@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import ClientScheduler from "../components/Syncfusion/ClientScheduler";
 
 const Home = () => {
@@ -10,6 +10,30 @@ const Home = () => {
   const authenticated = localStorage.getItem("authenticated");
   const isAdmin = localStorage.getItem("isAdmin");
   console.log("Authenticated: ", authenticated);
+
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  const isStripePayCancel = location.pathname.includes("stripe-pay-cancel");
+  const bookingId = searchParams.get("booking_id");
+
+  async function deleteBooking(bookingId) {
+    const response = await fetch(
+      `http://localhost:8080/api/parking/booking/delete/${bookingId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.ok) {
+      console.log("Booking deleted.");
+      navigate("/");
+    } else {
+      console.error("Failed to delete booking.");
+    }
+  }
 
   async function getUser(userId) {
     const response = await fetch(
@@ -30,6 +54,12 @@ const Home = () => {
       console.error("Failed to get user.");
     }
   }
+
+  useEffect(() => {
+    if (isStripePayCancel) {
+      deleteBooking(bookingId);
+    }
+  }, [isStripePayCancel, bookingId]);
 
   useEffect(() => {
     if (authenticated !== "Y") {

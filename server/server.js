@@ -167,7 +167,7 @@ app.post("/api/parking/payment/create-checkout-session", async (req, res) => {
         },
       ],
       success_url: `${process.env.CLIENT_URL}/stripe-pay-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.CLIENT_URL}/stripe-pay-cancel`,
+      cancel_url: `${process.env.CLIENT_URL}/stripe-pay-cancel?booking_id=${req.body.bookingID}`,
     });
     res.json({ url: session.url });
   } catch (error) {
