@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import ClientScheduler from "../components/Syncfusion/ClientScheduler";
+import AdminScheduler from "../components/Syncfusion/AdminScheduler";
 
 const Home = () => {
   const navigate = useNavigate();

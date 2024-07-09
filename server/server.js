@@ -55,6 +55,22 @@ app.post("/api/user/login", async (req, res) => {
   }
 });
 
+app.post("/api/admin/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const admin = await pool.query(
+      "SELECT * FROM users WHERE email = $1 AND password = $2",
+      [email, password]
+    );
+    if (admin.rows.length === 0) {
+      return res.status(400).json("Admin not found.");
+    }
+    res.status(200).json(admin.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // -----> Retrieve User
 app.get("/api/user/retrieve/:id", async (req, res) => {
   try {
