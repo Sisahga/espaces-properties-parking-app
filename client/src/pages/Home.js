@@ -56,6 +56,19 @@ const Home = () => {
     }
   }
 
+  const handleAdminLogout = () => {
+    localStorage.removeItem("authenticated");
+    localStorage.removeItem("uid");
+    localStorage.removeItem("isAdmin");
+    navigate("/login/admin");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("authenticated");
+    localStorage.removeItem("uid");
+    navigate("/login");
+  };
+
   useEffect(() => {
     if (isStripePayCancel) {
       deleteBooking(bookingId);
@@ -93,17 +106,62 @@ const Home = () => {
             <p>{user.email}</p>
           </div>
           <ClientScheduler />
-          <div className="flex gap-4 mt-4">
-            <button className="clientActionTab rounded bs-light">
-              My Bookings
-            </button>
-            <button className="clientActionTab rounded bs-light">
-              Settings
-            </button>
+          <div className="flex justify-between mt-4">
+            <div className="flex gap-4">
+              <button className="clientActionTab rounded bs-light">
+                My Bookings
+              </button>
+              <button className="clientActionTab rounded bs-light">
+                Settings
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={handleLogout}
+                className="logoutBtn rounded bs-light"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       ) : (
-        "ADMIN VIEW."
+        <div className="flex flex-col gap-4 px-8 py-12">
+          <div className="flex justify-center items-center gap-2">
+            <b>
+              <p>Espaces Properties</p>
+            </b>
+            <b>-</b>
+            <b>
+              <p className="my-text-orange">Parking</p>
+            </b>
+          </div>
+          <div className="flex justify-between bs-light px-4 py-2 rounded my-text-blue">
+            <p>
+              <b>ADMIN</b>
+            </p>
+            <p>{user.email}</p>
+          </div>
+          <AdminScheduler />
+          <div className="flex justify-between mt-4">
+            <div className="flex gap-4">
+              <button className="clientActionTab rounded bs-light">
+                All Bookings
+              </button>
+              <button className="clientActionTab rounded bs-light">
+                App Settings
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={handleAdminLogout}
+                className="logoutBtn rounded bs-light"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

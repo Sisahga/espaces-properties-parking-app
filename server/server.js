@@ -132,6 +132,48 @@ app.get("/api/parking/booking/retrieve", async (req, res) => {
   }
 });
 
+// -----> Retrieve All Bookings for Admin View
+app.get("/api/parking/booking/retrieve/admin", async (req, res) => {
+  try {
+    const allBookings = await pool.query(
+      "SELECT b.id, b.u_id, b.subject, b.starttime, b.endtime, b.isallday, b.description, b.licenseplate, b.vehiclemake, b.roomnumber, u.name, u.email FROM bookings b INNER JOIN users u ON b.u_id = u.u_id"
+    );
+    res.status(200).json(allBookings.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// -----> Update Booking
+app.put("/api/parking/booking/update/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      startTime,
+      endTime,
+      licensePlate,
+      vehicleMake,
+      description,
+      roomNumber,
+    } = req.body;
+    await pool.query(
+      "UPDATE bookings SET starttime = $1, endtime = $2, licenseplate = $3, vehiclemake = $4, description = $5, roomNumber = $6 WHERE id = $7",
+      [
+        startTime,
+        endTime,
+        licensePlate,
+        vehicleMake,
+        description,
+        roomNumber,
+        id,
+      ]
+    );
+    res.status(200).json("Booking updated.");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // -----> Delete Booking
 app.delete("/api/parking/booking/delete/:id", async (req, res) => {
   try {

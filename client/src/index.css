@@ -41,6 +41,16 @@ body {
   background: var(--primary-orange) !important;
 }
 
+.logoutBtn {
+  background-color: #000;
+  color: #fff;
+  padding: 0.25rem;
+  width: 100px;
+  transition: 0.15s all ease-in-out;
+}
+.logoutBtn:hover {
+  opacity: 0.8;
+}
 .clientActionTab {
   background-color: var(--blue);
   color: #fff;
@@ -100,4 +110,8 @@ body {
 
 .nonClientEvent {
   background: var(--red) !important;
+}
+
+.e-schedule .e-month-view .e-appointment {
+  height: auto !important;
 }

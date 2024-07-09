@@ -17,7 +17,7 @@ import SpinnerGif from "../Spinner";
 L10n.load({
   "en-US": {
     schedule: {
-      saveButton: "Add",
+      saveButton: "Save",
       cancelButton: "Cancel",
       deleteButton: "Delete",
       newEvent: "New Parking Booking",
@@ -32,7 +32,7 @@ const AdminScheduler = () => {
   async function retrieveBookings() {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/parking/booking/retrieve",
+        "http://localhost:8080/api/parking/booking/retrieve/admin",
         {
           method: "GET",
           headers: {
@@ -52,6 +52,9 @@ const AdminScheduler = () => {
         LicensePlate: item.licenseplate,
         VehicleMake: item.vehiclemake,
         uid: item.u_id,
+        name: item.name,
+        email: item.email,
+        RoomNum: item.roomnumber,
       }));
 
       setBookings(formattedData);
@@ -128,10 +131,37 @@ const AdminScheduler = () => {
     return true;
   }
 
+  function handleOverlapUpdate(args) {
+    const appointments = scheduleObj.current.getEvents();
+    const newAppointment = args.data;
+    const existingAppointments = appointments.filter((appointment) => {
+      if (appointment.Id === newAppointment.Id) {
+        return false;
+      }
+      console.log("Appointment: ", appointment);
+      return (
+        appointment !== args.data &&
+        ((newAppointment.StartTime >= appointment.StartTime &&
+          newAppointment.StartTime < appointment.EndTime) ||
+          (newAppointment.EndTime > appointment.StartTime &&
+            newAppointment.EndTime <= appointment.EndTime) ||
+          (newAppointment.StartTime <= appointment.StartTime &&
+            newAppointment.EndTime >= appointment.EndTime))
+      );
+    });
+
+    if (existingAppointments.length > 0) {
+      args.cancel = true;
+      alert("Cannot overlap with existing events.");
+      return true;
+    } else return false;
+  }
+
   function handleBeforeAppointmentChange(args) {
     const appointments = scheduleObj.current.getEvents();
     const newAppointment = args.data;
     const existingAppointments = appointments.filter((appointment) => {
+      console.log("Appointment: ", appointment);
       return (
         appointment !== args.data &&
         ((newAppointment.StartTime >= appointment.StartTime &&
@@ -159,6 +189,15 @@ const AdminScheduler = () => {
 
     // Use setTimeout to defer accessing parentElement
     setTimeout(() => {
+      const eventText = eventElement.querySelector(".e-subject");
+      var roomNumber = args.data.RoomNum ? "Room " + args.data.RoomNum : "";
+      eventText.innerHTML =
+        "<div className='flex flex-col'><p>" +
+        args.data.name +
+        "</p><p>" +
+        roomNumber +
+        "</p></div>";
+
       const parentElement = eventElement.parentElement;
       const grandparentElement = parentElement.parentElement;
       console.log("Parent Element: ", parentElement);
@@ -184,23 +223,23 @@ const AdminScheduler = () => {
       console.log("Day Diff: ", diffDays);
 
       eventElement.id = guid;
-      var isClientEvent = false;
-      if (userID === args.data.uid.toString()) {
-        eventElement.classList.add("clientEvent");
-        isClientEvent = true;
-      } else {
-        eventElement.classList.add("nonClientEvent");
-      }
+      eventElement.classList.add("nonClientEvent");
       eventElement.classList.add("noBorder");
       // Check if parentElement is not null before manipulating it
       if (grandparentElement) {
         grandparentElement.setAttribute("eventguid", guid);
-        if (isClientEvent) {
-          grandparentElement.classList.add("clientEvent");
-        } else {
-          grandparentElement.classList.add("nonClientEvent");
-        }
+        grandparentElement.classList.add("nonClientEvent");
+
         grandparentElement.children[0].classList.add("clientEventText");
+        if (diffDays > 0) {
+          var nextElement = grandparentElement.nextElementSibling;
+          for (var i = 0; i < diffDays; i++) {
+            if (nextElement) {
+              console.log("Getting Next Element: ", nextElement);
+              nextElement = nextElement.nextElementSibling;
+            }
+          }
+        }
         // if (diffDays > 0) {
         //   var nextElement = grandparentElement.nextElementSibling;
         //   for (var i = 0; i < diffDays; i++) {
@@ -225,23 +264,16 @@ const AdminScheduler = () => {
     console.log("Popup Opened: ", args);
     const target = args.target;
     console.log("Target: ", target);
-    if (
-      target.classList.contains("clientEvent") ||
-      target.classList.contains("nonClientEvent")
-    ) {
-      args.cancel = true;
-    }
+    // if (target.classList.contains("nonClientEvent")) {
+    //   args.cancel = true;
+    // }
   };
 
   // === CELL CLICK EVENTS ===
   const onCellClick = (args) => {
     console.log("Cell Clicked: ", args);
-    if (
-      args.element.classList.contains("clientEvent") ||
-      args.element.classList.contains("nonClientEvent")
-    ) {
+    if (args.element.classList.contains("nonClientEvent")) {
       console.log("Show different popup...");
-      args.cancel = true;
       const cell = args.element;
       const eventGuid = cell.getAttribute("eventguid");
       document.getElementById(eventGuid).click();
@@ -249,17 +281,21 @@ const AdminScheduler = () => {
   };
   const onEventClick = (args) => {
     console.log("Event Clicked: ", args);
-    if (!args.event.RecurrenceRule) {
-      console.log("Show different popup...");
-      args.cancel = true;
-    } else {
-      console.log("Opening Recurrence Alert...");
-      scheduleObj.current.quickPopup.openRecurrenceAlert();
-    }
+    scheduleObj.current.openEditor(args.event, "Save");
+    // if (!args.event.RecurrenceRule) {
+    //   console.log("Show different popup...");
+    //   args.cancel = true;
+    //   scheduleObj.current.openEditor(args.event, "Add");
+    // } else {
+    //   console.log("Opening Recurrence Alert...");
+    //   scheduleObj.current.quickPopup.openRecurrenceAlert();
+    // }
   };
 
   // === ACTION BEGIN EVENT ===
   const onActionBegin = async (args) => {
+    console.log("Request type: ", args.requestType);
+    // === EVENT CREATE ===
     if (args.requestType === "eventCreate") {
       const data = args.data[0];
       const slotAvailable = scheduleObj.current.isSlotAvailable(
@@ -337,30 +373,65 @@ const AdminScheduler = () => {
         const booking = await dbResponse.json();
         bookingID = booking.id;
         console.log("Booking: ", booking);
+        window.location.reload();
+      }
+    }
+    // === EVENT CHANGE ===
+    else if (args.requestType === "eventChange") {
+      console.log(args);
+      const slotAvailable = scheduleObj.current.isSlotAvailable(
+        args.data.StartTime,
+        args.data.EndTime
+      );
+      console.log("Slot Available: ", slotAvailable);
+      if (!slotAvailable) {
+        args.cancel = true;
+        alert(
+          "The selected dates are already booked. Please choose different dates."
+        );
+        return;
       }
 
-      const stripeResponse = await fetch(
-        "http://localhost:8080/api/parking/payment/create-checkout-session",
+      const overlapExists = handleOverlapUpdate(args);
+      if (overlapExists) {
+        args.cancel = true;
+        return;
+      }
+
+      console.log("Booking to update: " + args.data.Id);
+      const booking = {
+        startTime: formatDate(args.data.StartTime, false),
+        endTime: formatDate(args.data.EndTime, false),
+        licensePlate: args.data.LicensePlate,
+        vehicleMake: args.data.VehicleMake,
+        description: args.data.Description,
+        roomNumber: args.data.RoomNum,
+      };
+      console.log("Booking: ", booking);
+
+      const dbResponse = await fetch(
+        "http://localhost:8080/api/parking/booking/update/" + args.data.Id,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            quantity: daysBooked,
-            description: formattedStartDate + " - " + formattedEndDate,
-            bookingID: bookingID,
-          }),
+          body: JSON.stringify(booking),
         }
       );
-
-      if (!stripeResponse.ok) {
-        const error = await stripeResponse.json();
+      if (!dbResponse.ok) {
+        const error = await dbResponse.json();
         console.error("Error:", error.error);
       } else {
-        const { url } = await stripeResponse.json();
-        window.location.href = url;
+        const response = await dbResponse.json();
+        console.log("Response: ", response);
+        alert("Booking updated.");
+        window.location.reload();
       }
+    }
+    // === EVENT DELETE ===
+    else if (args.requestType === "eventRemove") {
+      alert("Event removed.");
     }
   };
 
@@ -407,6 +478,7 @@ const AdminScheduler = () => {
                   className="e-field e-input"
                   type="text"
                   name="LicensePlate"
+                  defaultValue={props.LicensePlate || ""}
                 />
               </div>
             </div>
@@ -419,6 +491,22 @@ const AdminScheduler = () => {
                   name="VehicleMake"
                   data-name="VehicleMake"
                   dataSource={cars}
+                  defaultValue={props.VehicleMake || ""}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex w-full">
+            <div className="w-1/4 flex-col">
+              <div className="e-textlabel">Room No.</div>
+              <div>
+                <input
+                  id="RoomNum"
+                  className="e-field e-input"
+                  type="text"
+                  name="RoomNum"
+                  defaultValue={props.RoomNum || ""}
                 />
               </div>
             </div>
@@ -428,10 +516,11 @@ const AdminScheduler = () => {
           <div className="flex flex-col w-full">
             <div className="e-textlabel">Additional Notes</div>
             <input
-              id="additionalNotes"
+              id="Description"
               className="e-field e-input"
               type="text"
-              name="additionalNotes"
+              name="Description"
+              defaultValue={props.Description || ""}
             />
           </div>
 
@@ -460,7 +549,7 @@ const AdminScheduler = () => {
 
   return (
     <div className="mt-4" style={{ overflowY: "scroll", maxHeight: "80vh" }}>
-      <SpinnerGif loadingText={"You are being redirected to checkout..."} />
+      <SpinnerGif loadingText={"Saving your booking..."} />
       <ScheduleComponent
         className="rounded"
         style={{ overflowY: "scroll", maxHeight: "100%" }}
