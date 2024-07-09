@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   ScheduleComponent,
   Week,
@@ -27,6 +27,44 @@ L10n.load({
 
 const ClientScheduler = () => {
   const scheduleObj = useRef(null);
+  const [bookings, setBookings] = useState([]);
+
+  async function retrieveBookings() {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/parking/booking/retrieve",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      // Map the data to the expected format
+      const formattedData = data.map((item) => ({
+        Id: item.id,
+        Subject: item.subject,
+        StartTime: new Date(item.starttime),
+        EndTime: new Date(item.endtime),
+        IsAllDay: item.isallday,
+        Description: item.description,
+        LicensePlate: item.licenseplate,
+        VehicleMake: item.vehiclemake,
+        uid: item.u_id,
+      }));
+
+      setBookings(formattedData);
+
+      console.log("Bookings: ", formattedData);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (bookings.length === 0) retrieveBookings();
+  }, []);
 
   function daysBetween(date1, date2) {
     // Convert input strings to Date objects
@@ -42,7 +80,7 @@ const ClientScheduler = () => {
     return diffDays;
   }
 
-  function formatDate(dateStr) {
+  function formatDate(dateStr, isReg) {
     // Create a Date object from the input date string
     const date = new Date(dateStr);
 
@@ -68,9 +106,14 @@ const ClientScheduler = () => {
     const year = date.getFullYear();
 
     // Construct the formatted date string
-    const formattedDate = `${month} ${day}, ${year}`;
-
-    return formattedDate;
+    if (isReg) return `${month} ${day}, ${year}`;
+    else {
+      let month = date.getMonth() + 1;
+      if (month < 10) month = "0" + month;
+      let tempDay = day;
+      if (tempDay < 10) tempDay = "0" + day;
+      return `${year}-${month}-${day} 00:00:00`;
+    }
   }
 
   function validateFields(data) {
@@ -86,17 +129,113 @@ const ClientScheduler = () => {
   }
 
   // === EVENT RENDERED EVENT ===
-  const onEventRendered = (args) => {};
+  const onEventRendered = (args) => {
+    console.log("Event Rendered: ", args);
+    const eventElement = args.element;
+    const userID = localStorage.getItem("uid");
+    console.log("User ID: ", userID);
 
-  // === CELL CLICK EVENT ===
+    // Use setTimeout to defer accessing parentElement
+    setTimeout(() => {
+      const parentElement = eventElement.parentElement;
+      const grandparentElement = parentElement.parentElement;
+      console.log("Parent Element: ", parentElement);
+      console.log("Grandparent Element: ", grandparentElement);
+
+      const guid = eventElement.getAttribute("data-guid");
+      const ariaLabel = eventElement.getAttribute("aria-label");
+      console.log("Arial Label: ", ariaLabel);
+      const regex =
+        /(\w+,\s\w+\s\d+,\s\d+\sat\s\d{2}:\d{2}:\d{2}\s\w+\s\w{3}-\d{2}:\d{2})/g;
+      const dates = ariaLabel.match(regex);
+      console.log("Dates, " + dates);
+      const startDate = new Date(
+        dates[0].replace(/^\w+,\s/, "").replace(" at", "")
+      );
+      console.log("Start Date: ", startDate);
+      const endDate = new Date(
+        dates[1].replace(/^\w+,\s/, "").replace(" at", "")
+      );
+
+      const diffTime = Math.abs(endDate - startDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+      console.log("Day Diff: ", diffDays);
+
+      eventElement.id = guid;
+      var isClientEvent = false;
+      if (userID === args.data.uid.toString()) {
+        eventElement.classList.add("clientEvent");
+        isClientEvent = true;
+      } else {
+        eventElement.classList.add("nonClientEvent");
+      }
+      eventElement.classList.add("noBorder");
+      // Check if parentElement is not null before manipulating it
+      if (grandparentElement) {
+        grandparentElement.setAttribute("eventguid", guid);
+        if (isClientEvent) {
+          grandparentElement.classList.add("clientEvent");
+        } else {
+          grandparentElement.classList.add("nonClientEvent");
+        }
+        grandparentElement.children[0].classList.add("clientEventText");
+        if (diffDays > 0) {
+          var nextElement = grandparentElement.nextElementSibling;
+          for (var i = 0; i < diffDays; i++) {
+            if (isClientEvent) {
+              nextElement.classList.add("clientEvent");
+            } else {
+              nextElement.classList.add("nonClientEvent");
+            }
+            nextElement.setAttribute("eventguid", guid);
+            nextElement.children[0].classList.add("clientEventText");
+            nextElement = nextElement.nextElementSibling;
+          }
+        }
+      }
+    }, 0);
+  };
+
+  // === CELL CLICK EVENTS ===
   const onCellClick = (args) => {
-    scheduleObj.current.openEditor(args, "Add");
+    console.log("Cell Clicked: ", args);
+    if (
+      args.element.classList.contains("clientEvent") ||
+      args.element.classList.contains("nonClientEvent")
+    ) {
+      console.log("Show different popup...");
+      args.cancel = true;
+      const cell = args.element;
+      const eventGuid = cell.getAttribute("eventguid");
+      document.getElementById(eventGuid).click();
+    } else scheduleObj.current.openEditor(args, "Add");
+  };
+  const onEventClick = (args) => {
+    console.log("Event Clicked: ", args);
+    if (!args.event.RecurrenceRule) {
+      console.log("Show different popup...");
+      args.cancel = true;
+    } else {
+      console.log("Opening Recurrence Alert...");
+      scheduleObj.current.quickPopup.openRecurrenceAlert();
+    }
   };
 
   // === ACTION BEGIN EVENT ===
   const onActionBegin = async (args) => {
     if (args.requestType === "eventCreate") {
       const data = args.data[0];
+      args.cancel = !scheduleObj.current.isSlotAvailable(
+        data.StartTime,
+        data.EndTime
+      );
+      if (!scheduleObj.current.isSlotAvailable(data.StartTime, data.EndTime)) {
+        alert(
+          "The selected dates are already booked. Please choose different dates."
+        );
+        return;
+      }
+
       const validBooking = validateFields(data);
 
       if (!validBooking) {
@@ -109,10 +248,10 @@ const ClientScheduler = () => {
 
       const newBooking = {
         uid: localStorage.getItem("uid"),
-        subject: data.Subject,
-        startTime: data.StartTime,
-        endTime: data.EndTime,
-        isAllDay: data.IsAllDay,
+        subject: "Booking",
+        startTime: formatDate(data.StartTime, false),
+        endTime: formatDate(data.EndTime, false),
+        isAllDay: true,
         description: data.Description,
         licensePlate: data.LicensePlate,
         vehicleMake: data.VehicleMake,
@@ -122,8 +261,8 @@ const ClientScheduler = () => {
       const daysBooked = daysBetween(newBooking.startTime, newBooking.endTime);
       console.log("Days Booked: ", daysBooked);
 
-      const formattedStartDate = formatDate(newBooking.startTime);
-      const formattedEndDate = formatDate(newBooking.endTime);
+      const formattedStartDate = formatDate(newBooking.startTime, true);
+      const formattedEndDate = formatDate(newBooking.endTime, true);
       console.log("Formatted Start Date: ", formattedStartDate);
       console.log("Formatted End Date: ", formattedEndDate);
 
@@ -133,6 +272,14 @@ const ClientScheduler = () => {
       overlay.style.display = "flex";
       const spinner = document.getElementById("spinnerComponent");
       spinner.style.display = "flex";
+
+      await fetch("http://localhost:8080/api/parking/booking/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newBooking),
+      });
 
       const stripeResponse = await fetch(
         "http://localhost:8080/api/parking/payment/create-checkout-session",
@@ -250,6 +397,8 @@ const ClientScheduler = () => {
     );
   };
 
+  const eventSettings = { dataSource: bookings };
+
   return (
     <div className="mt-4" style={{ overflowY: "scroll", maxHeight: "80vh" }}>
       <SpinnerGif loadingText={"You are being redirected to checkout..."} />
@@ -257,10 +406,12 @@ const ClientScheduler = () => {
         className="rounded"
         style={{ overflowY: "scroll", maxHeight: "100%" }}
         ref={scheduleObj}
+        eventSettings={eventSettings}
         showQuickInfo={false}
         editorTemplate={editorTemplate}
         currentView="Month"
         cellClick={onCellClick}
+        eventClick={onEventClick}
         eventRendered={onEventRendered}
         actionBegin={onActionBegin}
       >

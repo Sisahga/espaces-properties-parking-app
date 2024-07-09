@@ -8,6 +8,8 @@
   --white: #F8F8FF;
   --blue: #0B2275;
   --light-blue: #4A90E2;
+  --green: #28A745;
+  --red: #DC3545;
 }
 
 body {
@@ -83,4 +85,19 @@ body {
   justify-content: center;
   align-items: center;
   width: 90vw;
+}
+
+.noBorder {
+  border: none !important;
+}
+
+.clientEvent {
+  background: var(--green) !important;
+}
+.clientEventText {
+  color: #fff !important;
+}
+
+.nonClientEvent {
+  background: var(--red) !important;
 }
