@@ -77,7 +77,9 @@ const TransactionDetails = () => {
           <p className="text-center">
             <b className="my-text-blue">Transaction #</b>
           </p>
-          <p className="text-center text-xs">{transactionDetails.id}</p>
+          <p className="text-center" style={{ fontSize: "0.65rem" }}>
+            {transactionDetails.id}
+          </p>
         </div>
         <div className="flex justify-between mt-4">
           <p>

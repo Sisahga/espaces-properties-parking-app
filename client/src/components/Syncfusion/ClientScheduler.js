@@ -28,6 +28,8 @@ L10n.load({
 const ClientScheduler = () => {
   const scheduleObj = useRef(null);
   const [bookings, setBookings] = useState([]);
+  const [carryoverRender, setCarryoverRender] = useState(false);
+  const [carryoverRenderIndex, setCarryoverRenderIndex] = useState(0);
 
   async function retrieveBookings() {
     try {
@@ -181,19 +183,35 @@ const ClientScheduler = () => {
         grandparentElement.children[0].classList.add("clientEventText");
         if (diffDays > 0) {
           var nextElement = grandparentElement.nextElementSibling;
+          console.log("CARRYOVER: ", carryoverRender);
           for (var i = 0; i < diffDays; i++) {
-            if (isClientEvent) {
-              nextElement.classList.add("clientEvent");
-            } else {
-              nextElement.classList.add("nonClientEvent");
-            }
-            nextElement.setAttribute("eventguid", guid);
-            nextElement.children[0].classList.add("clientEventText");
-            nextElement = nextElement.nextElementSibling;
+            // if (nextElement) {
+            //   console.log("Getting Next Element: ", nextElement);
+            //   if (isClientEvent) {
+            //     nextElement.classList.add("clientEvent");
+            //   } else {
+            //     nextElement.classList.add("nonClientEvent");
+            //   }
+            //   nextElement.setAttribute("eventguid", guid);
+            //   nextElement.children[0].classList.add("clientEventText");
+            //   nextElement = nextElement.nextElementSibling;
+            // }
           }
         }
       }
     }, 0);
+  };
+
+  const onPopupOpen = (args) => {
+    console.log("Popup Opened: ", args);
+    const target = args.target;
+    console.log("Target: ", target);
+    if (
+      target.classList.contains("clientEvent") ||
+      target.classList.contains("nonClientEvent")
+    ) {
+      args.cancel = true;
+    }
   };
 
   // === CELL CLICK EVENTS ===
@@ -225,11 +243,13 @@ const ClientScheduler = () => {
   const onActionBegin = async (args) => {
     if (args.requestType === "eventCreate") {
       const data = args.data[0];
-      args.cancel = !scheduleObj.current.isSlotAvailable(
+      const slotAvailable = scheduleObj.current.isSlotAvailable(
         data.StartTime,
         data.EndTime
       );
-      if (!scheduleObj.current.isSlotAvailable(data.StartTime, data.EndTime)) {
+      console.log("Slot Available: ", slotAvailable);
+      if (!slotAvailable) {
+        args.cancel = true;
         alert(
           "The selected dates are already booked. Please choose different dates."
         );
@@ -273,13 +293,13 @@ const ClientScheduler = () => {
       const spinner = document.getElementById("spinnerComponent");
       spinner.style.display = "flex";
 
-      await fetch("http://localhost:8080/api/parking/booking/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newBooking),
-      });
+      // await fetch("http://localhost:8080/api/parking/booking/create", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newBooking),
+      // });
 
       const stripeResponse = await fetch(
         "http://localhost:8080/api/parking/payment/create-checkout-session",
@@ -411,12 +431,12 @@ const ClientScheduler = () => {
         editorTemplate={editorTemplate}
         currentView="Month"
         cellClick={onCellClick}
+        popupOpen={onPopupOpen}
         eventClick={onEventClick}
         eventRendered={onEventRendered}
         actionBegin={onActionBegin}
       >
         <ViewsDirective>
-          <ViewDirective option="Week" />
           <ViewDirective option="Month" />
         </ViewsDirective>
         <Inject services={[Week, Month]} />
