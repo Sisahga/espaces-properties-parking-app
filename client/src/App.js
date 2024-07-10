@@ -7,6 +7,7 @@ import TransactionDetails from "./pages/TransactionDetails";
 import AdminLogin from "./pages/AdminLogin";
 import AllBookingsAdmin from "./pages/AllBookingsAdmin";
 import AppSettings from "./pages/AppSettings";
+import ClientBookings from "./pages/ClientBookings";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           path="/all-bookings-admin"
           element={<AllBookingsAdmin />}
         ></Route>
+        <Route path="/my-bookings" element={<ClientBookings />}></Route>
         <Route path="/app-settings" element={<AppSettings />}></Route>
       </Routes>
     </>

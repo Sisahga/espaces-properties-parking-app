@@ -144,6 +144,20 @@ app.get("/api/parking/booking/retrieve/admin", async (req, res) => {
   }
 });
 
+// -----> Retrieve Booking by User ID
+app.get("/api/parking/booking/retrieve/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userBookings = await pool.query(
+      "SELECT * FROM bookings WHERE u_id = $1 ORDER BY starttime",
+      [id]
+    );
+    res.status(200).json(userBookings.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // -----> Update Booking
 app.put("/api/parking/booking/update/:id", async (req, res) => {
   try {

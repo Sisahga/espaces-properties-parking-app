@@ -42,7 +42,7 @@ const TransactionDetails = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-8">
+    <div className="flex flex-col gap-4 p-8 text-sm">
       <div className="flex w-full justify-center items-center">
         {/* HEADER */}
         <div className="flex flex-col gap-4">
@@ -96,12 +96,6 @@ const TransactionDetails = () => {
             ending in {transactionDetails.paymentCardEnding}
           </div>
         </div>
-        {/* <div className="flex justify-between">
-          <p>
-            <b className="my-text-blue">Subtotal</b>
-          </p>
-          <p>$ {transactionDetails.subtotal.toFixed(2)}</p>
-        </div> */}
         <div className="flex justify-between">
           <p>
             <b className="my-text-blue">Total</b>
@@ -114,20 +108,11 @@ const TransactionDetails = () => {
           </p>
           <p className="uppercase">{transactionDetails.currency}</p>
         </div>
-        {/* <div className="flex justify-between">
-          <p>
-            <b className="my-text-blue">Card</b>
-          </p>
-          <p>
-            <span className="uppercase">{transactionDetails.cardType}</span>{" "}
-            ending in {transactionDetails.paymentCardEnding}
-          </p>
-        </div> */}
         <div className="flex justify-between">
           <p>
             <b className="my-text-blue">Parking Bill</b>
           </p>
-          <div className="flex gap-2" style={{ fontStyle: "italic" }}>
+          <div className="flex gap-2 text-xs" style={{ fontStyle: "italic" }}>
             <p>
               {transactionDetails.quantity}-
               {transactionDetails.quantity > 1 ? "Days" : "Day"}

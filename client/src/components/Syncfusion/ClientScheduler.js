@@ -345,7 +345,11 @@ const ClientScheduler = () => {
           },
           body: JSON.stringify({
             quantity: daysBooked,
-            description: formattedStartDate + " - " + formattedEndDate,
+            description:
+              formattedStartDate +
+              " 3:00P.M. - " +
+              formattedEndDate +
+              " 11:00A.M.",
             bookingID: bookingID,
           }),
         }

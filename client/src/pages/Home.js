@@ -106,9 +106,14 @@ const Home = () => {
             <p>{user.email}</p>
           </div>
           <ClientScheduler />
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-between mt-4 bs-light p-4">
             <div className="flex gap-4">
-              <button className="clientActionTab rounded bs-light">
+              <button
+                onClick={() => {
+                  navigate("/my-bookings");
+                }}
+                className="clientActionTab rounded bs-light"
+              >
                 My Bookings
               </button>
               <button className="clientActionTab rounded bs-light">

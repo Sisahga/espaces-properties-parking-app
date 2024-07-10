@@ -522,7 +522,7 @@ const AdminScheduler = () => {
           </div>
 
           {/* FOOTNOTE */}
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <p className="pb-2">
               <b>N.B.</b>
             </p>
@@ -534,7 +534,7 @@ const AdminScheduler = () => {
               Departures are scheduled at the latest for <b>11:00 A.M.</b> on
               the last day of booking.
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     ) : (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AllBookings from "../components/AllBookings";
 
-const AllBookingsAdmin = () => {
+const ClientBookings = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -27,11 +27,10 @@ const AllBookingsAdmin = () => {
     }
   }
 
-  const handleAdminLogout = () => {
+  const handleLogout = () => {
     localStorage.removeItem("authenticated");
     localStorage.removeItem("uid");
-    localStorage.removeItem("isAdmin");
-    navigate("/login/admin");
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -42,7 +41,6 @@ const AllBookingsAdmin = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="flex flex-col gap-4 px-8 py-12">
       <div className="flex justify-center items-center gap-2">
@@ -55,19 +53,14 @@ const AllBookingsAdmin = () => {
         </b>
       </div>
       <div className="flex justify-between bs-light px-4 py-2 rounded my-text-blue">
-        <p>
-          <b>ADMIN</b>
-        </p>
+        <p>{user.name}</p>
         <p>{user.email}</p>
       </div>
 
-      <div
-        className="flex flex-col gap-4 mt-2"
-        style={{ maxHeight: "60vh", overflowY: "scroll" }}
-      >
+      <div className="flex flex-col gap-4 mt-2">
         <div className="w-full flex justify-center">
           <p className="my-text-orange text-lg">
-            <b>All Bookings</b>
+            <b>My Bookings</b>
           </p>
         </div>
         <AllBookings />
@@ -80,22 +73,19 @@ const AllBookingsAdmin = () => {
               navigate("/");
             }}
           >
-            Scheduler
+            Home
           </button>
           <button
-            onClick={() => {
-              navigate("/app-settings");
-            }}
+            // onClick={() => {
+            //   navigate("/");
+            // }}
             className="clientActionTab rounded"
           >
-            App Settings
+            Profile Settings
           </button>
         </div>
         <div>
-          <button
-            onClick={handleAdminLogout}
-            className="logoutBtn rounded bs-light"
-          >
+          <button onClick={handleLogout} className="logoutBtn rounded bs-light">
             Logout
           </button>
         </div>
@@ -104,4 +94,4 @@ const AllBookingsAdmin = () => {
   );
 };
 
-export default AllBookingsAdmin;
+export default ClientBookings;
