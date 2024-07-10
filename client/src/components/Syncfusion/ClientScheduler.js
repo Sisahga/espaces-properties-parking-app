@@ -66,6 +66,16 @@ const ClientScheduler = () => {
     if (bookings.length === 0) retrieveBookings();
   }, []);
 
+  const handleRentalCarChange = (e) => {
+    if (e.target.checked) {
+      document.getElementById("licensePlateLbl").innerText = "License Plate";
+      document.getElementById("vehicleMakeLbl").innerText = "Vehicle Make";
+    } else {
+      document.getElementById("licensePlateLbl").innerText = "License Plate *";
+      document.getElementById("vehicleMakeLbl").innerText = "Vehicle Make *";
+    }
+  };
+
   function daysBetween(date1, date2) {
     // Convert input strings to Date objects
     const d1 = new Date(date1);
@@ -120,8 +130,10 @@ const ClientScheduler = () => {
     if (
       data.StartTime === "" ||
       data.EndTime === "" ||
-      data.LicensePlate === "" ||
-      data.VehicleMake === ""
+      (data.LicensePlate === "" &&
+        document.getElementById("licensePlateLbl").innerText.includes("*")) ||
+      (data.VehicleMake === "" &&
+        document.getElementById("vehicleMakeLbl").innerText.includes("*"))
     ) {
       return false;
     }
@@ -184,6 +196,7 @@ const ClientScheduler = () => {
       if (userID === args.data.uid.toString()) {
         eventElement.classList.add("clientEvent");
         isClientEvent = true;
+        eventText.innerText = "Your Booking";
       } else {
         eventElement.classList.add("nonClientEvent");
         eventText.innerText = "Booked";
@@ -228,6 +241,7 @@ const ClientScheduler = () => {
     ) {
       args.cancel = true;
     }
+    document.getElementsByClassName("e-event-save")[0].innerText = "Pay Now";
   };
 
   // === CELL CLICK EVENTS ===
@@ -401,7 +415,9 @@ const ClientScheduler = () => {
           {/* MIDDLE ROW */}
           <div className="flex w-full gap-4">
             <div className="flex flex-col w-1/2">
-              <div className="e-textlabel">License Plate *</div>
+              <div className="e-textlabel" id="licensePlateLbl">
+                License Plate *
+              </div>
               <div style={{ paddingTop: "3px" }}>
                 <input
                   id="LicensePlate"
@@ -412,7 +428,9 @@ const ClientScheduler = () => {
               </div>
             </div>
             <div className="flex flex-col w-1/2">
-              <div className="e-textlabel">Vehicle Make *</div>
+              <div className="e-textlabel" id="vehicleMakeLbl">
+                Vehicle Make *
+              </div>
               <div>
                 <DropDownListComponent
                   className="e-field"
@@ -432,6 +450,7 @@ const ClientScheduler = () => {
                 className="e-field e-input"
                 type="checkbox"
                 name="isRentalCar"
+                onChange={handleRentalCarChange}
               />
             </div>
           </div>

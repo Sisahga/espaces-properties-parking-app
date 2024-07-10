@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AllBookings from "../components/AllBookings";
 
-const ClientBookings = () => {
+const ClientSettings = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -30,6 +29,7 @@ const ClientBookings = () => {
   const handleLogout = () => {
     localStorage.removeItem("authenticated");
     localStorage.removeItem("uid");
+    localStorage.removeItem("isAdmin");
     navigate("/login");
   };
 
@@ -60,12 +60,45 @@ const ClientBookings = () => {
       <div className="flex flex-col gap-4 mt-2">
         <div className="w-full flex justify-center">
           <p className="my-text-orange text-lg">
-            <b>My Bookings</b>
+            <b>Profile Settings</b>
           </p>
         </div>
-        <AllBookings />
+        <div className="flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
+          <p className="my-text-blue">
+            <b>Email</b>
+          </p>
+          <input
+            id="userEmail"
+            name="userEmail"
+            type="email"
+            defaultValue={user.email}
+            className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          ></input>
+        </div>
+        <div className="flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
+          <p className="my-text-blue">
+            <b>Phone Number</b>
+          </p>
+          <input
+            id="userPhone"
+            name="userPhone"
+            type="tel"
+            defaultValue={user.phone}
+            className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          ></input>
+        </div>
+        <div className="flex mx-auto w-1/2 mt-4">
+          <button
+            className="buttonBig rounded"
+            style={{
+              backgroundColor: "var(--green) !important",
+            }}
+          >
+            Save
+          </button>
+        </div>
       </div>
-      <div className="flex justify-between mt-4 bs-light p-4">
+      <div className="flex justify-between mt-12 bs-light p-4">
         <div className="flex gap-4">
           <button
             className="clientActionTab rounded"
@@ -77,11 +110,11 @@ const ClientBookings = () => {
           </button>
           <button
             onClick={() => {
-              navigate("/profile-settings");
+              navigate("/my-bookings");
             }}
             className="clientActionTab rounded"
           >
-            Profile Settings
+            My Bookings
           </button>
         </div>
         <div>
@@ -94,4 +127,4 @@ const ClientBookings = () => {
   );
 };
 
-export default ClientBookings;
+export default ClientSettings;

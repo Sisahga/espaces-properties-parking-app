@@ -116,7 +116,12 @@ const Home = () => {
               >
                 My Bookings
               </button>
-              <button className="clientActionTab rounded bs-light">
+              <button
+                onClick={() => {
+                  navigate("/profile-settings");
+                }}
+                className="clientActionTab rounded bs-light"
+              >
                 Profile Settings
               </button>
             </div>

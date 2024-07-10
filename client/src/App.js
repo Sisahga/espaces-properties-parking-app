@@ -8,6 +8,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AllBookingsAdmin from "./pages/AllBookingsAdmin";
 import AppSettings from "./pages/AppSettings";
 import ClientBookings from "./pages/ClientBookings";
+import ClientSettings from "./pages/ClientSettings";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           element={<AllBookingsAdmin />}
         ></Route>
         <Route path="/my-bookings" element={<ClientBookings />}></Route>
+        <Route path="/profile-settings" element={<ClientSettings />}></Route>
         <Route path="/app-settings" element={<AppSettings />}></Route>
       </Routes>
     </>

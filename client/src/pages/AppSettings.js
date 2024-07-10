@@ -76,8 +76,18 @@ const AppSettings = () => {
             className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           ></input>
         </div>
+        <div className="flex mx-auto w-1/2 mt-4">
+          <button
+            className="buttonBig rounded"
+            style={{
+              backgroundColor: "var(--green) !important",
+            }}
+          >
+            Save
+          </button>
+        </div>
       </div>
-      <div className="flex justify-between mt-48 bs-light p-4">
+      <div className="flex justify-between mt-24 bs-light p-4">
         <div className="flex gap-4">
           <button
             className="clientActionTab rounded"
