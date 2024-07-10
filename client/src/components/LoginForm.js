@@ -70,6 +70,13 @@ const LoginForm = () => {
             Signup here
           </Link>
         </div>
+        {/* Admin Login */}
+        <div className="flex flex-col pt-2">
+          <p className="text-sm">Admin?</p>
+          <Link to={"/login/admin"} className="underline my-text-light-blue">
+            Login here
+          </Link>
+        </div>
         {/* Company TM */}
         <div className="mt-4">
           <p className="text-sm font-thin">&copy; MacMee Inc. - 2024</p>

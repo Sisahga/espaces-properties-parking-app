@@ -214,22 +214,7 @@ const AdminScheduler = () => {
       console.log("Grandparent Element: ", grandparentElement);
 
       const guid = eventElement.getAttribute("data-guid");
-      const ariaLabel = eventElement.getAttribute("aria-label");
-      console.log("Arial Label: ", ariaLabel);
-      const regex =
-        /(\w+,\s\w+\s\d+,\s\d+\sat\s\d{2}:\d{2}:\d{2}\s\w+\s\w{3}-\d{2}:\d{2})/g;
-      const dates = ariaLabel.match(regex);
-      console.log("Dates, " + dates);
-      const startDate = new Date(
-        dates[0].replace(/^\w+,\s/, "").replace(" at", "")
-      );
-      console.log("Start Date: ", startDate);
-      const endDate = new Date(
-        dates[1].replace(/^\w+,\s/, "").replace(" at", "")
-      );
-
-      const diffTime = Math.abs(endDate - startDate);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+      const diffDays = args.data.data.count;
       console.log("Day Diff: ", diffDays);
 
       eventElement.id = guid;
@@ -243,29 +228,16 @@ const AdminScheduler = () => {
         grandparentElement.children[0].classList.add("clientEventText");
         if (diffDays > 0) {
           var nextElement = grandparentElement.nextElementSibling;
-          for (var i = 0; i < diffDays; i++) {
+          for (var i = 0; i < diffDays - 1; i++) {
             if (nextElement) {
               console.log("Getting Next Element: ", nextElement);
+              nextElement.classList.add("nonClientEvent");
+              nextElement.setAttribute("eventguid", guid);
+              nextElement.children[0].classList.add("clientEventText");
               nextElement = nextElement.nextElementSibling;
             }
           }
         }
-        // if (diffDays > 0) {
-        //   var nextElement = grandparentElement.nextElementSibling;
-        //   for (var i = 0; i < diffDays; i++) {
-        //     if (nextElement) {
-        //       console.log("Getting Next Element: ", nextElement);
-        //       if (isClientEvent) {
-        //         nextElement.classList.add("clientEvent");
-        //       } else {
-        //         nextElement.classList.add("nonClientEvent");
-        //       }
-        //       nextElement.setAttribute("eventguid", guid);
-        //       nextElement.children[0].classList.add("clientEventText");
-        //       nextElement = nextElement.nextElementSibling;
-        //     }
-        //   }
-        // }
       }
     }, 0);
   };

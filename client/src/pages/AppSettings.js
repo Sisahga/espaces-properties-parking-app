@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AllBookings from "../components/AllBookings";
 
-const AllBookingsAdmin = () => {
+const AppSettings = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -42,7 +41,6 @@ const AllBookingsAdmin = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="flex flex-col gap-4 px-8 py-12">
       <div className="flex justify-center items-center gap-2">
@@ -64,12 +62,22 @@ const AllBookingsAdmin = () => {
       <div className="flex flex-col gap-4 mt-2">
         <div className="w-full flex justify-center">
           <p className="my-text-orange text-lg">
-            <b>All Bookings</b>
+            <b>App Settings</b>
           </p>
         </div>
-        <AllBookings />
+        <div className="flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
+          <p className="my-text-blue">
+            <b>Daily Parking Price ($)</b>
+          </p>
+          <input
+            id="parkingPrice"
+            name="parkingPrice"
+            type="text"
+            className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          ></input>
+        </div>
       </div>
-      <div className="flex justify-between mt-4 bs-light p-4">
+      <div className="flex justify-between mt-48 bs-light p-4">
         <div className="flex gap-4">
           <button
             className="clientActionTab rounded"
@@ -81,11 +89,11 @@ const AllBookingsAdmin = () => {
           </button>
           <button
             onClick={() => {
-              navigate("/app-settings");
+              navigate("/all-bookings-admin");
             }}
             className="clientActionTab rounded"
           >
-            App Settings
+            All Bookings
           </button>
         </div>
         <div>
@@ -101,4 +109,4 @@ const AllBookingsAdmin = () => {
   );
 };
 
-export default AllBookingsAdmin;
+export default AppSettings;

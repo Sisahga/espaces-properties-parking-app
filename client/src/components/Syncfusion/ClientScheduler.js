@@ -168,28 +168,15 @@ const ClientScheduler = () => {
 
     // Use setTimeout to defer accessing parentElement
     setTimeout(() => {
+      const eventText = eventElement.querySelector(".e-subject");
+
       const parentElement = eventElement.parentElement;
       const grandparentElement = parentElement.parentElement;
       console.log("Parent Element: ", parentElement);
       console.log("Grandparent Element: ", grandparentElement);
 
       const guid = eventElement.getAttribute("data-guid");
-      const ariaLabel = eventElement.getAttribute("aria-label");
-      console.log("Arial Label: ", ariaLabel);
-      const regex =
-        /(\w+,\s\w+\s\d+,\s\d+\sat\s\d{2}:\d{2}:\d{2}\s\w+\s\w{3}-\d{2}:\d{2})/g;
-      const dates = ariaLabel.match(regex);
-      console.log("Dates, " + dates);
-      const startDate = new Date(
-        dates[0].replace(/^\w+,\s/, "").replace(" at", "")
-      );
-      console.log("Start Date: ", startDate);
-      const endDate = new Date(
-        dates[1].replace(/^\w+,\s/, "").replace(" at", "")
-      );
-
-      const diffTime = Math.abs(endDate - startDate);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+      const diffDays = args.data.data.count;
       console.log("Day Diff: ", diffDays);
 
       eventElement.id = guid;
@@ -199,6 +186,7 @@ const ClientScheduler = () => {
         isClientEvent = true;
       } else {
         eventElement.classList.add("nonClientEvent");
+        eventText.innerText = "Booked";
       }
       eventElement.classList.add("noBorder");
       // Check if parentElement is not null before manipulating it
@@ -210,22 +198,22 @@ const ClientScheduler = () => {
           grandparentElement.classList.add("nonClientEvent");
         }
         grandparentElement.children[0].classList.add("clientEventText");
-        // if (diffDays > 0) {
-        //   var nextElement = grandparentElement.nextElementSibling;
-        //   for (var i = 0; i < diffDays; i++) {
-        //     if (nextElement) {
-        //       console.log("Getting Next Element: ", nextElement);
-        //       if (isClientEvent) {
-        //         nextElement.classList.add("clientEvent");
-        //       } else {
-        //         nextElement.classList.add("nonClientEvent");
-        //       }
-        //       nextElement.setAttribute("eventguid", guid);
-        //       nextElement.children[0].classList.add("clientEventText");
-        //       nextElement = nextElement.nextElementSibling;
-        //     }
-        //   }
-        // }
+        if (diffDays > 0) {
+          var nextElement = grandparentElement.nextElementSibling;
+          for (var i = 0; i < diffDays - 1; i++) {
+            if (nextElement) {
+              console.log("Getting Next Element: ", nextElement);
+              if (isClientEvent) {
+                nextElement.classList.add("clientEvent");
+              } else {
+                nextElement.classList.add("nonClientEvent");
+              }
+              nextElement.setAttribute("eventguid", guid);
+              nextElement.children[0].classList.add("clientEventText");
+              nextElement = nextElement.nextElementSibling;
+            }
+          }
+        }
       }
     }, 0);
   };
@@ -430,6 +418,17 @@ const ClientScheduler = () => {
                   dataSource={cars}
                 />
               </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 w-1/2">
+            <div className="e-textlabel">Rental Car?</div>
+            <div className="mt-1">
+              <input
+                id="isRentalCar"
+                className="e-field e-input"
+                type="checkbox"
+                name="isRentalCar"
+              />
             </div>
           </div>
 
