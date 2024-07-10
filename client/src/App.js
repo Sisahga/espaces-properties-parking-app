@@ -5,6 +5,7 @@ import Signup from "./pages/signup";
 import Login from "./pages/login";
 import TransactionDetails from "./pages/TransactionDetails";
 import AdminLogin from "./pages/AdminLogin";
+import AllBookingsAdmin from "./pages/AllBookingsAdmin";
 
 function App() {
   return (
@@ -20,6 +21,10 @@ function App() {
           element={<TransactionDetails />}
         ></Route>
         <Route path="/stripe-pay-cancel" element={<Home />}></Route>
+        <Route
+          path="/all-bookings-admin"
+          element={<AllBookingsAdmin />}
+        ></Route>
       </Routes>
     </>
   );

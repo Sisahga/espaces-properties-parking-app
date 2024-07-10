@@ -130,7 +130,16 @@ const ClientScheduler = () => {
 
   function handleBeforeAppointmentChange(args) {
     const appointments = scheduleObj.current.getEvents();
-    const newAppointment = args.data;
+    const newAppointment = args.data[0];
+    const currentDate = new Date();
+
+    // Check if the new appointment's start time is before the current date and time
+    if (new Date(newAppointment.StartTime) < currentDate) {
+      args.cancel = true;
+      alert("Cannot create a booking with a start time in the past.");
+      return true;
+    }
+
     const existingAppointments = appointments.filter((appointment) => {
       return (
         appointment !== args.data &&

@@ -54,6 +54,7 @@ const AdminScheduler = () => {
         uid: item.u_id,
         name: item.name,
         email: item.email,
+        phone: item.phone,
         RoomNum: item.roomnumber,
       }));
 
@@ -159,7 +160,16 @@ const AdminScheduler = () => {
 
   function handleBeforeAppointmentChange(args) {
     const appointments = scheduleObj.current.getEvents();
-    const newAppointment = args.data;
+    const newAppointment = args.data[0];
+    const currentDate = new Date();
+
+    // Check if the new appointment's start time is before the current date and time
+    if (new Date(newAppointment.StartTime) < currentDate) {
+      args.cancel = true;
+      alert("Cannot create a booking with a start time in the past.");
+      return true;
+    }
+
     const existingAppointments = appointments.filter((appointment) => {
       console.log("Appointment: ", appointment);
       return (
@@ -431,7 +441,22 @@ const AdminScheduler = () => {
     }
     // === EVENT DELETE ===
     else if (args.requestType === "eventRemove") {
-      alert("Event removed.");
+      const response = await fetch(
+        `http://localhost:8080/api/parking/booking/delete/${args.data[0].Id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        console.log("Booking deleted.");
+        alert("Booking successfully deleted.");
+        window.location.reload();
+      } else {
+        console.error("Failed to delete booking.");
+      }
     }
   };
 

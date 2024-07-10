@@ -145,7 +145,12 @@ const Home = () => {
           <AdminScheduler />
           <div className="flex justify-between mt-4">
             <div className="flex gap-4">
-              <button className="clientActionTab rounded bs-light">
+              <button
+                onClick={() => {
+                  navigate("/all-bookings-admin");
+                }}
+                className="clientActionTab rounded bs-light"
+              >
                 All Bookings
               </button>
               <button className="clientActionTab rounded bs-light">

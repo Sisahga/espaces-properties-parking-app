@@ -136,7 +136,7 @@ app.get("/api/parking/booking/retrieve", async (req, res) => {
 app.get("/api/parking/booking/retrieve/admin", async (req, res) => {
   try {
     const allBookings = await pool.query(
-      "SELECT b.id, b.u_id, b.subject, b.starttime, b.endtime, b.isallday, b.description, b.licenseplate, b.vehiclemake, b.roomnumber, u.name, u.email FROM bookings b INNER JOIN users u ON b.u_id = u.u_id"
+      "SELECT b.id, b.u_id, b.subject, b.starttime, b.endtime, b.isallday, b.description, b.licenseplate, b.vehiclemake, b.roomnumber, u.name, u.email, u.phone FROM bookings b INNER JOIN users u ON b.u_id = u.u_id ORDER BY b.starttime"
     );
     res.status(200).json(allBookings.rows);
   } catch (err) {
