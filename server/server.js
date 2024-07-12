@@ -85,6 +85,21 @@ app.get("/api/user/retrieve/:id", async (req, res) => {
   }
 });
 
+// -----> Update User Email and Phone
+app.put("/api/user/update/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { email, phone } = req.body;
+    await pool.query(
+      "UPDATE users SET email = $1, phone = $2 WHERE u_id = $3",
+      [email, phone, id]
+    );
+    res.status(200).json("User updated.");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // ---< End of USER ROUTES >---
 
 // ---< SCHEDULER ROUTES >---
@@ -208,12 +223,13 @@ app.delete("/api/parking/booking/delete/:id", async (req, res) => {
 
 var parkingPrice = {
   name: "Daily Parking Space at Espace Properties",
-  priceInCents: 2500,
+  priceInCents: null,
 };
 
 // -----> STRIPE Payment
 app.post("/api/parking/payment/create-checkout-session", async (req, res) => {
   try {
+    await getParkingPrice();
     const dayWord = req.body.quantity > 1 ? "days" : "day";
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -283,6 +299,30 @@ app.get("/api/parking/payment/retrieve-complete/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+app.get("/api/parking/payment/standard-price", async (req, res) => {
+  const price = await getParkingPrice();
+  res.status(200).json(price);
+});
+
+app.put("/api/parking/payment/update-standard-price", async (req, res) => {
+  try {
+    const { newPrice } = req.body;
+    await pool.query("UPDATE parkingsettings SET price = $1 WHERE id = 1", [
+      newPrice,
+    ]);
+    res.status(200).json("Price updated.");
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+async function getParkingPrice() {
+  const price = await pool.query("SELECT * FROM parkingsettings where id = 1");
+  parkingPrice.priceInCents = price.rows[0].price;
+  return parkingPrice;
+}
 
 // ---< End of PAYMENT ROUTES >---
 

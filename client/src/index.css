@@ -97,6 +97,20 @@ body {
   width: 90vw;
 }
 
+#clientBookingDetails {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  background-color: #fff;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+}
+
 .noBorder {
   border: none !important;
 }

@@ -6,12 +6,14 @@ import {
   Inject,
   ViewDirective,
   ViewsDirective,
+  setTime,
 } from "@syncfusion/ej2-react-schedule";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n } from "@syncfusion/ej2-base";
 import cars from "../../cars.json";
 import SpinnerGif from "../Spinner";
+import ClientViewBooking from "../ClientViewBooking";
 
 // Define a custom locale
 L10n.load({
@@ -28,6 +30,7 @@ L10n.load({
 const ClientScheduler = () => {
   const scheduleObj = useRef(null);
   const [bookings, setBookings] = useState([]);
+  const [bookingSlot, setBookingSlot] = useState("");
 
   async function retrieveBookings() {
     try {
@@ -259,14 +262,21 @@ const ClientScheduler = () => {
     } else scheduleObj.current.openEditor(args, "Add");
   };
   const onEventClick = (args) => {
-    console.log("Event Clicked: ", args);
-    if (!args.event.RecurrenceRule) {
-      console.log("Show different popup...");
-      args.cancel = true;
-    } else {
-      console.log("Opening Recurrence Alert...");
-      scheduleObj.current.quickPopup.openRecurrenceAlert();
-    }
+    console.log("Event Clicked: ", args.event);
+    console.log("show different popup...");
+    setBookingSlot(args.event.StartTime + " " + args.event.EndTime);
+
+    setTimeout(() => {
+      const overlay = document.getElementById("overlay");
+      overlay.style.display = "flex";
+      const popup = document.getElementById("clientBookingDetails");
+      popup.style.display = "flex";
+    }, 0);
+
+    // const overlay = document.getElementById("overlay");
+    // overlay.style.display = "flex";
+    // const popup = document.getElementById("clientBookingDetails");
+    // popup.style.display = "flex";
   };
 
   // === ACTION BEGIN EVENT ===
@@ -491,6 +501,8 @@ const ClientScheduler = () => {
 
   return (
     <div className="mt-4" style={{ overflowY: "scroll", maxHeight: "80vh" }}>
+      {/* ClientViewBooking component will display booking details */}
+      <ClientViewBooking bookingSlot={bookingSlot} />
       <SpinnerGif loadingText={"You are being redirected to checkout..."} />
       <ScheduleComponent
         className="rounded"

@@ -5,6 +5,7 @@ const AppSettings = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [price, setPrice] = useState(0);
 
   async function getUser(userId) {
     const response = await fetch(
@@ -26,6 +27,46 @@ const AppSettings = () => {
     }
   }
 
+  const handlePriceChange = async () => {
+    const newPriceStr = document.getElementById("parkingPrice").value;
+    const newPrice = parseFloat(newPriceStr) * 100;
+    const response = await fetch(
+      `http://localhost:8080/api/parking/payment/update-standard-price`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ newPrice: newPrice }),
+      }
+    );
+    if (response.ok) {
+      console.log("Price updated.");
+      window.location.reload();
+    } else {
+      console.error("Failed to update");
+    }
+  };
+
+  async function getParkingPrice() {
+    const response = await fetch(
+      `http://localhost:8080/api/parking/payment/standard-price`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.ok) {
+      const priceObj = await response.json();
+      const price = parseFloat(priceObj.priceInCents) / 100;
+      setPrice(price);
+    } else {
+      console.error("Failed to get parking price.");
+    }
+  }
+
   const handleAdminLogout = () => {
     localStorage.removeItem("authenticated");
     localStorage.removeItem("uid");
@@ -35,6 +76,7 @@ const AppSettings = () => {
 
   useEffect(() => {
     const uid = localStorage.getItem("uid");
+    getParkingPrice();
     getUser(uid);
   }, [navigate]);
 
@@ -73,12 +115,14 @@ const AppSettings = () => {
             id="parkingPrice"
             name="parkingPrice"
             type="text"
+            defaultValue={price.toFixed(2)}
             className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           ></input>
         </div>
         <div className="flex mx-auto w-1/2 mt-4">
           <button
             className="buttonBig rounded"
+            onClick={handlePriceChange}
             style={{
               backgroundColor: "var(--green) !important",
             }}

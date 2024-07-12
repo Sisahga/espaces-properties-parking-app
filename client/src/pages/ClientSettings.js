@@ -26,6 +26,27 @@ const ClientSettings = () => {
     }
   }
 
+  const handleUserUpdate = async () => {
+    const userEmail = document.getElementById("userEmail").value;
+    const userPhone = document.getElementById("userPhone").value;
+    const response = await fetch(
+      `http://localhost:8080/api/user/update/${user.u_id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: userEmail, phone: userPhone }),
+      }
+    );
+    if (response.ok) {
+      console.log("User updated.");
+      window.location.reload();
+    } else {
+      console.error("Failed to update user.");
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("authenticated");
     localStorage.removeItem("uid");
@@ -90,6 +111,7 @@ const ClientSettings = () => {
         <div className="flex mx-auto w-1/2 mt-4">
           <button
             className="buttonBig rounded"
+            onClick={handleUserUpdate}
             style={{
               backgroundColor: "var(--green) !important",
             }}
