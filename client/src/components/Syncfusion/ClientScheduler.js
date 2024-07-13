@@ -31,6 +31,8 @@ const ClientScheduler = () => {
   const scheduleObj = useRef(null);
   const [bookings, setBookings] = useState([]);
   const [bookingSlot, setBookingSlot] = useState("");
+  const [bookingMake, setBookingMake] = useState("");
+  const [bookingLicensePlate, setBookingLicensePlate] = useState("");
 
   async function retrieveBookings() {
     try {
@@ -263,15 +265,23 @@ const ClientScheduler = () => {
   };
   const onEventClick = (args) => {
     console.log("Event Clicked: ", args.event);
-    console.log("show different popup...");
-    setBookingSlot(args.event.StartTime + " " + args.event.EndTime);
 
-    setTimeout(() => {
-      const overlay = document.getElementById("overlay");
-      overlay.style.display = "flex";
-      const popup = document.getElementById("clientBookingDetails");
-      popup.style.display = "flex";
-    }, 0);
+    console.log("show different popup...");
+
+    if (args.element.classList.contains("clientEvent")) {
+      const startTime = formatDate(args.event.StartTime, true);
+      const endTime = formatDate(args.event.EndTime, true);
+      setBookingSlot(startTime + " (3:00 P.M.) - " + endTime + " (11:00 A.M.)");
+      setBookingMake(args.event.VehicleMake);
+      setBookingLicensePlate(args.event.LicensePlate);
+
+      setTimeout(() => {
+        const overlay = document.getElementById("overlay");
+        overlay.style.display = "flex";
+        const popup = document.getElementById("clientBookingDetails");
+        popup.style.display = "flex";
+      }, 0);
+    }
 
     // const overlay = document.getElementById("overlay");
     // overlay.style.display = "flex";
@@ -502,7 +512,11 @@ const ClientScheduler = () => {
   return (
     <div className="mt-4" style={{ overflowY: "scroll", maxHeight: "80vh" }}>
       {/* ClientViewBooking component will display booking details */}
-      <ClientViewBooking bookingSlot={bookingSlot} />
+      <ClientViewBooking
+        bookingSlot={bookingSlot}
+        vehicle={bookingMake}
+        licensePlate={bookingLicensePlate}
+      />
       <SpinnerGif loadingText={"You are being redirected to checkout..."} />
       <ScheduleComponent
         className="rounded"
