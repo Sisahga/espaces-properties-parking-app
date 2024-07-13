@@ -129,3 +129,64 @@ body {
 .e-schedule .e-month-view .e-appointment {
   height: auto !important;
 }
+
+/* ------ Menu Button Style ------- */
+
+.menu-icon-btn {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 3rem;
+  cursor: pointer;
+}
+
+.menu-btn-burger {
+  width: 2rem;
+  height: 2px;
+  background: white;
+  border-radius: 0.25rem;
+  transition: 0.25s all ease-in-out;
+}
+
+.menu-btn-burger::before, .menu-btn-burger::after {
+  content: '';
+  position: absolute;
+  width: 2rem;
+  height: 2px;
+  background: white;
+  border-radius: 0.25rem;
+  transition: 0.25s all ease-in-out;
+}
+
+.menu-btn-burger::before {
+  transform: translateY(-10px);
+}
+
+.menu-btn-burger::after {
+  transform: translateY(10px);
+}
+
+/* Hover Animation */
+
+.menu-icon-btn:hover > .menu-btn-burger, 
+.menu-icon-btn:hover > .menu-btn-burger::after, 
+.menu-icon-btn:hover > .menu-btn-burger::before {
+  background: var(--purple);
+}
+
+/* Animation to X */
+.menu-icon-btn.open .menu-btn-burger {
+  transform: translateX(-2rem);
+  background: transparent;
+}
+
+.menu-icon-btn.open .menu-btn-burger::before {
+  transform: rotate(45deg) translate(1.4rem, -1.4rem);
+}
+
+.menu-icon-btn.open .menu-btn-burger::after {
+  transform: rotate(-45deg) translate(1.4rem, 1.4rem);
+}
+
+/* End of Animation to X */
