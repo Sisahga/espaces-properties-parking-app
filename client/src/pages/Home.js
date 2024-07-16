@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import ClientScheduler from "../components/Syncfusion/ClientScheduler";
 import AdminScheduler from "../components/Syncfusion/AdminScheduler";
+import BottomNavbar from "../components/BottomNavbar";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -92,7 +93,13 @@ const Home = () => {
     <div className="" style={{ maxHeight: "100vh" }}>
       {isAdmin === "N" ? (
         <div className="flex flex-col gap-4 px-8 py-12">
-          <div className="flex justify-center items-center gap-2">
+          <div
+            className="flex justify-center items-center gap-2"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             <b>
               <p>Espaces Properties</p>
             </b>
@@ -106,38 +113,17 @@ const Home = () => {
             <p>{user.email}</p>
           </div>
           <ClientScheduler />
-          <div className="flex justify-between mt-4 bs-light p-4">
-            <div className="flex gap-4">
-              <button
-                onClick={() => {
-                  navigate("/my-bookings");
-                }}
-                className="clientActionTab rounded bs-light"
-              >
-                My Bookings
-              </button>
-              <button
-                onClick={() => {
-                  navigate("/profile-settings");
-                }}
-                className="clientActionTab rounded bs-light"
-              >
-                Profile Settings
-              </button>
-            </div>
-            <div>
-              <button
-                onClick={handleLogout}
-                className="logoutBtn rounded bs-light"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
+          <BottomNavbar />
         </div>
       ) : (
         <div className="flex flex-col gap-4 px-8 py-12">
-          <div className="flex justify-center items-center gap-2">
+          <div
+            className="flex justify-center items-center gap-2"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             <b>
               <p>Espaces Properties</p>
             </b>
@@ -153,34 +139,7 @@ const Home = () => {
             <p>{user.email}</p>
           </div>
           <AdminScheduler />
-          <div className="flex justify-between mt-4 bs-light p-4">
-            <div className="flex gap-4">
-              <button
-                onClick={() => {
-                  navigate("/all-bookings-admin");
-                }}
-                className="clientActionTab rounded bs-light"
-              >
-                All Bookings
-              </button>
-              <button
-                onClick={() => {
-                  navigate("/app-settings");
-                }}
-                className="clientActionTab rounded bs-light"
-              >
-                App Settings
-              </button>
-            </div>
-            <div>
-              <button
-                onClick={handleAdminLogout}
-                className="logoutBtn rounded bs-light"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
+          <BottomNavbar />
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import BottomNavbar from "../components/BottomNavbar";
 
 const ClientSettings = () => {
   const navigate = useNavigate();
@@ -64,7 +65,13 @@ const ClientSettings = () => {
   }
   return (
     <div className="flex flex-col gap-4 px-8 py-12">
-      <div className="flex justify-center items-center gap-2">
+      <div
+        className="flex justify-center items-center gap-2"
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
         <b>
           <p>Espaces Properties</p>
         </b>
@@ -120,31 +127,7 @@ const ClientSettings = () => {
           </button>
         </div>
       </div>
-      <div className="flex justify-between mt-12 bs-light p-4">
-        <div className="flex gap-4">
-          <button
-            className="clientActionTab rounded"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Home
-          </button>
-          <button
-            onClick={() => {
-              navigate("/my-bookings");
-            }}
-            className="clientActionTab rounded"
-          >
-            My Bookings
-          </button>
-        </div>
-        <div>
-          <button onClick={handleLogout} className="logoutBtn rounded bs-light">
-            Logout
-          </button>
-        </div>
-      </div>
+      <BottomNavbar />
     </div>
   );
 };

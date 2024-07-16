@@ -55,7 +55,7 @@ body {
   background-color: var(--blue);
   color: #fff;
   padding: 0.25rem;
-  width: 180px;
+  width: 160px;
   transition: 0.15s all ease-in-out;
 }
 .buttonBig {
@@ -132,61 +132,99 @@ body {
 
 /* ------ Menu Button Style ------- */
 
-.menu-icon-btn {
-  position: relative;
+#menu-icon-btn {
+  position: fixed;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  height: 2rem;
   width: 3rem;
   cursor: pointer;
+  top: 2.75rem;
+  left: 1rem;
+  z-index: 4;
 }
 
-.menu-btn-burger {
+#menu-btn-burger {
   width: 2rem;
   height: 2px;
-  background: white;
+  background: var(--blue);
   border-radius: 0.25rem;
   transition: 0.25s all ease-in-out;
+  z-index: 4;
 }
 
-.menu-btn-burger::before, .menu-btn-burger::after {
+#menu-btn-burger::before, #menu-btn-burger::after {
   content: '';
   position: absolute;
   width: 2rem;
   height: 2px;
-  background: white;
+  background: var(--blue);
   border-radius: 0.25rem;
   transition: 0.25s all ease-in-out;
 }
 
-.menu-btn-burger::before {
+#menu-btn-burger::before {
   transform: translateY(-10px);
 }
 
-.menu-btn-burger::after {
+#menu-btn-burger::after {
   transform: translateY(10px);
 }
 
 /* Hover Animation */
 
-.menu-icon-btn:hover > .menu-btn-burger, 
-.menu-icon-btn:hover > .menu-btn-burger::after, 
-.menu-icon-btn:hover > .menu-btn-burger::before {
-  background: var(--purple);
+#menu-icon-btn:hover > #menu-btn-burger, 
+#menu-icon-btn:hover > #menu-btn-burger::after, 
+#menu-icon-btn:hover > #menu-btn-burger::before {
+  background: var(--primary-orange);
 }
 
 /* Animation to X */
-.menu-icon-btn.open .menu-btn-burger {
+#menu-icon-btn.open #menu-btn-burger {
   transform: translateX(-2rem);
   background: transparent;
 }
 
-.menu-icon-btn.open .menu-btn-burger::before {
+#menu-icon-btn.open #menu-btn-burger::before {
   transform: rotate(45deg) translate(1.4rem, -1.4rem);
 }
 
-.menu-icon-btn.open .menu-btn-burger::after {
+#menu-icon-btn.open #menu-btn-burger::after {
   transform: rotate(-45deg) translate(1.4rem, 1.4rem);
 }
 
 /* End of Animation to X */
+
+@media screen and (min-width: 767px) {
+  #sideNavbar, #menu-icon-btn {
+    display: none !important;
+  }
+}
+@media screen and (max-width: 767px) {
+  #sideNavbar {
+    display: none;
+  }
+  #bottomNavbar {
+    display: none !important;
+  }
+}
+
+#sideNavbar {
+  position: fixed;
+  padding: 2rem;
+  height: 100vh;
+  width: 300px;
+  z-index: 3;
+  background-color: var(--white);
+}
+
+.sidebar-tab {
+  padding: 1rem;
+  cursor: pointer;
+  transition: 0.15s all ease-in-out;
+}
+.sidebar-tab:hover {
+  background-color: var(--blue);
+  color: var(--white);
+}

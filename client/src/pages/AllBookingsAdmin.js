@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AllBookings from "../components/AllBookings";
+import BottomNavbar from "../components/BottomNavbar";
 
 const AllBookingsAdmin = () => {
   const navigate = useNavigate();
@@ -45,7 +46,13 @@ const AllBookingsAdmin = () => {
 
   return (
     <div className="flex flex-col gap-4 px-8 py-12">
-      <div className="flex justify-center items-center gap-2">
+      <div
+        className="flex justify-center items-center gap-2"
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
         <b>
           <p>Espaces Properties</p>
         </b>
@@ -72,34 +79,7 @@ const AllBookingsAdmin = () => {
         </div>
         <AllBookings />
       </div>
-      <div className="flex justify-between mt-4 bs-light p-4">
-        <div className="flex gap-4">
-          <button
-            className="clientActionTab rounded"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Scheduler
-          </button>
-          <button
-            onClick={() => {
-              navigate("/app-settings");
-            }}
-            className="clientActionTab rounded"
-          >
-            App Settings
-          </button>
-        </div>
-        <div>
-          <button
-            onClick={handleAdminLogout}
-            className="logoutBtn rounded bs-light"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+      <BottomNavbar />
     </div>
   );
 };

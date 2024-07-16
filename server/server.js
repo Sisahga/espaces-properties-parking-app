@@ -3,11 +3,13 @@ const app = express();
 const cors = require("cors");
 const pool = require("./db");
 require("dotenv").config();
+const path = require("path");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // --- Middleware ---
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 // === ROUTES ===
 
@@ -43,8 +45,8 @@ app.post("/api/user/login", async (req, res) => {
     const { email } = req.body;
     console.log(email);
     const user = await pool.query(
-      "SELECT u_id, name, email, phone FROM users WHERE email = $1",
-      [email]
+      "SELECT u_id, name, email, phone FROM users WHERE email = $1 and email != $2",
+      [email, "admin@gmail.com"]
     );
     if (user.rows.length === 0) {
       return res.status(400).json("User not found.");

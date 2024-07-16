@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import BottomNavbar from "../components/BottomNavbar";
 
 const AppSettings = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [priceLoading, setPriceLoading] = useState(true);
   const [price, setPrice] = useState(0);
 
   async function getUser(userId) {
@@ -62,17 +64,11 @@ const AppSettings = () => {
       const priceObj = await response.json();
       const price = parseFloat(priceObj.priceInCents) / 100;
       setPrice(price);
+      setPriceLoading(false);
     } else {
       console.error("Failed to get parking price.");
     }
   }
-
-  const handleAdminLogout = () => {
-    localStorage.removeItem("authenticated");
-    localStorage.removeItem("uid");
-    localStorage.removeItem("isAdmin");
-    navigate("/login/admin");
-  };
 
   useEffect(() => {
     const uid = localStorage.getItem("uid");
@@ -80,12 +76,18 @@ const AppSettings = () => {
     getUser(uid);
   }, [navigate]);
 
-  if (loading) {
+  if (loading || priceLoading) {
     return <div>Loading...</div>;
   }
   return (
     <div className="flex flex-col gap-4 px-8 py-12">
-      <div className="flex justify-center items-center gap-2">
+      <div
+        className="flex justify-center items-center gap-2"
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
         <b>
           <p>Espaces Properties</p>
         </b>
@@ -131,34 +133,7 @@ const AppSettings = () => {
           </button>
         </div>
       </div>
-      <div className="flex justify-between mt-24 bs-light p-4">
-        <div className="flex gap-4">
-          <button
-            className="clientActionTab rounded"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Scheduler
-          </button>
-          <button
-            onClick={() => {
-              navigate("/all-bookings-admin");
-            }}
-            className="clientActionTab rounded"
-          >
-            All Bookings
-          </button>
-        </div>
-        <div>
-          <button
-            onClick={handleAdminLogout}
-            className="logoutBtn rounded bs-light"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+      <BottomNavbar />
     </div>
   );
 };
