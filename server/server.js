@@ -11,11 +11,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "build")));
 
-//Put this after all middleware. Otherwise, Heroku will give you 304 page
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
 // === ROUTES ===
 
 // ---< USER ROUTES >---
@@ -335,6 +330,11 @@ async function getParkingPrice() {
 // ---< End of PAYMENT ROUTES >---
 
 // === END OF ROUTES ===
+
+//Put this after all middleware. Otherwise, Heroku will give you 304 page
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 const PORT = process.env.PORT || 8080;
 // --- Listener Port ---
