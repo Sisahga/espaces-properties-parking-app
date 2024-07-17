@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { registerLicense } from "@syncfusion/ej2-base";
-import SideNavbar from "./components/SideNavbar";
 
 // Syncfusion license key
 registerLicense(
