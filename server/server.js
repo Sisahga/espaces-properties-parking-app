@@ -82,6 +82,7 @@ app.post("/api/admin/login", async (req, res) => {
 app.get("/api/user/retrieve/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("ID: ", id);
     const user = await pool.query("SELECT * FROM users WHERE u_id = $1", [id]);
     if (user.rows.length === 0) {
       return res.status(400).json("User not found.");
