@@ -335,7 +335,8 @@ async function getParkingPrice() {
 
 // === END OF ROUTES ===
 
+const PORT = process.env.PORT || 8080;
 // --- Listener Port ---
-app.listen(8080, () => {
+app.listen(PORT, () => {
   console.log("Server is running on port 8080...");
 });
