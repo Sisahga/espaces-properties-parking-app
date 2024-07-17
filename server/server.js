@@ -330,6 +330,11 @@ async function getParkingPrice() {
 
 // === END OF ROUTES ===
 
+//Put this after all middleware. Otherwise, Heroku will give you 304 page
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 // --- Listener Port ---
 app.listen(8080, () => {
   console.log("Server is running on port 8080...");
