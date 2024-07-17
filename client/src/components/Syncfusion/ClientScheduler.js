@@ -37,7 +37,7 @@ const ClientScheduler = () => {
   async function retrieveBookings() {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/parking/booking/retrieve",
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/retrieve`,
         {
           method: "GET",
           headers: {
@@ -351,7 +351,7 @@ const ClientScheduler = () => {
       spinner.style.display = "flex";
 
       const dbResponse = await fetch(
-        "http://localhost:8080/api/parking/booking/create",
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/create`,
         {
           method: "POST",
           headers: {
@@ -371,7 +371,7 @@ const ClientScheduler = () => {
       }
 
       const stripeResponse = await fetch(
-        "http://localhost:8080/api/parking/payment/create-checkout-session",
+        `${process.env.REACT_APP_API_URL}/api/parking/payment/create-checkout-session`,
         {
           method: "POST",
           headers: {

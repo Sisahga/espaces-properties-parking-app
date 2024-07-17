@@ -32,7 +32,7 @@ const AdminScheduler = () => {
   async function retrieveBookings() {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/parking/booking/retrieve/admin",
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/retrieve/admin`,
         {
           method: "GET",
           headers: {
@@ -338,7 +338,7 @@ const AdminScheduler = () => {
       spinner.style.display = "flex";
 
       const dbResponse = await fetch(
-        "http://localhost:8080/api/parking/booking/create",
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/create`,
         {
           method: "POST",
           headers: {
@@ -392,7 +392,8 @@ const AdminScheduler = () => {
       console.log("Booking: ", booking);
 
       const dbResponse = await fetch(
-        "http://localhost:8080/api/parking/booking/update/" + args.data.Id,
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/update/` +
+          args.data.Id,
         {
           method: "PUT",
           headers: {
@@ -414,7 +415,7 @@ const AdminScheduler = () => {
     // === EVENT DELETE ===
     else if (args.requestType === "eventRemove") {
       const response = await fetch(
-        `http://localhost:8080/api/parking/booking/delete/${args.data[0].Id}`,
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${args.data[0].Id}`,
         {
           method: "DELETE",
           headers: {

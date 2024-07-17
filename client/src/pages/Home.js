@@ -21,7 +21,7 @@ const Home = () => {
 
   async function deleteBooking(bookingId) {
     const response = await fetch(
-      `http://localhost:8080/api/parking/booking/delete/${bookingId}`,
+      `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${bookingId}`,
       {
         method: "DELETE",
         headers: {
@@ -39,7 +39,7 @@ const Home = () => {
 
   async function getUser(userId) {
     const response = await fetch(
-      `http://localhost:8080/api/user/retrieve/${userId}`,
+      `${process.env.REACT_APP_API_URL}/api/user/retrieve/${userId}`,
       {
         method: "GET",
         headers: {

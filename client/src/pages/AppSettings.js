@@ -11,7 +11,7 @@ const AppSettings = () => {
 
   async function getUser(userId) {
     const response = await fetch(
-      `http://localhost:8080/api/user/retrieve/${userId}`,
+      `${process.env.REACT_APP_API_URL}/api/user/retrieve/${userId}`,
       {
         method: "GET",
         headers: {
@@ -33,7 +33,7 @@ const AppSettings = () => {
     const newPriceStr = document.getElementById("parkingPrice").value;
     const newPrice = parseFloat(newPriceStr) * 100;
     const response = await fetch(
-      `http://localhost:8080/api/parking/payment/update-standard-price`,
+      `${process.env.REACT_APP_API_URL}/api/parking/payment/update-standard-price`,
       {
         method: "PUT",
         headers: {
@@ -52,7 +52,7 @@ const AppSettings = () => {
 
   async function getParkingPrice() {
     const response = await fetch(
-      `http://localhost:8080/api/parking/payment/standard-price`,
+      `${process.env.REACT_APP_API_URL}/api/parking/payment/standard-price`,
       {
         method: "GET",
         headers: {

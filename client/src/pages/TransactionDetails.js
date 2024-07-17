@@ -20,7 +20,7 @@ const TransactionDetails = () => {
   async function retrieveSession() {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/parking/payment/retrieve-complete/${sessionId}`,
+        `${process.env.REACT_APP_API_URL}/api/parking/payment/retrieve-complete/${sessionId}`,
         {
           method: "GET",
           headers: {

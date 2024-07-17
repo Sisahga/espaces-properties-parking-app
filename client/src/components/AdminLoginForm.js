@@ -10,13 +10,16 @@ const AdminLoginForm = () => {
 
     const email = formData.get("email");
     const password = formData.get("password");
-    const loginResponse = await fetch("http://localhost:8080/api/admin/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const loginResponse = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/admin/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      }
+    );
 
     if (loginResponse.ok) {
       console.log("Admin logged in successfully!");

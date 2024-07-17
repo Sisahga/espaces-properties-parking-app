@@ -10,13 +10,16 @@ const LoginForm = () => {
     const formData = new FormData(e.target);
 
     const email = formData.get("email");
-    const loginResponse = await fetch("http://localhost:8080/api/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    });
+    const loginResponse = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/user/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }
+    );
 
     if (loginResponse.ok) {
       console.log("User logged in successfully!");

@@ -9,7 +9,7 @@ const ClientSettings = () => {
 
   async function getUser(userId) {
     const response = await fetch(
-      `http://localhost:8080/api/user/retrieve/${userId}`,
+      `${process.env.REACT_APP_API_URL}/api/user/retrieve/${userId}`,
       {
         method: "GET",
         headers: {
@@ -31,7 +31,7 @@ const ClientSettings = () => {
     const userEmail = document.getElementById("userEmail").value;
     const userPhone = document.getElementById("userPhone").value;
     const response = await fetch(
-      `http://localhost:8080/api/user/update/${user.u_id}`,
+      `${process.env.REACT_APP_API_URL}/api/user/update/${user.u_id}`,
       {
         method: "PUT",
         headers: {

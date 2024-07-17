@@ -21,7 +21,7 @@ const SignupForm = () => {
 
     console.log(email, name, phone);
     const registerUserResponse = await fetch(
-      "http://localhost:8080/api/user/register",
+      `${process.env.REACT_APP_API_URL}/api/user/register`,
       {
         method: "POST",
         headers: {

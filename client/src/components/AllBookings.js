@@ -19,7 +19,7 @@ const AllBookings = () => {
   const getAdminBookings = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/parking/booking/retrieve/admin"
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/retrieve/admin`
       );
       const jsonData = await response.json();
       console.log(jsonData);
@@ -34,7 +34,7 @@ const AllBookings = () => {
   const getClientBookings = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/parking/booking/retrieve/" +
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/retrieve/` +
           localStorage.getItem("uid")
       );
       const jsonData = await response.json();
