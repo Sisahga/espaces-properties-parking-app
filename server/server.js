@@ -79,7 +79,7 @@ app.post("/api/admin/login", async (req, res) => {
 });
 
 // -----> Retrieve User
-app.get("api/user/retrieve/:id", async (req, res) => {
+app.get("/api/user/retrieve/:id", async (req, res) => {
   try {
     const { id } = req.params;
     console.log("ID: ", id);
