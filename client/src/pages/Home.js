@@ -40,7 +40,7 @@ const Home = () => {
   async function getUser(userId) {
     console.log("Getting user " + userId);
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/user/retrieve/${userId}`,
+      `${process.env.REACT_APP_API_URL}api/user/retrieve/${userId}`,
       {
         method: "GET",
         headers: {
