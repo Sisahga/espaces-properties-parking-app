@@ -58,19 +58,6 @@ const Home = () => {
     }
   }
 
-  const handleAdminLogout = () => {
-    localStorage.removeItem("authenticated");
-    localStorage.removeItem("uid");
-    localStorage.removeItem("isAdmin");
-    navigate("/login/admin");
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("authenticated");
-    localStorage.removeItem("uid");
-    navigate("/login");
-  };
-
   useEffect(() => {
     if (isStripePayCancel) {
       deleteBooking(bookingId);
