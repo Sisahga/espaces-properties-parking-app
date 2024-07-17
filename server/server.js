@@ -9,7 +9,12 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 // --- Middleware ---
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "build")));
+
+//Put this after all middleware. Otherwise, Heroku will give you 304 page
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 // === ROUTES ===
 
@@ -329,11 +334,6 @@ async function getParkingPrice() {
 // ---< End of PAYMENT ROUTES >---
 
 // === END OF ROUTES ===
-
-//Put this after all middleware. Otherwise, Heroku will give you 304 page
-app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
 
 // --- Listener Port ---
 app.listen(8080, () => {
