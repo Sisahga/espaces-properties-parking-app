@@ -252,7 +252,7 @@ app.post("/api/parking/payment/create-checkout-session", async (req, res) => {
                 dayWord +
                 " booked.",
             },
-            unit_amount: parkingPrice.priceInCents,
+            unit_amount: Math.trunc(parkingPrice.priceInCents),
           },
           quantity: req.body.quantity,
         },

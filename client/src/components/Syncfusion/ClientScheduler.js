@@ -127,7 +127,7 @@ const ClientScheduler = () => {
       if (month < 10) month = "0" + month;
       let tempDay = day;
       if (tempDay < 10) tempDay = "0" + day;
-      return `${year}-${month}-${day} 00:00:00`;
+      return `${year}-${month}-${day} 04:00:00`;
     }
   }
 
