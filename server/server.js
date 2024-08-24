@@ -119,9 +119,10 @@ app.post("/api/parking/booking/create", async (req, res) => {
       description,
       licensePlate,
       vehicleMake,
+      roomNumber,
     } = req.body;
     const newBooking = await pool.query(
-      "INSERT INTO bookings (u_id, subject, starttime, endtime, isallday, description, licenseplate, vehiclemake) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      "INSERT INTO bookings (u_id, subject, starttime, endtime, isallday, description, licenseplate, vehiclemake, roomnumber) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
       [
         uid,
         subject,
@@ -131,6 +132,7 @@ app.post("/api/parking/booking/create", async (req, res) => {
         description,
         licensePlate,
         vehicleMake,
+        roomNumber,
       ]
     );
     console.log(newBooking.rows[0]);

@@ -319,6 +319,7 @@ const AdminScheduler = () => {
         description: data.Description,
         licensePlate: data.LicensePlate,
         vehicleMake: data.VehicleMake,
+        roomNumber: data.RoomNum,
       };
       console.log("New Booking: ", newBooking);
 
