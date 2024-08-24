@@ -49,7 +49,7 @@ app.post("/api/user/login", async (req, res) => {
       [email, "admin@gmail.com"]
     );
     if (user.rows.length === 0) {
-      return res.status(400).json("User not found.");
+      return res.status(400).json("User not found or doesn't exist.");
     }
     res.status(200).json(user.rows[0]);
   } catch (err) {
