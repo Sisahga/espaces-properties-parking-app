@@ -312,7 +312,7 @@ const AdminScheduler = () => {
 
       const newBooking = {
         uid: localStorage.getItem("uid"),
-        subject: "Booking",
+        subject: data.Subject,
         startTime: formatDate(data.StartTime, false),
         endTime: formatDate(data.EndTime, false),
         isAllDay: true,
