@@ -388,6 +388,7 @@ const AdminScheduler = () => {
         vehicleMake: args.data.VehicleMake,
         description: args.data.Description,
         roomNumber: args.data.RoomNum,
+        subject: args.data.Subject,
       };
       console.log("Booking: ", booking);
 

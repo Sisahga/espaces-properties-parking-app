@@ -187,9 +187,10 @@ app.put("/api/parking/booking/update/:id", async (req, res) => {
       vehicleMake,
       description,
       roomNumber,
+      subject,
     } = req.body;
     await pool.query(
-      "UPDATE bookings SET starttime = $1, endtime = $2, licenseplate = $3, vehiclemake = $4, description = $5, roomNumber = $6 WHERE id = $7",
+      "UPDATE bookings SET starttime = $1, endtime = $2, licenseplate = $3, vehiclemake = $4, description = $5, roomNumber = $6, subject = $8 WHERE id = $7",
       [
         startTime,
         endTime,
@@ -198,6 +199,7 @@ app.put("/api/parking/booking/update/:id", async (req, res) => {
         description,
         roomNumber,
         id,
+        subject,
       ]
     );
     res.status(200).json("Booking updated.");
