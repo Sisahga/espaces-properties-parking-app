@@ -203,7 +203,7 @@ const AdminScheduler = () => {
       var roomNumber = args.data.RoomNum ? "Room " + args.data.RoomNum : "";
       eventText.innerHTML =
         "<div className='flex flex-col'><p>" +
-        args.data.name +
+        args.data.Subject +
         "</p><p>" +
         roomNumber +
         "</p></div>";
@@ -439,6 +439,16 @@ const AdminScheduler = () => {
       <div className="custom-event-editor pt-4">
         <div className="flex flex-col gap-4">
           {/* TOP ROW */}
+          <div className="flex flex-col w-full">
+            <div className="e-textlabel">Title</div>
+            <input
+              id="Subject"
+              className="e-field e-input"
+              type="text"
+              name="Subject"
+              defaultValue={props.Subject || ""}
+            />
+          </div>
           <div className="flex w-full gap-4">
             <div className="flex flex-col w-1/2">
               <div className="e-textlabel">From *</div>
