@@ -459,7 +459,7 @@ const AdminScheduler = () => {
                   format="dd/MM/yyyy"
                   id="EndTime"
                   data-name="EndTime"
-                  value={new Date(props.endTime || props.EndTime)}
+                  value={new Date(props.EndTime)}
                   className="e-field"
                 ></DatePickerComponent>
               </div>
