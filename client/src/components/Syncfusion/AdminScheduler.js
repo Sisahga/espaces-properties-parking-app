@@ -263,6 +263,11 @@ const AdminScheduler = () => {
   };
   const onEventClick = (args) => {
     console.log("Event Clicked: ", args);
+
+    setTimeout(() => {
+      const mbEdActs = document.getElementById("mbEditorActions");
+      mbEdActs.style.display = "none";
+    }, 0);
     scheduleObj.current.openEditor(args.event, "Save");
     // if (!args.event.RecurrenceRule) {
     //   console.log("Show different popup...");
@@ -593,7 +598,7 @@ const AdminScheduler = () => {
           </div>
 
           {/* SAVE/DELETE BUTTON - Visible only on Mobile */}
-          <div className="actionBtnsMobile">
+          <div id="mbEditorActions" className="actionBtnsMobile">
             <div className="delete-button-container">
               <button
                 className="delete-button"

@@ -91,7 +91,7 @@ const ClientSettings = () => {
             <b>Profile Settings</b>
           </p>
         </div>
-        <div className="flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
+        <div className="pageTab flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
           <p className="my-text-blue">
             <b>Email</b>
           </p>
@@ -103,7 +103,7 @@ const ClientSettings = () => {
             className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           ></input>
         </div>
-        <div className="flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
+        <div className="pageTab flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
           <p className="my-text-blue">
             <b>Phone Number</b>
           </p>

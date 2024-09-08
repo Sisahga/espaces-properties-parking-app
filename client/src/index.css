@@ -280,4 +280,8 @@ body {
   #menu-icon-btn {
     justify-content: flex-start !important;
   }
+
+  .pageTab {
+    width: 75vw !important;
+  }
 }

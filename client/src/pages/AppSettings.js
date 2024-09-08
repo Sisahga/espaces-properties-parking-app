@@ -109,7 +109,7 @@ const AppSettings = () => {
             <b>App Settings</b>
           </p>
         </div>
-        <div className="flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
+        <div className="pageTab flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
           <p className="my-text-blue">
             <b>Daily Parking Price ($)</b>
           </p>
