@@ -246,7 +246,11 @@ const ClientScheduler = () => {
     ) {
       args.cancel = true;
     }
-    document.getElementsByClassName("e-event-save")[0].innerText = "Pay Now";
+    try {
+      document.getElementsByClassName("e-event-save")[0].innerText = "Pay Now";
+    } catch (e) {
+      console.log("mobile view.");
+    }
   };
 
   // === CELL CLICK EVENTS ===
@@ -335,8 +339,10 @@ const ClientScheduler = () => {
       };
       console.log("New Booking: ", newBooking);
 
-      const daysBooked = daysBetween(newBooking.startTime, newBooking.endTime);
+      var daysBooked = daysBetween(newBooking.startTime, newBooking.endTime);
       console.log("Days Booked: ", daysBooked);
+      if (daysBooked === 0) daysBooked = 1;
+      console.log("Days Booked after 0 check: ", daysBooked);
 
       const formattedStartDate = formatDate(newBooking.startTime, true);
       const formattedEndDate = formatDate(newBooking.endTime, true);

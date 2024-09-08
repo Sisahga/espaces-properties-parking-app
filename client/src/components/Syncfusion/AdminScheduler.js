@@ -277,6 +277,7 @@ const AdminScheduler = () => {
   // === ACTION BEGIN EVENT ===
   const onActionBegin = async (args) => {
     console.log("Request type: ", args.requestType);
+    console.log("Args:", args);
     // === EVENT CREATE ===
     if (args.requestType === "eventCreate") {
       const data = args.data[0];
@@ -284,6 +285,7 @@ const AdminScheduler = () => {
         data.StartTime,
         data.EndTime
       );
+
       console.log("Slot Available: ", slotAvailable);
       if (!slotAvailable) {
         args.cancel = true;
@@ -435,6 +437,60 @@ const AdminScheduler = () => {
     }
   };
 
+  // const handleMobileSave = async (props) => {
+  //   console.log("MB Props: ", props);
+
+  //   const startTime = document.getElementById("StartTime").value;
+  //   const endTime = document.getElementById("EndTime").value;
+
+  //   // Parse the date string. Assuming the format is DD/MM/YYYY
+  //   var [day, month, year] = startTime.split("/").map(Number);
+  //   var date = new Date(year, month - 1, day); // Months are 0-based in JavaScript
+
+  //   // Convert to ISO format
+  //   const startObject = date.toISOString();
+
+  //   [day, month, year] = endTime.split("/").map(Number);
+  //   date = new Date(year, month - 1, day); // Months are 0-based in JavaScript
+
+  //   // Convert to ISO format
+  //   const endObject = date.toISOString();
+
+  //   console.log("Start Time: ", startObject);
+  //   console.log("End Time: ", endObject);
+
+  //   const newEvent = {
+  //     Subject: document.getElementById("Subject").value,
+  //     StartTime: startObject,
+  //     EndTime: endObject,
+  //     LicensePlate: document.getElementById("LicensePlate").value,
+  //     VehicleMake: document.getElementById("VehicleMake").value,
+  //     RoomNum: document.getElementById("RoomNum").value,
+  //     Description: document.getElementById("Description").value,
+  //   };
+
+  //   scheduleObj.current.saveEvent(newEvent, "Save");
+  // };
+
+  const handleMobileDelete = async (props) => {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${props.Id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.ok) {
+      console.log("Booking deleted.");
+      alert("Booking successfully deleted.");
+      window.location.reload();
+    } else {
+      console.error("Failed to delete booking.");
+    }
+  };
+
   // ===> CUSTOM EDITOR TEMPLATE <===
   const editorTemplate = (props) => {
     return props !== undefined && Object.keys(props).length > 0 ? (
@@ -488,6 +544,7 @@ const AdminScheduler = () => {
                   className="e-field e-input"
                   type="text"
                   name="LicensePlate"
+                  autoComplete="off"
                   defaultValue={props.LicensePlate || ""}
                 />
               </div>
@@ -496,6 +553,7 @@ const AdminScheduler = () => {
               <div className="e-textlabel">Vehicle Make *</div>
               <div>
                 <DropDownListComponent
+                  id="VehicleMake"
                   className="e-field"
                   placeholder="Select Vehicle"
                   name="VehicleMake"
@@ -532,6 +590,26 @@ const AdminScheduler = () => {
               name="Description"
               defaultValue={props.Description || ""}
             />
+          </div>
+
+          {/* SAVE/DELETE BUTTON - Visible only on Mobile */}
+          <div className="actionBtnsMobile">
+            <div className="delete-button-container">
+              <button
+                className="delete-button"
+                onClick={() => handleMobileDelete(props)}
+              >
+                Delete
+              </button>
+            </div>
+            {/* <div className="save-button-container">
+              <button
+                className="save-button"
+                onClick={() => handleMobileSave(props)}
+              >
+                Save
+              </button>
+            </div> */}
           </div>
 
           {/* FOOTNOTE */}

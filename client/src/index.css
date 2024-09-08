@@ -228,3 +228,56 @@ body {
   background-color: var(--blue);
   color: var(--white);
 }
+
+.actionBtnsMobile {
+  display: none; /* Hide by default */
+  justify-content: space-between;
+  width: 354px;
+  position: absolute;
+  bottom: 1rem;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .actionBtnsMobile {
+    display: flex; /* Show the delete button on mobile */
+  }
+
+  .delete-button {
+    background-color: var(--blue);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 0.15rem;
+    cursor: pointer;
+  }
+
+  .save-button {
+    background-color: #e3165b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 0.15rem;
+    cursor: pointer;
+  }
+
+  /* .e-save-icon {
+    visibility: hidden;
+  } */
+
+  .delete-button:hover, .save-button:hover {
+    opacity: 0.8;
+  }
+
+  .e-form-container, .e-schedule-form {
+    height: 100%;
+  }
+
+  input {
+    font-size: 1rem !important;
+  }
+
+  #menu-icon-btn {
+    justify-content: flex-start !important;
+  }
+}

@@ -27,7 +27,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://espaces-properties-parking-239f3c8d468b.herokuapp.com/",
+  "proxy": "https://espaces-properties-parking-239f3c8d468b.herokuapp.com",
   "eslintConfig": {
     "extends": [
       "react-app",
