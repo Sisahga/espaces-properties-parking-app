@@ -57,17 +57,17 @@ const AllBookings = () => {
   }
 
   return (
-    <div className="w-full flex flex-col gap-4 text-xs">
+    <div className="w-full flex flex-col gap-4 text-xs p-2">
       {bookings.map((booking) => (
         <div
           key={booking.id}
           className="flex flex-col gap-2 w-full p-4 bs-light rounded"
         >
-          <div className="flex justify-between w-full">
+          <div className="flex flex-col justify-between w-full">
             {isAdmin === "Y" && (
               <div>
                 <p>
-                  <b>{booking.name}</b>{" "}
+                  <b>{booking.subject}</b>{" "}
                   {booking.roomnumber
                     ? "(Room " + booking.roomnumber + ")"
                     : ""}
