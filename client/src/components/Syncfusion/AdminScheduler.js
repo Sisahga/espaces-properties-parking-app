@@ -259,14 +259,20 @@ const AdminScheduler = () => {
       const cell = args.element;
       const eventGuid = cell.getAttribute("eventguid");
       document.getElementById(eventGuid).click();
-    } else scheduleObj.current.openEditor(args, "Add");
+    } else {
+      scheduleObj.current.openEditor(args, "Add");
+      setTimeout(() => {
+        const mbEdActs = document.getElementById("mbEditorActions");
+        mbEdActs.style.display = "none";
+      }, 0);
+    }
   };
   const onEventClick = (args) => {
     console.log("Event Clicked: ", args);
 
     setTimeout(() => {
       const mbEdActs = document.getElementById("mbEditorActions");
-      mbEdActs.style.display = "none";
+      mbEdActs.style.display = "flex";
     }, 0);
     scheduleObj.current.openEditor(args.event, "Save");
     // if (!args.event.RecurrenceRule) {
