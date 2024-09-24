@@ -28,6 +28,7 @@ const LoginForm = () => {
       localStorage.setItem("authenticated", "Y");
       localStorage.setItem("uid", userId);
       localStorage.setItem("isAdmin", "N");
+      localStorage.setItem("u_name", user.name);
       navigate("/");
     } else {
       if (loginResponse.status === 400) {

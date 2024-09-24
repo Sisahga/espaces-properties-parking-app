@@ -112,13 +112,17 @@ const TransactionDetails = () => {
           <p>
             <b className="my-text-blue">Parking Bill</b>
           </p>
-          <div className="flex gap-2 text-xs" style={{ fontStyle: "italic" }}>
-            <p>
+          <div
+            id="trans-det-date"
+            className="flex gap-2 text-xs"
+            style={{ fontStyle: "italic" }}
+          >
+            <p className="trans-det-days">
               {transactionDetails.quantity}-
               {transactionDetails.quantity > 1 ? "Days" : "Day"}
             </p>
-            <p>/</p>
-            <p>{transactionDetails.slotBooked}</p>
+            <p id="trans-det-separator">/</p>
+            <p className="trans-date-slot">{transactionDetails.slotBooked}</p>
           </div>
         </div>
         <div className="flex justify-between">

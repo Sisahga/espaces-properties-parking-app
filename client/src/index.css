@@ -193,6 +193,10 @@ body {
   height: auto !important;
 }
 
+#clientBookingDetails {
+  max-width: 768px;
+}
+
 /* ------ Menu Button Style ------- */
 
 #menu-icon-btn {
@@ -353,6 +357,19 @@ body {
 
   .e-title-text {
     margin-top: -6px;
+  }
+
+  #trans-det-separator {
+    display: none;
+  }
+
+  #trans-det-date {
+    flex-direction: column;
+    gap: 0 !important;
+  }
+
+  .trans-det-days, .trans-date-slot {
+    text-align: right;
   }
 }
 

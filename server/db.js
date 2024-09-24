@@ -11,7 +11,7 @@
 //   database: process.env.PG_DATABASE,
 // });
 
-// module.exports = pool;
+module.exports = pool;
 
 // --> Deployment DB Code
 

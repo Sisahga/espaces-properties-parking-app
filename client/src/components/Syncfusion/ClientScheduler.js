@@ -287,11 +287,6 @@ const ClientScheduler = () => {
         popup.style.display = "flex";
       }, 0);
     }
-
-    // const overlay = document.getElementById("overlay");
-    // overlay.style.display = "flex";
-    // const popup = document.getElementById("clientBookingDetails");
-    // popup.style.display = "flex";
   };
 
   // === ACTION BEGIN EVENT ===
@@ -330,7 +325,7 @@ const ClientScheduler = () => {
 
       const newBooking = {
         uid: localStorage.getItem("uid"),
-        subject: "Booking",
+        subject: localStorage.getItem("u_name"),
         startTime: formatDate(data.StartTime, false),
         endTime: formatDate(data.EndTime, false),
         isAllDay: true,
