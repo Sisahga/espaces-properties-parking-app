@@ -24,9 +24,11 @@ function App() {
       document.getElementById("overlay").style.display = "none";
     }
   };
+
   return (
     <>
       <div id="overlay"></div>
+      <div id="notification-ctn"></div>
       <Routes>
         <Route
           path="/"

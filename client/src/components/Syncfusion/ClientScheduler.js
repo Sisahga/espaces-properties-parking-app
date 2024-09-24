@@ -241,8 +241,9 @@ const ClientScheduler = () => {
     const target = args.target;
     console.log("Target: ", target);
     if (
-      target.classList.contains("clientEvent") ||
-      target.classList.contains("nonClientEvent")
+      target !== undefined &&
+      (target.classList.contains("clientEvent") ||
+        target.classList.contains("nonClientEvent"))
     ) {
       args.cancel = true;
     }

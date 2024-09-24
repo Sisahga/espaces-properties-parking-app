@@ -3,6 +3,7 @@ import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import ClientScheduler from "../components/Syncfusion/ClientScheduler";
 import AdminScheduler from "../components/Syncfusion/AdminScheduler";
 import BottomNavbar from "../components/BottomNavbar";
+import { notify } from "../util/functions";
 
 const Home = () => {
   const navigate = useNavigate();

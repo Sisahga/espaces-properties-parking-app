@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { notify } from "../util/functions";
 
 const AdminLoginForm = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const AdminLoginForm = () => {
       navigate("/");
     } else {
       if (loginResponse.status === 400) {
-        alert("Invalid Credentials.");
+        notify("Invalid Credentials.", false);
       } else {
         console.error("Failed to login admin user.");
       }

@@ -17,6 +17,21 @@ body {
   background-color: var(--white);
 }
 
+#notification-ctn {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 3;
+  padding: 1rem;
+  display: none;
+  border-radius: 0.25rem;
+  color: white;
+}
+
+.e-dialog .e-icon-dlg-close::before {
+  top: -2px;
+}
+
 .bottom-bar, .top-bar, .middle-content {
   max-width: 1024px !important;
   position: relative;
