@@ -352,25 +352,25 @@ const ClientScheduler = () => {
       const spinner = document.getElementById("spinnerComponent");
       spinner.style.display = "flex";
 
-      // const dbResponse = await fetch(
-      //   `${process.env.REACT_APP_API_URL}/api/parking/booking/create`,
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(newBooking),
-      //   }
-      // );
-      // var bookingID;
-      // if (!dbResponse.ok) {
-      //   const error = await dbResponse.json();
-      //   console.error("Error:", error.error);
-      // } else {
-      //   const booking = await dbResponse.json();
-      //   bookingID = booking.id;
-      //   console.log("Booking: ", booking);
-      // }
+      const dbResponse = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newBooking),
+        }
+      );
+      var bookingID;
+      if (!dbResponse.ok) {
+        const error = await dbResponse.json();
+        console.error("Error:", error.error);
+      } else {
+        const booking = await dbResponse.json();
+        bookingID = booking.id;
+        console.log("Booking: ", booking);
+      }
 
       const stripeResponse = await fetch(
         `${process.env.REACT_APP_API_URL}/api/parking/payment/create-checkout-session`,
@@ -397,27 +397,6 @@ const ClientScheduler = () => {
         console.error("Error:", error.error);
       } else {
         const { url } = await stripeResponse.json();
-
-        const dbResponse = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/parking/booking/create`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newBooking),
-          }
-        );
-        var bookingID;
-        if (!dbResponse.ok) {
-          const error = await dbResponse.json();
-          console.error("Error:", error.error);
-        } else {
-          const booking = await dbResponse.json();
-          bookingID = booking.id;
-          console.log("Booking: ", booking);
-        }
-
         window.location.href = url;
       }
     }
