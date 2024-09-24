@@ -49,7 +49,7 @@ const SignupForm = () => {
   };
 
   return (
-    <form className="p-2" onSubmit={handleSignup}>
+    <form className="p-2 reg-form" onSubmit={handleSignup}>
       <div className="flex flex-col gap-4">
         {/* Full Name */}
         <div className="flex flex-col">

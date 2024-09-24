@@ -202,9 +202,9 @@ const AdminScheduler = () => {
       const eventText = eventElement.querySelector(".e-subject");
       var roomNumber = args.data.RoomNum ? "Room " + args.data.RoomNum : "";
       eventText.innerHTML =
-        "<div className='flex flex-col'><p>" +
+        "<div className='flex flex-col'><p><b>" +
         args.data.Subject +
-        "</p><p>" +
+        "</b></p><p>" +
         roomNumber +
         "</p></div>";
 
@@ -246,9 +246,6 @@ const AdminScheduler = () => {
     console.log("Popup Opened: ", args);
     const target = args.target;
     console.log("Target: ", target);
-    // if (target.classList.contains("nonClientEvent")) {
-    //   args.cancel = true;
-    // }
   };
 
   // === CELL CLICK EVENTS ===
@@ -261,28 +258,11 @@ const AdminScheduler = () => {
       document.getElementById(eventGuid).click();
     } else {
       scheduleObj.current.openEditor(args, "Add");
-      setTimeout(() => {
-        const mbEdActs = document.getElementById("mbEditorActions");
-        mbEdActs.style.display = "none";
-      }, 0);
     }
   };
   const onEventClick = (args) => {
     console.log("Event Clicked: ", args);
-
-    setTimeout(() => {
-      const mbEdActs = document.getElementById("mbEditorActions");
-      mbEdActs.style.display = "flex";
-    }, 0);
     scheduleObj.current.openEditor(args.event, "Save");
-    // if (!args.event.RecurrenceRule) {
-    //   console.log("Show different popup...");
-    //   args.cancel = true;
-    //   scheduleObj.current.openEditor(args.event, "Add");
-    // } else {
-    //   console.log("Opening Recurrence Alert...");
-    //   scheduleObj.current.quickPopup.openRecurrenceAlert();
-    // }
   };
 
   // === ACTION BEGIN EVENT ===
@@ -607,10 +587,10 @@ const AdminScheduler = () => {
           <div id="mbEditorActions" className="actionBtnsMobile">
             <div className="delete-button-container">
               <button
-                className="delete-button"
+                className="delete-button bs-light"
                 onClick={() => handleMobileDelete(props)}
               >
-                Delete
+                DELETE
               </button>
             </div>
             {/* <div className="save-button-container">

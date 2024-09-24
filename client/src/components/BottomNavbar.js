@@ -27,7 +27,10 @@ const BottomNavbar = () => {
   };
 
   return (
-    <div id="bottomNavbar" className="flex justify-between mt-4 bs-light p-4">
+    <div
+      id="bottomNavbar"
+      className="flex justify-between mt-4 bs-light p-4 bottom-bar"
+    >
       {isAdmin ? (
         <>
           <div className="flex gap-4">

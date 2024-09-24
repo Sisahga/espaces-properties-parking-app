@@ -63,7 +63,7 @@ const AllBookings = () => {
           key={booking.id}
           className="flex flex-col gap-2 w-full p-4 bs-light rounded"
         >
-          <div className="flex flex-col justify-between w-full">
+          <div className="flex flex-col justify-between w-full gap-2">
             {isAdmin === "Y" && (
               <div>
                 <p>

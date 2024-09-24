@@ -78,12 +78,19 @@ const Home = () => {
   }
 
   return (
-    <div className="" style={{ maxHeight: "100vh" }}>
+    <div
+      className="flex justify-center"
+      style={{ maxHeight: "100vh", width: "100vw" }}
+    >
       {isAdmin === "N" ? (
-        <div className="flex flex-col gap-4 px-8 py-12">
+        <div className="flex flex-col gap-4 px-8 py-12 main-content">
           <div
             className="flex justify-center items-center gap-2"
-            style={{ cursor: "pointer" }}
+            style={{
+              cursor: "pointer",
+              marginBottom: "1rem",
+              fontSize: "0.9rem",
+            }}
             onClick={() => {
               navigate("/");
             }}
@@ -104,10 +111,14 @@ const Home = () => {
           <BottomNavbar />
         </div>
       ) : (
-        <div className="flex flex-col gap-4 px-8 py-12">
+        <div className="flex flex-col gap-4 px-8 py-12 main-content">
           <div
             className="flex justify-center items-center gap-2"
-            style={{ cursor: "pointer" }}
+            style={{
+              cursor: "pointer",
+              marginBottom: "1rem",
+              fontSize: "0.9rem",
+            }}
             onClick={() => {
               navigate("/");
             }}

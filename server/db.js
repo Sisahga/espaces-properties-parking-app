@@ -1,3 +1,5 @@
+// --> Development DB Code
+
 // const Pool = require("pg").Pool;
 // require("dotenv").config();
 
@@ -10,6 +12,8 @@
 // });
 
 // module.exports = pool;
+
+// --> Deployment DB Code
 
 const { Pool } = require("pg");
 require("dotenv").config();

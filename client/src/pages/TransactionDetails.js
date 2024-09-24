@@ -72,7 +72,7 @@ const TransactionDetails = () => {
           with more details
         </p>
       </div>
-      <div className="flex flex-col gap-4 bs-light p-4 rounded">
+      <div className="flex flex-col gap-4 bs-light p-4 rounded tr-detail-comp">
         <div className="flex flex-col justify-center">
           <p className="text-center">
             <b className="my-text-blue">Transaction #</b>
@@ -136,7 +136,7 @@ const TransactionDetails = () => {
           </div>
         </div>
       </div>
-      <div>
+      <div className="tr-detail-comp">
         <button
           className="buttonBig rounded"
           onClick={() => {

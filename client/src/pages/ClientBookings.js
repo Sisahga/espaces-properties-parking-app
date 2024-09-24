@@ -59,12 +59,12 @@ const ClientBookings = () => {
           <p className="my-text-orange">Parking</p>
         </b>
       </div>
-      <div className="flex justify-between bs-light px-4 py-2 rounded my-text-blue">
+      <div className="flex justify-between bs-light px-4 py-2 rounded my-text-blue top-bar">
         <p>{user.name}</p>
         <p>{user.email}</p>
       </div>
 
-      <div className="flex flex-col gap-4 mt-2">
+      <div className="flex flex-col gap-4 mt-2 middle-content">
         <div className="w-full flex justify-center">
           <p className="my-text-orange text-lg">
             <b>My Bookings</b>

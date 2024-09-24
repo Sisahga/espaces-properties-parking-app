@@ -31,7 +31,7 @@ const AdminLoginForm = () => {
       navigate("/");
     } else {
       if (loginResponse.status === 400) {
-        alert("Admin with email " + email + " not found.");
+        alert("Invalid Credentials.");
       } else {
         console.error("Failed to login admin user.");
       }
@@ -39,7 +39,7 @@ const AdminLoginForm = () => {
   };
 
   return (
-    <form className="p-2" onSubmit={handleLogin}>
+    <form className="p-2 reg-form" onSubmit={handleLogin}>
       <div className="flex flex-col gap-4">
         {/* Email Address */}
         <div className="flex flex-col">
@@ -81,6 +81,14 @@ const AdminLoginForm = () => {
             Log In
           </button>
         </div>
+        {/* Regular Login */}
+        <div className="flex flex-col mt-4">
+          <p className="text-sm">Not an admin?</p>
+          <a href="/login" className="underline my-text-light-blue">
+            Login here
+          </a>
+        </div>
+
         {/* Company TM */}
         <div className="mt-4">
           <p className="text-sm font-thin">&copy; MacMee Inc. - 2024</p>

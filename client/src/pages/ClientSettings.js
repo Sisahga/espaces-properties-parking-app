@@ -115,7 +115,7 @@ const ClientSettings = () => {
             className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           ></input>
         </div>
-        <div className="flex mx-auto w-1/2 mt-4">
+        <div className="flex mx-auto w-1/2 mt-4" style={{ maxWidth: "300px" }}>
           <button
             className="buttonBig rounded"
             onClick={handleUserUpdate}

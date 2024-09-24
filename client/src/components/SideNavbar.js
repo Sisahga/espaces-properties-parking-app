@@ -45,6 +45,18 @@ const SideNavbar = () => {
                 menuIconBtn.classList.toggle("open");
                 document.getElementById("sideNavbar").style.display = "none";
                 document.getElementById("overlay").style.display = "none";
+                navigate("/");
+              }}
+              className="sidebar-tab rounded bs-light"
+            >
+              Home
+            </div>
+            <div
+              onClick={() => {
+                const menuIconBtn = document.getElementById("menu-icon-btn");
+                menuIconBtn.classList.toggle("open");
+                document.getElementById("sideNavbar").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
                 navigate("/all-bookings-admin");
               }}
               className="sidebar-tab rounded bs-light"
