@@ -70,6 +70,27 @@ const ClientScheduler = () => {
 
   useEffect(() => {
     if (bookings.length === 0) retrieveBookings();
+
+    if (localStorage.getItem("booking-pending") === "true") {
+      alert("Your booking was pending. The request could not be processed.");
+      const bookingID = localStorage.getItem("booking-id");
+
+      const dbResponse = fetch(
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${bookingID}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!dbResponse.ok) {
+        const error = dbResponse.json();
+        console.error("Error:", error.error);
+      } else {
+        alert("Booking was successfully deleted.");
+      }
+    }
   }, []);
 
   const handleRentalCarChange = (e) => {
@@ -371,6 +392,9 @@ const ClientScheduler = () => {
         const booking = await dbResponse.json();
         bookingID = booking.id;
         console.log("Booking: ", booking);
+
+        localStorage.setItem("booking-pending", true);
+        localStorage.setItem("booking-id", bookingID);
       }
 
       const stripeResponse = await fetch(
@@ -398,6 +422,8 @@ const ClientScheduler = () => {
         console.error("Error:", error.error);
       } else {
         const { url } = await stripeResponse.json();
+        localStorage.setItem("booking-pending", false);
+        localStorage.setItem("booking-id", "");
         window.location.href = url;
       }
     }
