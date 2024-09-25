@@ -71,7 +71,13 @@ const ClientScheduler = () => {
   useEffect(() => {
     if (bookings.length === 0) retrieveBookings();
 
-    if (localStorage.getItem("booking-pending") === "true") {
+    const [navigationEntry] = performance.getEntriesByType("navigation");
+
+    if (
+      navigationEntry &&
+      navigationEntry.type === "reload" &&
+      localStorage.getItem("booking-pending") === "true"
+    ) {
       alert("Your booking was pending. The request could not be processed.");
       const bookingID = localStorage.getItem("booking-id");
 
