@@ -393,7 +393,7 @@ const ClientScheduler = () => {
         bookingID = booking.id;
         console.log("Booking: ", booking);
 
-        localStorage.setItem("booking-pending", true);
+        localStorage.setItem("booking-pending", "true");
         localStorage.setItem("booking-id", bookingID);
       }
 
@@ -422,7 +422,7 @@ const ClientScheduler = () => {
         console.error("Error:", error.error);
       } else {
         const { url } = await stripeResponse.json();
-        localStorage.setItem("booking-pending", false);
+        localStorage.setItem("booking-pending", "false");
         localStorage.setItem("booking-id", "");
         window.location.href = url;
       }
