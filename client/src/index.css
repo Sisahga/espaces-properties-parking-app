@@ -285,13 +285,21 @@ body {
   color: var(--white);
 }
 
-.actionBtnsMobile {
+.actionBtnsMobile, .saveBtnsMobile {
   display: none;
-  /* Hide by default */
-  justify-content: space-between;
-  width: 354px;
+  width: 100%;
   position: absolute;
-  bottom: 1rem;
+  bottom: 0rem;
+}
+.actionBtnsMobile {
+  justify-content: space-between;
+}
+.saveBtnsMobile {
+  justify-content: flex-end;
+}
+
+.e-schedule-form.e-lib.e-formvalidator {
+  position: relative;
 }
 
 .pageTab {
@@ -310,7 +318,7 @@ body {
 
 /* Media query for mobile devices */
 @media (max-width: 768px) {
-  .actionBtnsMobile {
+  .actionBtnsMobile, .saveBtnsMobile {
     display: flex;
     /* Show the delete button on mobile */
   }
@@ -370,6 +378,13 @@ body {
 
   .trans-det-days, .trans-date-slot {
     text-align: right;
+  }
+
+  .e-save-icon::before {
+    display: none !important;
+  }
+  .e-save-icon {
+    pointer-events: none !important;
   }
 }
 

@@ -14,6 +14,7 @@ import { L10n } from "@syncfusion/ej2-base";
 import cars from "../../cars.json";
 import SpinnerGif from "../Spinner";
 import ClientViewBooking from "../ClientViewBooking";
+import { handleMobileSave } from "../../util/functions";
 
 // Define a custom locale
 L10n.load({
@@ -487,6 +488,18 @@ const ClientScheduler = () => {
               type="text"
               name="additionalNotes"
             />
+          </div>
+
+          {/* SAVE/DELETE BUTTON - Visible only on Mobile */}
+          <div id="mbEditorActions" className="saveBtnsMobile">
+            <div className="delete-button-container">
+              <button
+                className="delete-button bs-light"
+                onClick={() => handleMobileSave(props)}
+              >
+                PAY NOW
+              </button>
+            </div>
           </div>
 
           {/* FOOTNOTE */}

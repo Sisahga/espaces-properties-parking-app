@@ -12,3 +12,8 @@ export function notify(message, success) {
     notificationDiv.style.display = "none";
   }, 3000);
 }
+
+export function handleMobileSave(props) {
+  var saveIcon = document.getElementsByClassName("e-save-icon")[0];
+  saveIcon.click();
+}

@@ -12,6 +12,7 @@ import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n } from "@syncfusion/ej2-base";
 import cars from "../../cars.json";
 import SpinnerGif from "../Spinner";
+import { handleMobileSave } from "../../util/functions";
 
 // Define a custom locale
 L10n.load({
@@ -243,6 +244,24 @@ const AdminScheduler = () => {
   };
 
   const onPopupOpen = (args) => {
+    // Check if on mobile, adjust action buttons accordingly
+    const screenWidth = window.innerWidth;
+    const deleteDiv = document.getElementById("mbDelete");
+    const editorActionsDiv = document.getElementById("mbEditorActions");
+    console.log("Delete Div: ", deleteDiv);
+
+    if (screenWidth < 768) {
+      console.log("Mobile Screen Detected");
+
+      if (document.getElementById("Subject").value === "") {
+        deleteDiv.style.display = "none";
+        editorActionsDiv.style.justifyContent = "flex-end";
+      } else {
+        console.log("EDITING PARKING EVENT DETECTED");
+      }
+    }
+
+    console.log("Screen Width: ", screenWidth);
     console.log("Popup Opened: ", args);
     const target = args.target;
     console.log("Target: ", target);
@@ -585,7 +604,7 @@ const AdminScheduler = () => {
 
           {/* SAVE/DELETE BUTTON - Visible only on Mobile */}
           <div id="mbEditorActions" className="actionBtnsMobile">
-            <div className="delete-button-container">
+            <div id="mbDelete" className="delete-button-container">
               <button
                 className="delete-button bs-light"
                 onClick={() => handleMobileDelete(props)}
@@ -593,14 +612,14 @@ const AdminScheduler = () => {
                 DELETE
               </button>
             </div>
-            {/* <div className="save-button-container">
+            <div className="delete-button-container">
               <button
-                className="save-button"
+                className="delete-button bs-light"
                 onClick={() => handleMobileSave(props)}
               >
-                Save
+                SAVE
               </button>
-            </div> */}
+            </div>
           </div>
 
           {/* FOOTNOTE */}
