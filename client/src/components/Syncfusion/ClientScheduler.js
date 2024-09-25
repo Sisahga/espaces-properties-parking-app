@@ -70,7 +70,7 @@ const ClientScheduler = () => {
 
   useEffect(() => {
     if (bookings.length === 0) retrieveBookings();
-
+    localStorage.setItem("booking-pending", "false");
     const [navigationEntry] = performance.getEntriesByType("navigation");
 
     if (
