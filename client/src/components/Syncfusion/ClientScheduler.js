@@ -85,6 +85,26 @@ const ClientScheduler = () => {
         return;
       }
 
+      // Check if booking is paid or not
+      const statusResponse = fetch(
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/status/${bookingID}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!statusResponse.ok) {
+        console.error("Error checking booking status.");
+      } else {
+        const status = statusResponse.json();
+        if (status === "PAID") {
+          alert("Booking was successfully paid for.");
+          return;
+        }
+      }
+
       const dbResponse = fetch(
         `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${bookingID}`,
         {
@@ -485,8 +505,6 @@ const ClientScheduler = () => {
       } else {
         const { url } = await stripeResponse.json();
         window.location.href = url;
-        localStorage.setItem("booking-pending", "false");
-        localStorage.setItem("booking-id", bookingID);
       }
     }
   };

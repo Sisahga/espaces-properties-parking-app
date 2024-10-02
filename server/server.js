@@ -244,6 +244,20 @@ app.put("/api/parking/booking/update-payment-status/:id", async (req, res) => {
   }
 });
 
+// -----> Get Booking Status
+app.get("/api/parking/booking/status/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const booking = await pool.query(
+      "SELECT paymentstatus FROM bookings WHERE id = $1",
+      [id]
+    );
+    res.status(200).json(booking.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // -----> Delete Booking
 app.delete("/api/parking/booking/delete/:id", async (req, res) => {
   try {
