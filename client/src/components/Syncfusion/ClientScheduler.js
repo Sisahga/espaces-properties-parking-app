@@ -467,6 +467,7 @@ const ClientScheduler = () => {
         const error = await stripeResponse.json();
         alert("An error occurred. Please try again.");
         console.error("Error:", error.error);
+        window.location.reload();
       } else {
         const { url } = await stripeResponse.json();
         window.location.href = url;
