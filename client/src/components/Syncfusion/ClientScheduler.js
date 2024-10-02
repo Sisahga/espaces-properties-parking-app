@@ -467,7 +467,21 @@ const ClientScheduler = () => {
         const error = await stripeResponse.json();
         alert("An error occurred. Please try again.");
         console.error("Error:", error.error);
-        window.location.reload();
+        const dbResponse = fetch(
+          `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${bookingID}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!dbResponse.ok) {
+          console.error("Couldn't delete the booking.");
+        } else {
+          alert("Booking was successfully deleted.");
+        }
       } else {
         const { url } = await stripeResponse.json();
         window.location.href = url;
