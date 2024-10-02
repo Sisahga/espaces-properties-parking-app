@@ -68,7 +68,8 @@ const AdminScheduler = () => {
   }
 
   useEffect(() => {
-    if (bookings.length === 0) retrieveBookings();
+    // if (bookings.length === 0) retrieveBookings();
+    retrieveBookings();
   }, []);
 
   function daysBetween(date1, date2) {
