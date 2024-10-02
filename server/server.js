@@ -120,9 +120,10 @@ app.post("/api/parking/booking/create", async (req, res) => {
       licensePlate,
       vehicleMake,
       roomNumber,
+      paymentStatus,
     } = req.body;
     const newBooking = await pool.query(
-      "INSERT INTO bookings (u_id, subject, starttime, endtime, isallday, description, licenseplate, vehiclemake, roomnumber) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
+      "INSERT INTO bookings (u_id, subject, starttime, endtime, isallday, description, licenseplate, vehiclemake, roomnumber, paymentstatus) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
       [
         uid,
         subject,
@@ -133,8 +134,12 @@ app.post("/api/parking/booking/create", async (req, res) => {
         licensePlate,
         vehicleMake,
         roomNumber,
+        paymentStatus,
       ]
     );
+
+    pendingBookingID = newBooking.rows[0].id;
+
     console.log(newBooking.rows[0]);
     res.status(200).json(newBooking.rows[0]);
   } catch (err) {
@@ -205,6 +210,35 @@ app.put("/api/parking/booking/update/:id", async (req, res) => {
       ]
     );
     res.status(200).json("Booking updated.");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+var pendingBookingID = null;
+async function updateBookingPaymentStatus(id, paymentStatus) {
+  try {
+    await pool.query("UPDATE bookings SET paymentstatus = $1 WHERE id = $2", [
+      paymentStatus,
+      id,
+    ]);
+    console.log("Payment status updated.");
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+// -----> Update Booking Payment Status
+app.put("/api/parking/booking/update-payment-status/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const paymentStatus = req.body.paymentStatus;
+    await pool.query("UPDATE bookings SET paymentstatus = $1 WHERE id = $2", [
+      paymentStatus,
+      id,
+    ]);
+    res.status(200).json("Payment status updated.");
+    console.log("Payment status updated.");
   } catch (err) {
     console.error(err.message);
   }
@@ -300,6 +334,9 @@ app.get("/api/parking/payment/retrieve-complete/:id", async (req, res) => {
         session.customer_details.address.postal_code,
       slotBooked: lineItems.data[0].description.split(" * ")[1],
     };
+
+    updateBookingPaymentStatus(pendingBookingID, "PAID");
+
     res.status(200).json(transactionDetails);
   } catch (error) {
     console.error(error.message);

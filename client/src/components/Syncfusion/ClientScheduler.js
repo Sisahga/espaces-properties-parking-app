@@ -70,16 +70,20 @@ const ClientScheduler = () => {
 
   useEffect(() => {
     if (bookings.length === 0) retrieveBookings();
-    localStorage.setItem("booking-pending", "false");
-    const [navigationEntry] = performance.getEntriesByType("navigation");
 
+    // Check if there is a pending booking (payment screen breakdown, or page reload before stripe redirect)
     if (
-      navigationEntry &&
-      navigationEntry.type === "reload" &&
+      localStorage.getItem("booking-pending") &&
       localStorage.getItem("booking-pending") === "true"
     ) {
-      alert("Your booking was pending. The request could not be processed.");
+      alert(
+        "Your booking was pending for too long. The request could not be processed. Please try again."
+      );
       const bookingID = localStorage.getItem("booking-id");
+
+      if (!bookingID || bookingID === "") {
+        return;
+      }
 
       const dbResponse = fetch(
         `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${bookingID}`,
@@ -90,13 +94,49 @@ const ClientScheduler = () => {
           },
         }
       );
+
       if (!dbResponse.ok) {
-        const error = dbResponse.json();
-        console.error("Error:", error.error);
+        console.error("Double load error.");
       } else {
         alert("Booking was successfully deleted.");
       }
+
+      localStorage.removeItem("booking-pending");
+      localStorage.removeItem("booking-id");
     }
+    // else if (
+    //   localStorage.getItem("booking-pending") &&
+    //   localStorage.getItem("booking-pending") === "false"
+    // ) {
+    //   // Booking was successful, update bookings table with payment status "PAID"
+    //   const bookingID = localStorage.getItem("booking-id");
+    //   alert(
+    //     "Pending booking " +
+    //       bookingID +
+    //       " was successfully processed. Payment status will be updated."
+    //   );
+    //   console.log("Booking ID: ", bookingID);
+    //   if (bookingID !== "") {
+    //     const dbResponse = fetch(
+    //       `${process.env.REACT_APP_API_URL}/api/parking/booking/update-payment-status/${bookingID}`,
+    //       {
+    //         method: "PUT",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({ paymentStatus: "PAID" }),
+    //       }
+    //     );
+    //     if (!dbResponse.ok) {
+    //       console.error("Double load error.");
+    //     } else {
+    //       alert("Booking payment status set to 'PAID'.");
+    //     }
+    //   }
+
+    //   localStorage.removeItem("booking-pending");
+    //   localStorage.removeItem("booking-id");
+    // }
   }, []);
 
   const handleRentalCarChange = (e) => {
@@ -360,6 +400,7 @@ const ClientScheduler = () => {
         description: data.Description,
         licensePlate: data.LicensePlate,
         vehicleMake: data.VehicleMake,
+        paymentStatus: "PENDING",
       };
       console.log("New Booking: ", newBooking);
 
@@ -428,9 +469,9 @@ const ClientScheduler = () => {
         console.error("Error:", error.error);
       } else {
         const { url } = await stripeResponse.json();
-        localStorage.setItem("booking-pending", "false");
-        localStorage.setItem("booking-id", "");
         window.location.href = url;
+        localStorage.setItem("booking-pending", "false");
+        localStorage.setItem("booking-id", bookingID);
       }
     }
   };
