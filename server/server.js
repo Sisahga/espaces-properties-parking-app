@@ -46,7 +46,7 @@ app.post("/api/user/login", async (req, res) => {
     console.log(email);
     const user = await pool.query(
       "SELECT u_id, name, email, phone FROM users WHERE email = $1 and email != $2",
-      [email, "admin@test.com"]
+      [email, "info@espaceproperties.com"]
     );
     if (user.rows.length === 0) {
       return res.status(400).json("User not found or doesn't exist.");
