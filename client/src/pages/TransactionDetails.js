@@ -66,13 +66,13 @@ const TransactionDetails = () => {
       </div>
       <div className="flex flex-col w-full justify-center">
         <p className="text-center">Your booking has been confirmed.</p>
-        <p className="text-center">
+        {/* <p className="text-center">
           An email has been sent to{" "}
           <span className="my-text-light-blue">
             {transactionDetails.customerEmail}
           </span>{" "}
           with more details
-        </p>
+        </p> */}
       </div>
       <div className="flex flex-col gap-4 bs-light p-4 rounded tr-detail-comp">
         <div className="flex flex-col justify-center">
