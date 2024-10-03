@@ -598,7 +598,7 @@ const AdminScheduler = () => {
           {/* MIDDLE ROW */}
           <div className="flex w-full gap-4">
             <div className="flex flex-col w-1/2">
-              <div className="e-textlabel">License Plate *</div>
+              <div className="e-textlabel">License Plate</div>
               <div style={{ paddingTop: "3px" }}>
                 <input
                   id="LicensePlate"
@@ -611,7 +611,7 @@ const AdminScheduler = () => {
               </div>
             </div>
             <div className="flex flex-col w-1/2">
-              <div className="e-textlabel">Vehicle Make *</div>
+              <div className="e-textlabel">Vehicle Make</div>
               <div>
                 <DropDownListComponent
                   id="VehicleMake"
