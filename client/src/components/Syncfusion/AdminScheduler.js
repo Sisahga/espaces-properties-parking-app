@@ -86,6 +86,27 @@ const AdminScheduler = () => {
     return diffDays;
   }
 
+  function formatEndTimeDate(dateStr) {
+    // Split the string into day, month, and year
+    let [day, month, year] = dateStr.split("/").map(Number);
+
+    // Create a Date object from the parsed values (month is 0-indexed)
+    let date = new Date(year, month - 1, day);
+
+    // Increment the date by one day
+    date.setDate(date.getDate() + 1);
+
+    // Format the new date back to DD/MM/YYYY
+    let newDay = String(date.getDate()).padStart(2, "0");
+    let newMonth = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+    let newYear = date.getFullYear();
+
+    let newDateStr = `${newYear}-${newMonth}-${newDay}`;
+    console.log("New Date String: ", newDateStr);
+
+    return newDateStr + " 04:00:00";
+  }
+
   function formatDate(dateStr, isReg) {
     // Create a Date object from the input date string
     const date = new Date(dateStr);
@@ -356,7 +377,8 @@ const AdminScheduler = () => {
         uid: localStorage.getItem("uid"),
         subject: data.Subject,
         startTime: formatDate(data.StartTime, false),
-        endTime: formatDate(data.EndTime, false),
+        // endTime: formatDate(data.EndTime, false),
+        endTime: formatEndTimeDate(document.getElementById("EndTime").value),
         isAllDay: true,
         description: data.Description,
         licensePlate: data.LicensePlate,
@@ -424,6 +446,7 @@ const AdminScheduler = () => {
         return;
       }
 
+      // Need to check End Time (issues)
       console.log("Booking to update: " + args.data.Id);
       const booking = {
         startTime: formatDate(args.data.StartTime, false),
