@@ -141,12 +141,7 @@ const AdminScheduler = () => {
   }
 
   function validateFields(data) {
-    if (
-      data.StartTime === "" ||
-      data.EndTime === "" ||
-      data.LicensePlate === "" ||
-      data.VehicleMake === ""
-    ) {
+    if (data.StartTime === "" || data.EndTime === "") {
       return false;
     }
     return true;
@@ -184,11 +179,11 @@ const AdminScheduler = () => {
     const currentDate = new Date();
 
     // Check if the new appointment's start time is before the current date and time
-    if (new Date(newAppointment.StartTime) < currentDate) {
-      args.cancel = true;
-      alert("Cannot create a booking with a start time in the past.");
-      return true;
-    }
+    // if (new Date(newAppointment.StartTime) < currentDate) {
+    //   args.cancel = true;
+    //   alert("Cannot create a booking with a start time in the past.");
+    //   return true;
+    // }
 
     const existingAppointments = appointments.filter((appointment) => {
       console.log("Appointment: ", appointment);
@@ -374,7 +369,6 @@ const AdminScheduler = () => {
         uid: localStorage.getItem("uid"),
         subject: data.Subject,
         startTime: formatDate(data.StartTime, false),
-        // endTime: formatDate(data.EndTime, false),
         endTime: formatDate(args.data.EndTime, false),
         isAllDay: true,
         description: data.Description,
