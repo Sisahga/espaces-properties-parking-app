@@ -265,6 +265,7 @@ const AdminScheduler = () => {
       console.log("Editor!");
       var endTimeElement = document.getElementById("EndTime");
       console.log("End Time Element: ", endTimeElement);
+      console.log("End Time Value: ", endTimeElement.value);
     } else {
       console.log("Non Editor. Popup Type: ", args.type);
     }
