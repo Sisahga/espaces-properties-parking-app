@@ -378,7 +378,7 @@ const AdminScheduler = () => {
         subject: data.Subject,
         startTime: formatDate(data.StartTime, false),
         // endTime: formatDate(data.EndTime, false),
-        endTime: formatEndTimeDate(document.getElementById("EndTime").value),
+        endTime: formatDate(args.data.EndTime, false),
         isAllDay: true,
         description: data.Description,
         licensePlate: data.LicensePlate,
@@ -450,7 +450,7 @@ const AdminScheduler = () => {
       console.log("Booking to update: " + args.data.Id);
       const booking = {
         startTime: formatDate(args.data.StartTime, false),
-        endTime: formatDate(args.data.EndTime, false),
+        endTime: formatEndTimeDate(document.getElementById("EndTime").value),
         licensePlate: args.data.LicensePlate,
         vehicleMake: args.data.VehicleMake,
         description: args.data.Description,
