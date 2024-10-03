@@ -107,6 +107,82 @@ app.put("/api/user/update/:id", async (req, res) => {
 
 // ---< SCHEDULER ROUTES >---
 
+// -----> Pending Booking Creation Object
+var bookingObject = {
+  uid: null,
+  subject: null,
+  startTime: null,
+  endTime: null,
+  isAllDay: true,
+  description: null,
+  licensePlate: null,
+  vehicleMake: null,
+  paymentStatus: null,
+};
+
+// -----> Store temporary booking in BookingObject
+app.post("/api/parking/booking/temp", async (req, res) => {
+  try {
+    const {
+      uid,
+      subject,
+      startTime,
+      endTime,
+      isAllDay,
+      description,
+      licensePlate,
+      vehicleMake,
+      paymentStatus,
+    } = req.body;
+    bookingObject.uid = uid;
+    bookingObject.subject = subject;
+    bookingObject.startTime = startTime;
+    bookingObject.endTime = endTime;
+    bookingObject.isAllDay = isAllDay;
+    bookingObject.description = description;
+    bookingObject.licensePlate = licensePlate;
+    bookingObject.vehicleMake = vehicleMake;
+    bookingObject.paymentStatus = paymentStatus;
+    res.status(200).json(bookingObject);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// Create booking for CLIENT only when receiving successful payment confirmation
+async function createBooking(
+  uid,
+  subject,
+  startTime,
+  endTime,
+  isAllDay,
+  description,
+  licensePlate,
+  vehicleMake,
+  paymentStatus
+) {
+  try {
+    const newBooking = await pool.query(
+      "INSERT INTO bookings (u_id, subject, starttime, endtime, isallday, description, licenseplate, vehiclemake, paymentstatus) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
+      [
+        uid,
+        subject,
+        startTime,
+        endTime,
+        isAllDay,
+        description,
+        licensePlate,
+        vehicleMake,
+        paymentStatus,
+      ]
+    );
+    console.log(newBooking.rows[0]);
+    return newBooking.rows[0];
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
 // -----> Create New Booking
 app.post("/api/parking/booking/create", async (req, res) => {
   try {
@@ -137,8 +213,6 @@ app.post("/api/parking/booking/create", async (req, res) => {
         paymentStatus,
       ]
     );
-
-    pendingBookingID = newBooking.rows[0].id;
 
     console.log(newBooking.rows[0]);
     res.status(200).json(newBooking.rows[0]);
@@ -214,19 +288,6 @@ app.put("/api/parking/booking/update/:id", async (req, res) => {
     console.error(err.message);
   }
 });
-
-var pendingBookingID = null;
-async function updateBookingPaymentStatus(id, paymentStatus) {
-  try {
-    await pool.query("UPDATE bookings SET paymentstatus = $1 WHERE id = $2", [
-      paymentStatus,
-      id,
-    ]);
-    console.log("Payment status updated.");
-  } catch (err) {
-    console.error(err.message);
-  }
-}
 
 // -----> Update Booking Payment Status
 app.put("/api/parking/booking/update-payment-status/:id", async (req, res) => {
@@ -310,7 +371,7 @@ app.post("/api/parking/payment/create-checkout-session", async (req, res) => {
         },
       ],
       success_url: `${process.env.CLIENT_URL}/stripe-pay-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.CLIENT_URL}/stripe-pay-cancel?booking_id=${req.body.bookingID}`,
+      cancel_url: `${process.env.CLIENT_URL}/stripe-pay-cancel`,
     });
     res.json({ url: session.url });
   } catch (error) {
@@ -349,7 +410,19 @@ app.get("/api/parking/payment/retrieve-complete/:id", async (req, res) => {
       slotBooked: lineItems.data[0].description.split(" * ")[1],
     };
 
-    updateBookingPaymentStatus(pendingBookingID, "PAID");
+    bookingObject.paymentStatus = "PAID";
+    // Create booking after payment successful
+    await createBooking(
+      bookingObject.uid,
+      bookingObject.subject,
+      bookingObject.startTime,
+      bookingObject.endTime,
+      bookingObject.isAllDay,
+      bookingObject.description,
+      bookingObject.licensePlate,
+      bookingObject.vehicleMake,
+      bookingObject.paymentStatus
+    );
 
     res.status(200).json(transactionDetails);
   } catch (error) {

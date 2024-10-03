@@ -11,10 +11,12 @@ const TransactionDetails = () => {
   const [transactionDetails, setTransactionDetails] = useState({});
   const [loading, setLoading] = useState(true);
 
+  // let ready = false;
   useEffect(() => {
     if (sessionId) {
       retrieveSession();
     }
+    // ready = true;
   }, [sessionId]);
 
   async function retrieveSession() {

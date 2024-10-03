@@ -3,7 +3,6 @@ import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import ClientScheduler from "../components/Syncfusion/ClientScheduler";
 import AdminScheduler from "../components/Syncfusion/AdminScheduler";
 import BottomNavbar from "../components/BottomNavbar";
-import { notify } from "../util/functions";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,28 +14,8 @@ const Home = () => {
   console.log("Authenticated: ", authenticated);
 
   const location = useLocation();
-  const [searchParams] = useSearchParams();
 
   const isStripePayCancel = location.pathname.includes("stripe-pay-cancel");
-  const bookingId = searchParams.get("booking_id");
-
-  async function deleteBooking(bookingId) {
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${bookingId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (response.ok) {
-      console.log("Booking deleted.");
-      navigate("/");
-    } else {
-      console.error("Failed to delete booking.");
-    }
-  }
 
   async function getUser(userId) {
     console.log("Getting user " + userId);
@@ -61,9 +40,9 @@ const Home = () => {
 
   useEffect(() => {
     if (isStripePayCancel) {
-      deleteBooking(bookingId);
+      console.log("Stripe payment cancelled by user.");
     }
-  }, [isStripePayCancel, bookingId]);
+  }, [isStripePayCancel]);
 
   useEffect(() => {
     if (authenticated !== "Y") {

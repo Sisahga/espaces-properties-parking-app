@@ -70,93 +70,6 @@ const ClientScheduler = () => {
 
   useEffect(() => {
     if (bookings.length === 0) retrieveBookings();
-
-    // Check if there is a pending booking (payment screen breakdown, or page reload before stripe redirect)
-    if (
-      localStorage.getItem("booking-pending") &&
-      localStorage.getItem("booking-pending") === "true"
-    ) {
-      alert(
-        "Your booking was pending for too long. The request could not be processed. Please try again."
-      );
-      const bookingID = localStorage.getItem("booking-id");
-
-      if (!bookingID || bookingID === "") {
-        return;
-      }
-
-      // Check if booking is paid or not
-      const statusResponse = fetch(
-        `${process.env.REACT_APP_API_URL}/api/parking/booking/status/${bookingID}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!statusResponse.ok) {
-        console.error("Error checking booking status.");
-      } else {
-        const status = statusResponse.json();
-        if (status === "PAID") {
-          alert("Booking was successfully paid for.");
-          return;
-        }
-      }
-
-      const dbResponse = fetch(
-        `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${bookingID}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!dbResponse.ok) {
-        console.error("Double load error.");
-      } else {
-        alert("Booking was successfully deleted.");
-      }
-
-      localStorage.removeItem("booking-pending");
-      localStorage.removeItem("booking-id");
-    }
-    // else if (
-    //   localStorage.getItem("booking-pending") &&
-    //   localStorage.getItem("booking-pending") === "false"
-    // ) {
-    //   // Booking was successful, update bookings table with payment status "PAID"
-    //   const bookingID = localStorage.getItem("booking-id");
-    //   alert(
-    //     "Pending booking " +
-    //       bookingID +
-    //       " was successfully processed. Payment status will be updated."
-    //   );
-    //   console.log("Booking ID: ", bookingID);
-    //   if (bookingID !== "") {
-    //     const dbResponse = fetch(
-    //       `${process.env.REACT_APP_API_URL}/api/parking/booking/update-payment-status/${bookingID}`,
-    //       {
-    //         method: "PUT",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({ paymentStatus: "PAID" }),
-    //       }
-    //     );
-    //     if (!dbResponse.ok) {
-    //       console.error("Double load error.");
-    //     } else {
-    //       alert("Booking payment status set to 'PAID'.");
-    //     }
-    //   }
-
-    //   localStorage.removeItem("booking-pending");
-    //   localStorage.removeItem("booking-id");
-    // }
   }, []);
 
   const handleRentalCarChange = (e) => {
@@ -442,7 +355,7 @@ const ClientScheduler = () => {
       spinner.style.display = "flex";
 
       const dbResponse = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/parking/booking/create`,
+        `${process.env.REACT_APP_API_URL}/api/parking/booking/temp`,
         {
           method: "POST",
           headers: {
@@ -451,17 +364,11 @@ const ClientScheduler = () => {
           body: JSON.stringify(newBooking),
         }
       );
-      var bookingID;
       if (!dbResponse.ok) {
         const error = await dbResponse.json();
         console.error("Error:", error.error);
       } else {
         const booking = await dbResponse.json();
-        bookingID = booking.id;
-        console.log("Booking: ", booking);
-
-        localStorage.setItem("booking-pending", "true");
-        localStorage.setItem("booking-id", bookingID);
       }
 
       const stripeResponse = await fetch(
@@ -478,7 +385,6 @@ const ClientScheduler = () => {
               " 3:00P.M. - " +
               formattedEndDate +
               " 11:00A.M.",
-            bookingID: bookingID,
           }),
         }
       );
@@ -487,21 +393,6 @@ const ClientScheduler = () => {
         const error = await stripeResponse.json();
         alert("An error occurred. Please try again.");
         console.error("Error:", error.error);
-        const dbResponse = fetch(
-          `${process.env.REACT_APP_API_URL}/api/parking/booking/delete/${bookingID}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!dbResponse.ok) {
-          console.error("Couldn't delete the booking.");
-        } else {
-          alert("Booking was successfully deleted.");
-        }
       } else {
         const { url } = await stripeResponse.json();
         window.location.href = url;
