@@ -369,7 +369,7 @@ const AdminScheduler = () => {
         uid: localStorage.getItem("uid"),
         subject: data.Subject,
         startTime: formatDate(data.StartTime, false),
-        endTime: formatDate(args.data.EndTime, false),
+        endTime: formatDate(data.EndTime, false),
         isAllDay: true,
         description: data.Description,
         licensePlate: data.LicensePlate,
