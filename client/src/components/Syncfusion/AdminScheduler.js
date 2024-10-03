@@ -262,6 +262,11 @@ const AdminScheduler = () => {
       }
     }
 
+    if (args.type === "Editor") {
+      var endTimeElement = document.getElementById("EndTime");
+      console.log("End Time Element: ", endTimeElement);
+    }
+
     console.log("Screen Width: ", screenWidth);
     console.log("Popup Opened: ", args);
     const target = args.target;
