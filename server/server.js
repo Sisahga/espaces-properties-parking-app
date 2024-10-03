@@ -159,11 +159,12 @@ async function createBooking(
   description,
   licensePlate,
   vehicleMake,
-  paymentStatus
+  paymentStatus,
+  transactionID
 ) {
   try {
     const newBooking = await pool.query(
-      "INSERT INTO bookings (u_id, subject, starttime, endtime, isallday, description, licenseplate, vehiclemake, paymentstatus) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
+      "INSERT INTO bookings (u_id, subject, starttime, endtime, isallday, description, licenseplate, vehiclemake, paymentstatus, transactionId) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
       [
         uid,
         subject,
@@ -174,6 +175,7 @@ async function createBooking(
         licensePlate,
         vehicleMake,
         paymentStatus,
+        transactionID,
       ]
     );
     console.log(newBooking.rows[0]);
@@ -421,7 +423,8 @@ app.get("/api/parking/payment/retrieve-complete/:id", async (req, res) => {
       bookingObject.description,
       bookingObject.licensePlate,
       bookingObject.vehicleMake,
-      bookingObject.paymentStatus
+      bookingObject.paymentStatus,
+      transactionDetails.id
     );
 
     res.status(200).json(transactionDetails);
