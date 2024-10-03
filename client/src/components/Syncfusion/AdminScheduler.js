@@ -93,9 +93,6 @@ const AdminScheduler = () => {
     // Create a Date object from the parsed values (month is 0-indexed)
     let date = new Date(year, month - 1, day);
 
-    // Increment the date by one day
-    date.setDate(date.getDate() + 1);
-
     // Format the new date back to DD/MM/YYYY
     let newDay = String(date.getDate()).padStart(2, "0");
     let newMonth = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
