@@ -249,7 +249,6 @@ const AdminScheduler = () => {
     const screenWidth = window.innerWidth;
     const deleteDiv = document.getElementById("mbDelete");
     const editorActionsDiv = document.getElementById("mbEditorActions");
-    console.log("Delete Div: ", deleteDiv);
 
     if (screenWidth < 768) {
       console.log("Mobile Screen Detected");
@@ -263,8 +262,11 @@ const AdminScheduler = () => {
     }
 
     if (args.type === "Editor") {
+      console.log("Editor!");
       var endTimeElement = document.getElementById("EndTime");
       console.log("End Time Element: ", endTimeElement);
+    } else {
+      console.log("Non Editor. Popup Type: ", args.type);
     }
 
     console.log("Screen Width: ", screenWidth);
