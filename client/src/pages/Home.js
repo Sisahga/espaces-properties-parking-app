@@ -102,7 +102,7 @@ const Home = () => {
             </div>
           )}
           <ClientScheduler />
-          <BottomNavbar />
+          {authenticated !== null && authenticated && <BottomNavbar />}
         </div>
       ) : (
         <div className="flex flex-col gap-4 px-8 py-12 main-content">
