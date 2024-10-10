@@ -51,7 +51,11 @@ const Home = () => {
     //   const uid = localStorage.getItem("uid");
     //   getUser(uid);
     // }
-    if (authenticated === null || authenticated !== "Y") {
+    if (
+      authenticated === null ||
+      authenticated === undefined ||
+      authenticated !== "Y"
+    ) {
       isAdmin = "N";
       setLoading(false);
     } else {
@@ -90,12 +94,14 @@ const Home = () => {
               <p className="my-text-orange">Parking</p>
             </b>
           </div>
-          {authenticated !== null && authenticated && (
-            <div className="flex justify-between bs-light px-4 py-2 rounded my-text-blue">
-              <p>{user.name}</p>
-              <p>{user.email}</p>
-            </div>
-          )}
+          {authenticated !== undefined &&
+            authenticated !== null &&
+            authenticated && (
+              <div className="flex justify-between bs-light px-4 py-2 rounded my-text-blue">
+                <p>{user.name}</p>
+                <p>{user.email}</p>
+              </div>
+            )}
           <ClientScheduler />
           <BottomNavbar />
         </div>
