@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ScheduleComponent,
   Week,
@@ -29,6 +30,7 @@ L10n.load({
 });
 
 const ClientScheduler = () => {
+  const navigate = useNavigate();
   const scheduleObj = useRef(null);
   const [bookings, setBookings] = useState([]);
   const [bookingSlot, setBookingSlot] = useState("");
@@ -257,6 +259,11 @@ const ClientScheduler = () => {
 
   // === CELL CLICK EVENTS ===
   const onCellClick = (args) => {
+    if (localStorage.getItem("authenticated") !== "Y") {
+      navigate("/signup");
+      return;
+    }
+
     console.log("Cell Clicked: ", args);
     if (
       args.element.classList.contains("clientEvent") ||

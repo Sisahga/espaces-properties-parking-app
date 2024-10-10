@@ -10,7 +10,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   const authenticated = localStorage.getItem("authenticated");
-  const isAdmin = localStorage.getItem("isAdmin");
+  var isAdmin = localStorage.getItem("isAdmin");
   console.log("Authenticated: ", authenticated);
 
   const location = useLocation();
@@ -45,8 +45,15 @@ const Home = () => {
   }, [isStripePayCancel]);
 
   useEffect(() => {
+    // if (authenticated !== "Y") {
+    //   navigate("/signup");
+    // } else {
+    //   const uid = localStorage.getItem("uid");
+    //   getUser(uid);
+    // }
     if (authenticated !== "Y") {
-      navigate("/signup");
+      isAdmin = "N";
+      setLoading(false);
     } else {
       const uid = localStorage.getItem("uid");
       getUser(uid);
@@ -83,10 +90,12 @@ const Home = () => {
               <p className="my-text-orange">Parking</p>
             </b>
           </div>
-          <div className="flex justify-between bs-light px-4 py-2 rounded my-text-blue">
-            <p>{user.name}</p>
-            <p>{user.email}</p>
-          </div>
+          {authenticated && (
+            <div className="flex justify-between bs-light px-4 py-2 rounded my-text-blue">
+              <p>{user.name}</p>
+              <p>{user.email}</p>
+            </div>
+          )}
           <ClientScheduler />
           <BottomNavbar />
         </div>
