@@ -90,7 +90,7 @@ const Home = () => {
               <p className="my-text-orange">Parking</p>
             </b>
           </div>
-          {authenticated && (
+          {authenticated !== null && authenticated && (
             <div className="flex justify-between bs-light px-4 py-2 rounded my-text-blue">
               <p>{user.name}</p>
               <p>{user.email}</p>
