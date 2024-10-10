@@ -57,6 +57,7 @@ const Home = () => {
       authenticated !== "Y"
     ) {
       localStorage.setItem("isAdmin", "N");
+      isAdmin = "N";
       setLoading(false);
     } else {
       const uid = localStorage.getItem("uid");
