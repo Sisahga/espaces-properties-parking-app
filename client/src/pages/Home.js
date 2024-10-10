@@ -11,6 +11,9 @@ const Home = () => {
 
   const authenticated = localStorage.getItem("authenticated");
   var isAdmin = localStorage.getItem("isAdmin");
+  if (isAdmin === null || isAdmin === undefined) {
+    isAdmin = "N";
+  }
   console.log("Authenticated: ", authenticated);
 
   const location = useLocation();
