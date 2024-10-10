@@ -34,7 +34,7 @@ function App() {
           path="/"
           element={
             <>
-              <SideNavbar />
+              {localStorage.getItem("authenticated") === "Y" && <SideNavbar />}
               <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
                 <div id="menu-btn-burger"></div>
               </div>
