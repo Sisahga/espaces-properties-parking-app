@@ -51,7 +51,7 @@ const Home = () => {
     //   const uid = localStorage.getItem("uid");
     //   getUser(uid);
     // }
-    if (authenticated !== "Y") {
+    if (authenticated === null || authenticated !== "Y") {
       isAdmin = "N";
       setLoading(false);
     } else {
