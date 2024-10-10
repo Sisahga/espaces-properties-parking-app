@@ -34,10 +34,14 @@ function App() {
           path="/"
           element={
             <>
-              {localStorage.getItem("authenticated") === "Y" && <SideNavbar />}
-              <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
-                <div id="menu-btn-burger"></div>
-              </div>
+              {localStorage.getItem("authenticated") === "Y" && (
+                <>
+                  <SideNavbar />
+                  <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
+                    <div id="menu-btn-burger"></div>
+                  </div>
+                </>
+              )}
               <Home />
             </>
           }
