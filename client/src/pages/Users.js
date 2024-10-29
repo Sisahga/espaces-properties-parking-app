@@ -127,7 +127,7 @@ const Users = () => {
                 </p>
                 <p className="flex justify-between">
                   <span style={{ color: "var(--blue)" }}>Email:</span>{" "}
-                  {user.email}
+                  <p className="text-xs">{user.email}</p>
                 </p>
               </div>
             </div>
