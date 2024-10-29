@@ -388,7 +388,7 @@ body {
   }
 }
 
-@media screen and (min-width: 767px) {
+@media screen and (min-width: 900px) {
 
   #sideNavbar,
   #menu-icon-btn {
@@ -396,7 +396,7 @@ body {
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 900px) {
   #sideNavbar {
     display: none;
   }

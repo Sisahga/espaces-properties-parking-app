@@ -58,6 +58,14 @@ const BottomNavbar = () => {
             >
               App Settings
             </button>
+            <button
+              onClick={() => {
+                navigate("/customers");
+              }}
+              className="clientActionTab rounded bs-light"
+            >
+              Customers
+            </button>
           </div>
           <div>
             <button

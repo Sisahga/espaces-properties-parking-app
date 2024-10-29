@@ -10,6 +10,7 @@ import AppSettings from "./pages/AppSettings";
 import ClientBookings from "./pages/ClientBookings";
 import ClientSettings from "./pages/ClientSettings";
 import SideNavbar from "./components/SideNavbar";
+import Users from "./pages/Users";
 
 function App() {
   const handleMenuButtonClick = () => {
@@ -118,6 +119,18 @@ function App() {
                 <div id="menu-btn-burger"></div>
               </div>
               <AppSettings />
+            </>
+          }
+        ></Route>
+        <Route
+          path="/customers"
+          element={
+            <>
+              <SideNavbar />
+              <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
+                <div id="menu-btn-burger"></div>
+              </div>
+              <Users />
             </>
           }
         ></Route>

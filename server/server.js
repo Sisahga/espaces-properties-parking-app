@@ -57,6 +57,7 @@ app.post("/api/user/login", async (req, res) => {
   }
 });
 
+// -----> Login Admin
 app.post("/api/admin/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -98,6 +99,18 @@ app.put("/api/user/update/:id", async (req, res) => {
       [email, phone, id]
     );
     res.status(200).json("User updated.");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// -----> Admin get all Users
+app.get("/api/admin/user/retrieve/all", async (req, res) => {
+  try {
+    const allUsers = await pool.query(
+      "SELECT * FROM users WHERE password IS NULL"
+    );
+    res.status(200).json(allUsers.rows);
   } catch (err) {
     console.error(err.message);
   }
