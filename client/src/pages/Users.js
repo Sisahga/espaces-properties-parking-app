@@ -125,10 +125,10 @@ const Users = () => {
                     {user.phone}
                   </a>
                 </p>
-                <p className="flex justify-between">
+                <div className="flex justify-between items-center">
                   <span style={{ color: "var(--blue)" }}>Email:</span>{" "}
                   <p className="text-xs">{user.email}</p>
-                </p>
+                </div>
               </div>
             </div>
           ))}
