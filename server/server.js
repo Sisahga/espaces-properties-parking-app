@@ -108,7 +108,7 @@ app.put("/api/user/update/:id", async (req, res) => {
 app.get("/api/admin/user/retrieve/all", async (req, res) => {
   try {
     const allUsers = await pool.query(
-      "SELECT * FROM users WHERE password IS NULL"
+      "SELECT * FROM users WHERE password IS NULL ORDER BY name"
     );
     res.status(200).json(allUsers.rows);
   } catch (err) {
