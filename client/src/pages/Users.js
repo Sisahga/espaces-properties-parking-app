@@ -81,6 +81,8 @@ const Users = () => {
             transform: "translateX(-50%)",
             position: "relative",
             left: "50%",
+            maxHeight: "60vh",
+            overflowY: "scroll",
           }}
         >
           {users.map((user, index) => (
