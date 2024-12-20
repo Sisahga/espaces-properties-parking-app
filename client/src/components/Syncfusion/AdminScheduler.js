@@ -295,16 +295,16 @@ const AdminScheduler = () => {
       let date = new Date(year, month - 1, day);
 
       // Increment the date by one day
-      //date.setDate(date.getDate() + 1);
+      date.setDate(date.getDate() + 1);
 
       // Format the new date back to DD/MM/YYYY
-      // let newDay = String(date.getDate()).padStart(2, "0");
-      // let newMonth = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-      // let newYear = date.getFullYear();
+      let newDay = String(date.getDate()).padStart(2, "0");
+      let newMonth = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+      let newYear = date.getFullYear();
 
-      // let newDateStr = `${newDay}/${newMonth}/${newYear}`;
-      // console.log("New Date String: ", newDateStr);
-      // endTimeElement.value = newDateStr;
+      let newDateStr = `${newDay}/${newMonth}/${newYear}`;
+      console.log("New Date String: ", newDateStr);
+      endTimeElement.value = newDateStr;
     } else {
       console.log("Non Editor. Popup Type: ", args.type);
     }
