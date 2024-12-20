@@ -72,6 +72,11 @@ const AdminScheduler = () => {
     retrieveBookings();
   }, []);
 
+  function normalizeDate(date) {
+    alert("Date day: " + date.getDate());
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
   function daysBetween(date1, date2) {
     // Convert input strings to Date objects
     const d1 = new Date(date1);
@@ -290,16 +295,16 @@ const AdminScheduler = () => {
       let date = new Date(year, month - 1, day);
 
       // Increment the date by one day
-      date.setDate(date.getDate() + 1);
+      //date.setDate(date.getDate() + 1);
 
       // Format the new date back to DD/MM/YYYY
-      let newDay = String(date.getDate()).padStart(2, "0");
-      let newMonth = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-      let newYear = date.getFullYear();
+      // let newDay = String(date.getDate()).padStart(2, "0");
+      // let newMonth = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+      // let newYear = date.getFullYear();
 
-      let newDateStr = `${newDay}/${newMonth}/${newYear}`;
-      console.log("New Date String: ", newDateStr);
-      endTimeElement.value = newDateStr;
+      // let newDateStr = `${newDay}/${newMonth}/${newYear}`;
+      // console.log("New Date String: ", newDateStr);
+      // endTimeElement.value = newDateStr;
     } else {
       console.log("Non Editor. Popup Type: ", args.type);
     }
@@ -415,7 +420,7 @@ const AdminScheduler = () => {
         window.location.reload();
       }
     }
-    // === EVENT CHANGE ===
+    // === EVENT UPDATE ===
     else if (args.requestType === "eventChange") {
       console.log(args);
       const slotAvailable = scheduleObj.current.isSlotAvailable(
@@ -571,6 +576,7 @@ const AdminScheduler = () => {
                   id="StartTime"
                   data-name="StartTime"
                   value={new Date(props.startTime || props.StartTime)}
+                  locale="en-US"
                   className="e-field"
                 ></DatePickerComponent>
               </div>
@@ -583,6 +589,7 @@ const AdminScheduler = () => {
                   id="EndTime"
                   data-name="EndTime"
                   value={new Date(props.endTime || props.EndTime)}
+                  locale="en-US"
                   className="e-field"
                 ></DatePickerComponent>
               </div>
