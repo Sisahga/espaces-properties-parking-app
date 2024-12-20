@@ -106,7 +106,7 @@ const AdminScheduler = () => {
     let newDateStr = `${newYear}-${newMonth}-${newDay}`;
     console.log("New Date String: ", newDateStr);
 
-    return newDateStr + " 04:00:00";
+    return newDateStr + " 05:00:00";
   }
 
   function formatDate(dateStr, isReg) {
@@ -141,7 +141,7 @@ const AdminScheduler = () => {
       if (month < 10) month = "0" + month;
       let tempDay = day;
       if (tempDay < 10) tempDay = "0" + day;
-      return `${year}-${month}-${day} 04:00:00`;
+      return `${year}-${month}-${day} 05:00:00`;
     }
   }
 
