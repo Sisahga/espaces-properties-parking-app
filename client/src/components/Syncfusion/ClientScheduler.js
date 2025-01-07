@@ -130,7 +130,7 @@ const ClientScheduler = () => {
       if (month < 10) month = "0" + month;
       let tempDay = day;
       if (tempDay < 10) tempDay = "0" + day;
-      return `${year}-${month}-${day} 04:00:00`;
+      return `${year}-${month}-${day} 05:00:00`;
     }
   }
 
@@ -153,8 +153,24 @@ const ClientScheduler = () => {
     const newAppointment = args.data[0];
     const currentDate = new Date();
 
-    // Check if the new appointment's start time is before the current date and time
-    if (new Date(newAppointment.StartTime) < currentDate) {
+    console.log("Appointment Start Time: ", new Date(newAppointment.StartTime));
+    console.log("Current Date: ", currentDate);
+
+    const startDate = new Date(newAppointment.StartTime);
+    // Strips timestamps from the dates for proper comparison.
+    const startDateOnly = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate()
+    );
+    const currentDateOnly = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate()
+    );
+
+    // Check if the new appointment's start time is before the current date and time.
+    if (startDateOnly < currentDateOnly) {
       args.cancel = true;
       alert("Cannot create a booking with a start time in the past.");
       return true;
@@ -284,7 +300,19 @@ const ClientScheduler = () => {
     if (args.element.classList.contains("clientEvent")) {
       const startTime = formatDate(args.event.StartTime, true);
       const endTime = formatDate(args.event.EndTime, true);
-      setBookingSlot(startTime + " (3:00 P.M.) - " + endTime + " (11:00 A.M.)");
+      if (startTime === endTime) {
+        // Set end time to be the next day since checkout can't be on same day as checkin.
+        const nextDay = new Date(args.event.EndTime);
+        nextDay.setDate(nextDay.getDate() + 1);
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        const formattedNextDay = nextDay.toLocaleDateString("en-US", options);
+        setBookingSlot(
+          startTime + " (3:00 P.M.) - " + formattedNextDay + " (11:00 A.M.)"
+        );
+      } else
+        setBookingSlot(
+          startTime + " (3:00 P.M.) - " + endTime + " (11:00 A.M.)"
+        );
       setBookingMake(args.event.VehicleMake);
       setBookingLicensePlate(args.event.LicensePlate);
 
