@@ -1,3 +1,10 @@
+import {
+  BookIcon,
+  HomeIcon,
+  LogOutIcon,
+  SettingsIcon,
+  UsersRoundIcon,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -29,50 +36,56 @@ const BottomNavbar = () => {
   return (
     <div
       id="bottomNavbar"
-      className="flex justify-between mt-4 bs-light p-4 bottom-bar"
+      className="flex justify-center mt-4 bs-light p-2 fixed bottom-0 w-full lg:w-2/3 
+                  lg:left-1/2 lg:-translate-x-1/2 gap-8 bg-[var(--white)]"
     >
       {isAdmin ? (
         <>
-          <div className="flex gap-4">
+          <div className="flex gap-8">
             <button
               onClick={() => {
                 navigate("/");
               }}
-              className="clientActionTab rounded bs-light"
+              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              Home
+              <HomeIcon className="h-4 w-4" />
+              <p>Home</p>
             </button>
             <button
               onClick={() => {
                 navigate("/all-bookings-admin");
               }}
-              className="clientActionTab rounded bs-light"
+              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              All Bookings
+              <BookIcon className="h-4 w-4" />
+              <p>All Bookings</p>
             </button>
             <button
               onClick={() => {
                 navigate("/app-settings");
               }}
-              className="clientActionTab rounded bs-light"
+              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              App Settings
+              <SettingsIcon className="h-4 w-4" />
+              <p>App Settings</p>
             </button>
             <button
               onClick={() => {
                 navigate("/customers");
               }}
-              className="clientActionTab rounded bs-light"
+              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              Customers
+              <UsersRoundIcon className="h-4 w-4" />
+              <p>Customers</p>
             </button>
           </div>
           <div>
             <button
               onClick={handleAdminLogout}
-              className="logoutBtn rounded bs-light"
+              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              Logout
+              <LogOutIcon className="h-4 w-4" />
+              <p>Logout</p>
             </button>
           </div>
         </>
@@ -83,7 +96,7 @@ const BottomNavbar = () => {
               onClick={() => {
                 navigate("/");
               }}
-              className="clientActionTab rounded bs-light"
+              className="text-sm flex flex-col"
             >
               Home
             </button>
@@ -91,7 +104,7 @@ const BottomNavbar = () => {
               onClick={() => {
                 navigate("/my-bookings");
               }}
-              className="clientActionTab rounded bs-light"
+              className="text-sm flex flex-col"
             >
               My Bookings
             </button>
@@ -99,7 +112,7 @@ const BottomNavbar = () => {
               onClick={() => {
                 navigate("/profile-settings");
               }}
-              className="clientActionTab rounded bs-light"
+              className="text-sm flex flex-col"
             >
               Profile Settings
             </button>

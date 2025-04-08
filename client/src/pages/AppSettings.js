@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import BottomNavbar from "../components/BottomNavbar";
 
 const AppSettings = () => {
   const navigate = useNavigate();
@@ -72,8 +71,8 @@ const AppSettings = () => {
 
   useEffect(() => {
     const uid = localStorage.getItem("uid");
-    getParkingPrice();
-    getUser(uid);
+    getParkingPrice().then((_) => _);
+    getUser(uid).then((_) => _);
   }, [navigate]);
 
   if (loading || priceLoading) {
@@ -133,7 +132,6 @@ const AppSettings = () => {
           </button>
         </div>
       </div>
-      <BottomNavbar />
     </div>
   );
 };

@@ -1,30 +1,22 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import Signup from "./pages/signup";
-import Login from "./pages/login";
+import Signup from "./pages/Auth/signup";
+import Login from "./pages/Auth/login";
 import TransactionDetails from "./pages/TransactionDetails";
-import AdminLogin from "./pages/AdminLogin";
-import AllBookingsAdmin from "./pages/AllBookingsAdmin";
+import AdminLogin from "./pages/Auth/AdminLogin";
+import AllBookingsAdmin from "./pages/Bookings/AllBookingsAdmin";
 import AppSettings from "./pages/AppSettings";
-import ClientBookings from "./pages/ClientBookings";
+import ClientBookings from "./pages/Bookings/ClientBookings";
 import ClientSettings from "./pages/ClientSettings";
-import SideNavbar from "./components/SideNavbar";
+import SideNavbar from "./components/Navbars/SideNavbar";
 import Users from "./pages/Users";
+import MenuIconBtn from "./components/Navbars/MenuIconButton";
+import BottomNavbar from "./components/Navbars/BottomNavbar";
 
 function App() {
-  const handleMenuButtonClick = () => {
-    const menuIconBtn = document.getElementById("menu-icon-btn");
-    menuIconBtn.classList.toggle("open");
-
-    if (menuIconBtn.classList.contains("open")) {
-      document.getElementById("sideNavbar").style.display = "flex";
-      document.getElementById("overlay").style.display = "block";
-    } else {
-      document.getElementById("sideNavbar").style.display = "none";
-      document.getElementById("overlay").style.display = "none";
-    }
-  };
+  const isAuthenticated = localStorage.getItem("authenticated") === "Y";
+  console.log("isAuthenticated", isAuthenticated);
 
   return (
     <>
@@ -35,12 +27,10 @@ function App() {
           path="/"
           element={
             <>
-              {localStorage.getItem("authenticated") === "Y" && (
+              {isAuthenticated && (
                 <>
                   <SideNavbar />
-                  <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
-                    <div id="menu-btn-burger"></div>
-                  </div>
+                  <MenuIconBtn />
                 </>
               )}
               <Home />
@@ -55,9 +45,7 @@ function App() {
           element={
             <>
               <SideNavbar />
-              <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
-                <div id="menu-btn-burger"></div>
-              </div>
+              <MenuIconBtn />
               <TransactionDetails />
             </>
           }
@@ -67,9 +55,7 @@ function App() {
           element={
             <>
               <SideNavbar />
-              <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
-                <div id="menu-btn-burger"></div>
-              </div>
+              <MenuIconBtn />
               <Home />
             </>
           }
@@ -79,9 +65,7 @@ function App() {
           element={
             <>
               <SideNavbar />
-              <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
-                <div id="menu-btn-burger"></div>
-              </div>
+              <MenuIconBtn />
               <AllBookingsAdmin />
             </>
           }
@@ -91,9 +75,7 @@ function App() {
           element={
             <>
               <SideNavbar />
-              <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
-                <div id="menu-btn-burger"></div>
-              </div>
+              <MenuIconBtn />
               <ClientBookings />
             </>
           }
@@ -103,9 +85,7 @@ function App() {
           element={
             <>
               <SideNavbar />
-              <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
-                <div id="menu-btn-burger"></div>
-              </div>
+              <MenuIconBtn />
               <ClientSettings />
             </>
           }
@@ -115,9 +95,7 @@ function App() {
           element={
             <>
               <SideNavbar />
-              <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
-                <div id="menu-btn-burger"></div>
-              </div>
+              <MenuIconBtn />
               <AppSettings />
             </>
           }
@@ -127,14 +105,13 @@ function App() {
           element={
             <>
               <SideNavbar />
-              <div id="menu-icon-btn" onClick={handleMenuButtonClick}>
-                <div id="menu-btn-burger"></div>
-              </div>
+              <MenuIconBtn />
               <Users />
             </>
           }
         ></Route>
       </Routes>
+      {isAuthenticated && <BottomNavbar />}
     </>
   );
 }

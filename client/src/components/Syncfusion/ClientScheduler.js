@@ -14,7 +14,7 @@ import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { L10n } from "@syncfusion/ej2-base";
 import cars from "../../cars.json";
 import SpinnerGif from "../Spinner";
-import ClientViewBooking from "../ClientViewBooking";
+import ClientViewBooking from "../Bookings/ClientViewBooking";
 import { handleMobileSave } from "../../util/functions";
 
 // Define a custom locale

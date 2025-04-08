@@ -32,7 +32,7 @@ body {
   top: -2px;
 }
 
-.bottom-bar, .top-bar, .middle-content {
+.top-bar, .middle-content {
   max-width: 1024px !important;
   position: relative;
   left: 50%;
@@ -200,12 +200,12 @@ body {
 /* ------ Menu Button Style ------- */
 
 #menu-icon-btn {
+  all: unset;
   position: fixed;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   height: 2rem;
-  width: 1rem;
   cursor: pointer;
   top: 2.75rem;
   left: 2rem;

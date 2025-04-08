@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AllBookings from "../components/AllBookings";
-import BottomNavbar from "../components/BottomNavbar";
-
+import AllBookings from "../../components/Bookings/AllBookings";
 const AllBookingsAdmin = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
@@ -37,14 +35,13 @@ const AllBookingsAdmin = () => {
 
   useEffect(() => {
     const uid = localStorage.getItem("uid");
-    getUser(uid);
+    getUser(uid).then((_) => _);
   }, [navigate]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // Random comment LOL
   return (
     <div className="flex flex-col gap-4 px-8 py-12">
       <div
@@ -72,7 +69,6 @@ const AllBookingsAdmin = () => {
       <div
         className="flex flex-col gap-4 mt-2"
         style={{
-          maxHeight: "60vh",
           overflowY: "scroll",
           maxWidth: "1024px",
           transform: "translateX(-50%)",
@@ -82,12 +78,11 @@ const AllBookingsAdmin = () => {
       >
         <div className="w-full flex justify-center">
           <p className="my-text-orange text-lg">
-            <b>All Bookings</b>
+            <b>Current and Upcoming Bookings</b>
           </p>
         </div>
         <AllBookings />
       </div>
-      <BottomNavbar />
     </div>
   );
 };

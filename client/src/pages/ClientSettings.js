@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import BottomNavbar from "../components/BottomNavbar";
 
 const ClientSettings = () => {
   const navigate = useNavigate();
@@ -127,7 +126,6 @@ const ClientSettings = () => {
           </button>
         </div>
       </div>
-      <BottomNavbar />
     </div>
   );
 };

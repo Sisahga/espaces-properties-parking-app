@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { notify } from "../util/functions";
+import { notify } from "../../util/functions";
 
 const AdminLoginForm = () => {
   const navigate = useNavigate();

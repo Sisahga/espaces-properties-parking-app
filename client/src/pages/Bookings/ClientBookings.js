@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AllBookings from "../components/AllBookings";
-import BottomNavbar from "../components/BottomNavbar";
+import AllBookings from "../../components/Bookings/AllBookings";
 
 const ClientBookings = () => {
   const navigate = useNavigate();
@@ -72,7 +71,6 @@ const ClientBookings = () => {
         </div>
         <AllBookings />
       </div>
-      <BottomNavbar />
     </div>
   );
 };

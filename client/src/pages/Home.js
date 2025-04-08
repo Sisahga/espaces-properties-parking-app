@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import ClientScheduler from "../components/Syncfusion/ClientScheduler";
 import AdminScheduler from "../components/Syncfusion/AdminScheduler";
-import BottomNavbar from "../components/BottomNavbar";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -102,7 +101,6 @@ const Home = () => {
             </div>
           )}
           <ClientScheduler />
-          {authenticated !== null && authenticated && <BottomNavbar />}
         </div>
       ) : (
         <div className="flex flex-col gap-4 px-8 py-12 main-content">
@@ -132,7 +130,6 @@ const Home = () => {
             <p>{user.email}</p>
           </div>
           <AdminScheduler />
-          <BottomNavbar />
         </div>
       )}
     </div>
