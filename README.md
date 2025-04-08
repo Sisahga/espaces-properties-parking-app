@@ -1,7 +1,7 @@
 # Espaces Properties Parking App
 
 This is a Web App developed for Espaces Properties.\
-It allows hotel clients to book a parking space and allows administrator of the parking lot to manage the parking space.
+It allows hotel clients to book a parking space and allows the administrator of the parking lot to manage the parking space.
 
 <div style="display: flex;">
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
