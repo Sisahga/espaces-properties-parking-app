@@ -15,9 +15,6 @@ import MenuIconBtn from "./components/Navbars/MenuIconButton";
 import BottomNavbar from "./components/Navbars/BottomNavbar";
 
 function App() {
-  const isAuthenticated = localStorage.getItem("authenticated") === "Y";
-  console.log("isAuthenticated", isAuthenticated);
-
   return (
     <>
       <div id="overlay"></div>
@@ -27,13 +24,14 @@ function App() {
           path="/"
           element={
             <>
-              {isAuthenticated && (
+              {localStorage.getItem("authenticated") === "Y" && (
                 <>
                   <SideNavbar />
                   <MenuIconBtn />
                 </>
               )}
               <Home />
+              <BottomNavbar />
             </>
           }
         ></Route>
@@ -47,6 +45,7 @@ function App() {
               <SideNavbar />
               <MenuIconBtn />
               <TransactionDetails />
+              <BottomNavbar />
             </>
           }
         ></Route>
@@ -57,6 +56,7 @@ function App() {
               <SideNavbar />
               <MenuIconBtn />
               <Home />
+              <BottomNavbar />
             </>
           }
         ></Route>
@@ -67,6 +67,7 @@ function App() {
               <SideNavbar />
               <MenuIconBtn />
               <AllBookingsAdmin />
+              <BottomNavbar />
             </>
           }
         ></Route>
@@ -77,6 +78,7 @@ function App() {
               <SideNavbar />
               <MenuIconBtn />
               <ClientBookings />
+              <BottomNavbar />
             </>
           }
         ></Route>
@@ -87,6 +89,7 @@ function App() {
               <SideNavbar />
               <MenuIconBtn />
               <ClientSettings />
+              <BottomNavbar />
             </>
           }
         ></Route>
@@ -97,6 +100,7 @@ function App() {
               <SideNavbar />
               <MenuIconBtn />
               <AppSettings />
+              <BottomNavbar />
             </>
           }
         ></Route>
@@ -107,11 +111,11 @@ function App() {
               <SideNavbar />
               <MenuIconBtn />
               <Users />
+              <BottomNavbar />
             </>
           }
         ></Route>
       </Routes>
-      {isAuthenticated && <BottomNavbar />}
     </>
   );
 }
