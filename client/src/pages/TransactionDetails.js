@@ -11,12 +11,10 @@ const TransactionDetails = () => {
   const [transactionDetails, setTransactionDetails] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // let ready = false;
   useEffect(() => {
     if (sessionId) {
       retrieveSession();
     }
-    // ready = true;
   }, [sessionId]);
 
   async function retrieveSession() {
@@ -151,10 +149,6 @@ const TransactionDetails = () => {
         >
           Return Home
         </button>
-      </div>
-      {/* Company TM */}
-      <div className="mt-4 w-full text-center">
-        <p className="text-sm font-thin">&copy; MacMee Inc. - 2024</p>
       </div>
     </div>
   );

@@ -276,6 +276,7 @@ app.get("/api/parking/booking/retrieve/admin", async (req, res) => {
   }
 });
 
+// ------> Retrieve All Bookings for Admin View (Older than 2 weeks)
 app.get("/api/parking/booking/retrieve-more/admin", async (req, res) => {
   try {
     const allBookings = await pool.query(
@@ -522,7 +523,7 @@ async function getParkingPrice() {
 
 // === END OF ROUTES ===
 
-//Put this after all middleware. Otherwise, Heroku will give you 304 page
+// Put this after all middleware. Otherwise, Heroku will give you 304 page
 app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });

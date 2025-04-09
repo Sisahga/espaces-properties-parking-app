@@ -401,9 +401,9 @@ body {
     display: none;
   }
 
-  #bottomNavbar {
+  /* #bottomNavbar {
     display: none !important;
-  }
+  } */
 }
 
 @media screen and (max-width: 460px) {

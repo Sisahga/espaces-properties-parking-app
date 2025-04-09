@@ -1,8 +1,11 @@
 import {
+  BookCheck,
   BookIcon,
+  Cog,
   HomeIcon,
   LogOutIcon,
   SettingsIcon,
+  UserCog,
   UserIcon,
   UsersRoundIcon,
 } from "lucide-react";
@@ -46,97 +49,93 @@ const BottomNavbar = () => {
   return (
     <div
       id="bottomNavbar"
-      className={`flex justify-center mt-4 bs-light p-2 fixed bottom-0 w-full lg:w-2/3 
-                  lg:left-1/2 lg:-translate-x-1/2 gap-8 bg-[var(--white)] ${isAuthenticated && show ? "" : "hidden"}`}
+      className={`flex justify-center mt-4 bs-light p-2 fixed bottom-0 w-full lg:w-fit 
+                  lg:left-1/2 lg:-translate-x-1/2 gap-2 sm:gap-8 bg-[var(--white)] ${isAuthenticated && show ? "" : "hidden"}`}
     >
       {isAdmin ? (
         <>
-          <div className="flex gap-8">
+          <div className="grid grid-cols-5 gap-12 sm:gap-8">
             <button
               onClick={() => {
                 navigate("/");
               }}
-              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
+              className="text-xs text-nowrap sm:text-sm flex flex-col items-center py-3 sm:p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              <HomeIcon className="h-4 w-4" />
-              <p>Home</p>
+              <HomeIcon className="sm:h-4 sm:w-4 h-6 w-6" />
+              <p className="hidden sm:block">Home</p>
             </button>
             <button
               onClick={() => {
                 navigate("/all-bookings-admin");
               }}
-              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
+              className="text-xs text-nowrap sm:text-sm flex flex-col items-center py-3 sm:p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              <BookIcon className="h-4 w-4" />
-              <p>All Bookings</p>
+              <BookCheck className="sm:h-4 sm:w-4 h-6 w-6" />
+              <p className="hidden sm:block">All Bookings</p>
             </button>
             <button
               onClick={() => {
                 navigate("/app-settings");
               }}
-              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
+              className="text-xs text-nowrap sm:text-sm flex flex-col items-center py-3 sm:p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              <SettingsIcon className="h-4 w-4" />
-              <p>App Settings</p>
+              <Cog className="sm:h-4 sm:w-4 h-6 w-6" />
+              <p className="hidden sm:block">App Settings</p>
             </button>
             <button
               onClick={() => {
                 navigate("/customers");
               }}
-              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
+              className="text-xs text-nowrap sm:text-sm flex flex-col items-center py-3 sm:p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              <UsersRoundIcon className="h-4 w-4" />
-              <p>Customers</p>
+              <UsersRoundIcon className="sm:h-4 sm:w-4 h-6 w-6" />
+              <p className="hidden sm:block">Customers</p>
             </button>
-          </div>
-          <div>
             <button
               onClick={handleAdminLogout}
-              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
+              className="text-xs text-nowrap sm:text-sm flex flex-col items-center py-3 sm:p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              <LogOutIcon className="h-4 w-4" />
-              <p>Logout</p>
+              <LogOutIcon className="sm:h-4 sm:w-4 h-6 w-6" />
+              <p className="hidden sm:block">Logout</p>
             </button>
           </div>
         </>
       ) : (
         <>
-          <div className="flex gap-8">
+          <div className="grid grid-cols-4 gap-12 sm:gap-8">
             <button
               onClick={() => {
                 navigate("/");
               }}
-              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
+              className="text-xs text-nowrap sm:text-sm flex flex-col items-center py-3 sm:p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              <HomeIcon className="h-4 w-4" />
-              <p>Home</p>
+              <HomeIcon className="sm:h-4 sm:w-4 h-6 w-6" />
+              <p className="hidden sm:block">Home</p>
             </button>
             <button
               onClick={() => {
                 navigate("/my-bookings");
               }}
-              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
+              className="text-xs text-nowrap sm:text-sm flex flex-col items-center py-3 sm:p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              <BookIcon className="h-4 w-4" />
-              <p>My Bookings</p>
+              <BookCheck className="sm:h-4 sm:w-4 h-6 w-6" />
+              <p className="hidden sm:block">My Bookings</p>
             </button>
             <button
               onClick={() => {
                 navigate("/profile-settings");
               }}
-              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
+              className="text-xs text-nowrap sm:text-sm flex flex-col items-center py-3 sm:p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              <UserIcon className="h-4 w-4" />
-              <p>Profile Settings</p>
+              <UserCog className="sm:h-4 sm:w-4 h-6 w-6" />
+              <p className="hidden sm:block">User Settings</p>
             </button>
-          </div>
-          <div>
             <button
               onClick={handleLogout}
-              className="text-sm flex flex-col items-center p-3 rounded-lg gap-1 hover:opacity-50"
+              className="text-xs text-nowrap sm:text-sm flex flex-col items-center py-3 sm:p-3 rounded-lg gap-1 hover:opacity-50"
             >
-              <LogOutIcon className="h-4 w-4" />
-              <p>Logout</p>
+              <LogOutIcon className="sm:h-4 sm:w-4 h-6 w-6" />
+              <p className="hidden sm:block">Logout</p>
             </button>
           </div>
         </>

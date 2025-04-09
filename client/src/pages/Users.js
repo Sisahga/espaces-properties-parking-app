@@ -1,3 +1,4 @@
+import { MailIcon, PhoneIcon, UserCircleIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -69,7 +70,7 @@ const Users = () => {
       </div>
 
       <div className="flex flex-col gap-2 mt-4">
-        <p className="text-2xl mx-auto">
+        <p className="text-2xl mx-auto text-[var(--primary-orange)]">
           <b>Users</b>
         </p>
         <div
@@ -86,47 +87,26 @@ const Users = () => {
           {users.map((user, index) => (
             <div
               key={index}
-              className="bs-light rounded p-2 flex flex-col gap-2"
+              className="bs-light rounded-lg p-3 flex flex-col gap-2"
             >
               <div className="flex gap-2 items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="16"
-                  height="16"
-                  color="#000000"
-                  fill="none"
-                >
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M7.5 17C9.8317 14.5578 14.1432 14.4428 16.5 17M14.4951 9.5C14.4951 10.8807 13.3742 12 11.9915 12C10.6089 12 9.48797 10.8807 9.48797 9.5C9.48797 8.11929 10.6089 7 11.9915 7C13.3742 7 14.4951 8.11929 14.4951 9.5Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                <UserCircleIcon className="h-6 w-6" strokeWidth={1.5} />
                 <p className="text-sm">
                   <b>{user.name}</b>
                 </p>
               </div>
-              <div>
-                <p className="flex justify-between text-sm">
-                  <span style={{ color: "var(--blue)" }}>Phone:</span>{" "}
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-start text-sm gap-4 px-1">
+                  <PhoneIcon className="h-4 w-4" strokeWidth={1.5} />
                   <a
-                    className="text-blue-500 underline"
+                    className="text-[var(--blue)] underline"
                     href={`tel:${user.phone}`}
                   >
                     {user.phone}
                   </a>
-                </p>
-                <div className="flex justify-between items-center text-sm">
-                  <span style={{ color: "var(--blue)" }}>Email:</span>{" "}
+                </div>
+                <div className="flex justify-start items-center text-sm gap-4 px-1">
+                  <MailIcon className="h-4 w-4" strokeWidth={1.5} />
                   <p className="text-xs">{user.email}</p>
                 </div>
               </div>

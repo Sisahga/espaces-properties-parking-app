@@ -45,7 +45,6 @@ function App() {
               <SideNavbar />
               <MenuIconBtn />
               <TransactionDetails />
-              <BottomNavbar />
             </>
           }
         ></Route>

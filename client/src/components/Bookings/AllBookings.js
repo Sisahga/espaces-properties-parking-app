@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BookIcon, LoaderCircle } from "lucide-react";
+import {
+  PhoneIcon,
+  MailIcon,
+  BookMinus,
+  BookPlus,
+  LoaderCircle,
+} from "lucide-react";
 
 const AllBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -126,18 +132,31 @@ const AllBookings = () => {
               </div>
             </div>
             {isAdmin === "Y" && (
-              <div>
-                <p>
-                  <span className="my-text-blue">Email:</span> {booking.email}
-                </p>
-                <p>
-                  <span className="my-text-blue">Phone:</span>{" "}
-                  {booking.phone || "N/A"}
-                </p>
+              <div className="flex flex-col gap-1">
+                <div className="flex gap-4">
+                  <MailIcon className="h-4 w-4" strokeWidth={1.5} />
+                  <p>{booking.email}</p>
+                </div>
+                <div className="flex gap-4">
+                  <PhoneIcon className="h-4 w-4" strokeWidth={1.5} />
+                  <a
+                    className="text-[var(--blue)] underline"
+                    href={`tel:${booking.phone}`}
+                  >
+                    {booking.phone || "N/A"}
+                  </a>
+                </div>
               </div>
             )}
           </div>
         ))}
+        {!loading && bookings.length === 0 && (
+          <div className="absolute flex left-1/2 -translate-x-1/2 mt-4">
+            <p className="text-sm text-center">
+              No Recent Bookings to show at this time.
+            </p>
+          </div>
+        )}
         {recentPastBookings.length > 0 && (
           <>
             <p className="text-sm font-bold">Recent Past Bookings</p>
@@ -170,13 +189,13 @@ const AllBookings = () => {
               className={`bg-[var(--primary-orange)] hover:opacity-70 transition-opacity text-white rounded-lg w-fit p-4 font-bold text-sm flex items-center gap-4 ${showOlderBookings ? "hidden" : ""}`}
               onClick={handleAdminShowMoreBookings}
             >
-              Show Older Bookings <BookIcon className="h-4 w-4" />
+              Show Older Bookings <BookPlus className="h-4 w-4" />
             </button>
             <button
               className={`bg-black hover:opacity-70 transition-opacity text-white rounded-lg w-fit p-4 font-bold text-sm flex items-center gap-4 ${showOlderBookings ? "" : "hidden"}`}
               onClick={handleHideMoreBookings}
             >
-              Hide Older Bookings <BookIcon className="h-4 w-4" />
+              Hide Older Bookings <BookMinus className="h-4 w-4" />
             </button>
           </div>
           <div
