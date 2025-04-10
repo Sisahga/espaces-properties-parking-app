@@ -295,8 +295,6 @@ const ClientScheduler = () => {
   const onEventClick = (args) => {
     console.log("Event Clicked: ", args.event);
 
-    console.log("show different popup...");
-
     if (args.element.classList.contains("clientEvent")) {
       const startTime = formatDate(args.event.StartTime, true);
       const endTime = formatDate(args.event.EndTime, true);

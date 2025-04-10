@@ -5,6 +5,7 @@ import {
   BookMinus,
   BookPlus,
   LoaderCircle,
+  Circle,
 } from "lucide-react";
 
 const AllBookings = () => {
@@ -23,6 +24,12 @@ const AllBookings = () => {
       day: "numeric",
     });
     return formattedDate;
+  };
+
+  const addDayToSingleDayBookingEndTime = (date) => {
+    const jsDate = new Date(date);
+    jsDate.setUTCDate(new Date(date).getUTCDate() + 1);
+    return jsDate.toISOString();
   };
 
   const getAdminBookings = async () => {
@@ -86,6 +93,23 @@ const AllBookings = () => {
     }
   };
 
+  const getBookingIsActive = (startTime, endTime) => {
+    const now = new Date();
+    const start = new Date(startTime);
+    start.setHours(15, 0, 0, 0);
+    const end = new Date(endTime);
+    if (startTime === endTime) {
+      end.setDate(end.getDate() + 1);
+    }
+    end.setHours(11, 0, 0, 0);
+
+    console.log("Now:", now);
+    console.log("Start:", start);
+    console.log("End:", end);
+
+    return now >= start && now <= end;
+  };
+
   const handleHideMoreBookings = () => {
     setShowOlderBookings(false);
   };
@@ -113,8 +137,18 @@ const AllBookings = () => {
         {bookings.map((booking) => (
           <div
             key={booking.id}
-            className="flex flex-col gap-2 w-full p-4 bs-light rounded"
+            className="flex flex-col gap-2 w-full p-4 bs-light rounded relative"
           >
+            <div
+              className={`${getBookingIsActive(booking.starttime, booking.endtime) ? "flex" : "hidden"} 
+                            absolute text-[var(--green)] gap-1 top-3 right-3 items-center`}
+            >
+              <p>Active</p>
+              <Circle
+                className="h-3 w-3 bg-[var(--green)] rounded-full"
+                strokeWidth={2}
+              />
+            </div>
             <div className="flex flex-col justify-between w-full gap-2">
               {isAdmin === "Y" && (
                 <div>
@@ -135,7 +169,13 @@ const AllBookings = () => {
                 </p>
                 <p>-</p>
                 <p>
-                  <b className="my-text-blue">{formatDate(booking.endtime)}</b>{" "}
+                  <b className="my-text-blue">
+                    {booking.starttime === booking.endtime
+                      ? formatDate(
+                          addDayToSingleDayBookingEndTime(booking.endtime)
+                        )
+                      : formatDate(booking.endtime)}
+                  </b>{" "}
                   (11:00 A.M.)
                 </p>
               </div>
@@ -197,7 +237,11 @@ const AllBookings = () => {
                   <p>-</p>
                   <p>
                     <b className="my-text-blue">
-                      {formatDate(booking.endtime)}
+                      {booking.starttime === booking.endtime
+                        ? formatDate(
+                            addDayToSingleDayBookingEndTime(booking.endtime)
+                          )
+                        : formatDate(booking.endtime)}
                     </b>{" "}
                     (11:00 A.M.)
                   </p>
@@ -276,7 +320,13 @@ const AllBookings = () => {
                         <p>-</p>
                         <p>
                           <b className="my-text-blue">
-                            {formatDate(booking.endtime)}
+                            {booking.starttime === booking.endtime
+                              ? formatDate(
+                                  addDayToSingleDayBookingEndTime(
+                                    booking.endtime
+                                  )
+                                )
+                              : formatDate(booking.endtime)}
                           </b>{" "}
                           (11:00 A.M.)
                         </p>

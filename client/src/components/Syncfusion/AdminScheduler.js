@@ -383,6 +383,7 @@ const AdminScheduler = () => {
         paymentStatus: "ADMIN",
       };
       console.log("New Booking: ", newBooking);
+      alert("START TIME: " + newBooking.startTime);
 
       const daysBooked = daysBetween(newBooking.startTime, newBooking.endTime);
       console.log("Days Booked: ", daysBooked);
