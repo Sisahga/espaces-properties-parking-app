@@ -170,7 +170,7 @@ const AllBookings = () => {
       {isAdmin === "Y" && recentPastBookings.length > 0 && (
         <div className="flex flex-col gap-4">
           <p className="text-sm font-bold text-[var(--primary-orange)] px-2">
-            Recent Past Bookings (2 Weeks Ago)
+            Recent Past Bookings (Last 2 Weeks)
           </p>
           <div className="w-full flex flex-col lg:grid lg:grid-cols-2 gap-4 text-xs p-2">
             {recentPastBookings.map((booking) => (
@@ -178,19 +178,46 @@ const AllBookings = () => {
                 key={booking.id}
                 className="flex flex-col gap-2 w-full p-4 bs-light rounded"
               >
-                <p>
-                  <b>{booking.subject}</b>{" "}
-                  {booking.roomnumber
-                    ? "(Room " + booking.roomnumber + ")"
-                    : ""}
-                </p>
-                <p>
-                  <span className="my-text-blue">Email:</span> {booking.email}
-                </p>
-                <p>
-                  <span className="my-text-blue">Phone:</span>{" "}
-                  {booking.phone || "N/A"}
-                </p>
+                <div>
+                  <p>
+                    <b>{booking.subject}</b>{" "}
+                    {booking.roomnumber
+                      ? "(Room " + booking.roomnumber + ")"
+                      : ""}
+                  </p>
+                </div>
+
+                <div className="flex gap-2 text-xs">
+                  <p>
+                    <b className="my-text-blue">
+                      {formatDate(booking.starttime)}
+                    </b>{" "}
+                    (3:00 P.M.)
+                  </p>
+                  <p>-</p>
+                  <p>
+                    <b className="my-text-blue">
+                      {formatDate(booking.endtime)}
+                    </b>{" "}
+                    (11:00 A.M.)
+                  </p>
+                </div>
+
+                <div className="flex justify-between sm:justify-normal gap-2">
+                  <div className="flex gap-1">
+                    <MailIcon className="h-4 w-4" strokeWidth={1.5} />
+                    <p>{booking.email}</p>
+                  </div>
+                  <div className="flex gap-1">
+                    <PhoneIcon className="h-4 w-4" strokeWidth={1.5} />
+                    <a
+                      className="text-[var(--blue)] underline"
+                      href={`tel:${booking.phone}`}
+                    >
+                      {booking.phone || "N/A"}
+                    </a>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
