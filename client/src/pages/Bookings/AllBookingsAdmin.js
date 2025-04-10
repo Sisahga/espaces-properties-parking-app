@@ -69,7 +69,7 @@ const AllBookingsAdmin = () => {
       <div
         className="flex flex-col gap-4 mt-2"
         style={{
-          overflowY: "scroll",
+          overflowY: "auto",
           maxWidth: "1024px",
           transform: "translateX(-50%)",
           position: "relative",

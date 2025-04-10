@@ -102,31 +102,28 @@ const AppSettings = () => {
         <p>{user.email}</p>
       </div>
 
-      <div className="flex flex-col gap-4 mt-2">
+      <div className="flex flex-col gap-4 mt-8">
         <div className="w-full flex justify-center">
           <p className="my-text-orange text-lg">
             <b>App Settings</b>
           </p>
         </div>
-        <div className="pageTab flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
-          <p className="my-text-blue">
-            <b>Daily Parking Price ($)</b>
-          </p>
-          <input
-            id="parkingPrice"
-            name="parkingPrice"
-            type="text"
-            defaultValue={price.toFixed(2)}
-            className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          ></input>
-        </div>
-        <div className="flex mx-auto w-1/2 mt-4" style={{ maxWidth: "300px" }}>
+        <div className="flex flex-col gap-6 w-72 sm:w-96 bs-light p-8 rounded-lg mx-auto">
+          <div className="flex flex-col gap-2">
+            <p className="my-text-blue">
+              <b>Daily Parking Price ($)</b>
+            </p>
+            <input
+              id="parkingPrice"
+              name="parkingPrice"
+              type="text"
+              defaultValue={price.toFixed(2)}
+              className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            ></input>
+          </div>
           <button
-            className="buttonBig rounded"
+            className="bg-[var(--primary-orange)] text-white p-2 hover:opacity-70 transition-opacity rounded"
             onClick={handlePriceChange}
-            style={{
-              backgroundColor: "var(--green) !important",
-            }}
           >
             Save
           </button>

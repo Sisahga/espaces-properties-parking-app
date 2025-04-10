@@ -84,43 +84,44 @@ const ClientSettings = () => {
         <p>{user.email}</p>
       </div>
 
-      <div className="flex flex-col gap-4 mt-2">
+      <div className="flex flex-col gap-4 mt-8">
         <div className="w-full flex justify-center">
           <p className="my-text-orange text-lg">
             <b>Profile Settings</b>
           </p>
         </div>
-        <div className="pageTab flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
-          <p className="my-text-blue">
-            <b>Email</b>
-          </p>
-          <input
-            id="userEmail"
-            name="userEmail"
-            type="email"
-            defaultValue={user.email}
-            className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          ></input>
-        </div>
-        <div className="pageTab flex flex-col mx-auto mt-4 gap-2 justify-center w-1/2 bs-light p-4 rounded">
-          <p className="my-text-blue">
-            <b>Phone Number</b>
-          </p>
-          <input
-            id="userPhone"
-            name="userPhone"
-            type="tel"
-            defaultValue={user.phone}
-            className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          ></input>
-        </div>
-        <div className="flex mx-auto w-1/2 mt-4" style={{ maxWidth: "300px" }}>
+        <div className="flex flex-col mx-auto mt-4 gap-4 justify-center bs-light p-6 rounded-lg">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col mx-auto gap-2">
+              <p className="my-text-blue">
+                <b>Email</b>
+              </p>
+              <input
+                id="userEmail"
+                name="userEmail"
+                type="email"
+                defaultValue={user.email}
+                className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 
+                            focus:border-transparent min-w-56"
+              ></input>
+            </div>
+            <div className="flex flex-col mx-auto gap-2">
+              <p className="my-text-blue">
+                <b>Phone Number</b>
+              </p>
+              <input
+                id="userPhone"
+                name="userPhone"
+                type="tel"
+                defaultValue={user.phone}
+                className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 
+                            focus:border-transparent min-w-56"
+              ></input>
+            </div>
+          </div>
           <button
-            className="buttonBig rounded"
+            className="bg-[var(--primary-orange)] text-white p-2 hover:opacity-70 transition-opacity rounded"
             onClick={handleUserUpdate}
-            style={{
-              backgroundColor: "var(--green) !important",
-            }}
           >
             Save
           </button>

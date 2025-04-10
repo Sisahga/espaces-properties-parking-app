@@ -12,6 +12,7 @@ const TransactionDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Session ID:", sessionId);
     if (sessionId) {
       retrieveSession();
     }

@@ -81,7 +81,7 @@ const Users = () => {
             position: "relative",
             left: "50%",
             maxHeight: "60vh",
-            overflowY: "scroll",
+            overflowY: "auto",
           }}
         >
           {users.map((user, index) => (
@@ -99,7 +99,7 @@ const Users = () => {
                 <div className="flex justify-start text-sm gap-4 px-1">
                   <PhoneIcon className="h-4 w-4" strokeWidth={1.5} />
                   <a
-                    className="text-[var(--blue)] underline"
+                    className="text-[var(--blue)] underline text-xs"
                     href={`tel:${user.phone}`}
                   >
                     {user.phone}

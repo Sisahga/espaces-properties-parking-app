@@ -33,10 +33,17 @@ const AllBookings = () => {
       const jsonData = await response.json();
       console.log(jsonData);
       setBookings(
-        jsonData.filter((booking) => new Date(booking.endtime) >= new Date())
+        jsonData.filter(
+          (booking) =>
+            new Date(booking.endtime).setHours(0, 0, 0, 0) >=
+            new Date().setHours(0, 0, 0, 0)
+        )
       );
       setRecentPastBookings(
-        jsonData.filter((booking) => new Date(booking.endtime) < new Date())
+        jsonData.filter(
+          (booking) =>
+            new Date(booking.endtime).setHours(0, 0, 0, 0) < new Date()
+        )
       );
     } catch (err) {
       console.error(err.message);
@@ -99,8 +106,10 @@ const AllBookings = () => {
   }
 
   return (
-    <div className="pb-12">
-      <div className="w-full flex flex-col lg:grid lg:grid-cols-2 gap-4 text-xs p-2">
+    <div className="pb-12 flex flex-col gap-8">
+      <div
+        className={`w-full flex flex-col ${bookings.length === 0 ? "" : "lg:grid lg:grid-cols-2"} gap-4 text-xs p-2`}
+      >
         {bookings.map((booking) => (
           <div
             key={booking.id}
@@ -132,12 +141,12 @@ const AllBookings = () => {
               </div>
             </div>
             {isAdmin === "Y" && (
-              <div className="flex flex-col gap-1">
-                <div className="flex gap-4">
+              <div className="flex justify-between sm:justify-normal gap-2">
+                <div className="flex gap-1">
                   <MailIcon className="h-4 w-4" strokeWidth={1.5} />
                   <p>{booking.email}</p>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-1">
                   <PhoneIcon className="h-4 w-4" strokeWidth={1.5} />
                   <a
                     className="text-[var(--blue)] underline"
@@ -150,38 +159,43 @@ const AllBookings = () => {
             )}
           </div>
         ))}
-        {!loading && bookings.length === 0 && (
-          <div className="absolute flex left-1/2 -translate-x-1/2 mt-4">
-            <p className="text-sm text-center">
-              No Recent Bookings to show at this time.
-            </p>
-          </div>
-        )}
-        {recentPastBookings.length > 0 && (
-          <>
-            <p className="text-sm font-bold">Recent Past Bookings</p>
-            <div className="flex flex-col lg:grid lg:grid-cols-2 gap-2 w-full p-4 bs-light rounded">
-              {recentPastBookings.map((booking) => (
-                <div key={booking.id} className="flex flex-col gap-2">
-                  <p>
-                    <b>{booking.subject}</b>{" "}
-                    {booking.roomnumber
-                      ? "(Room " + booking.roomnumber + ")"
-                      : ""}
-                  </p>
-                  <p>
-                    <span className="my-text-blue">Email:</span> {booking.email}
-                  </p>
-                  <p>
-                    <span className="my-text-blue">Phone:</span>{" "}
-                    {booking.phone || "N/A"}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
       </div>
+      {!loading && bookings.length === 0 && (
+        <div className="py-4">
+          <p className="text-sm text-center">
+            No Upcoming Bookings to show at this time.
+          </p>
+        </div>
+      )}
+      {isAdmin === "Y" && recentPastBookings.length > 0 && (
+        <div className="flex flex-col gap-4">
+          <p className="text-sm font-bold text-[var(--primary-orange)] px-2">
+            Recent Past Bookings (2 Weeks Ago)
+          </p>
+          <div className="w-full flex flex-col lg:grid lg:grid-cols-2 gap-4 text-xs p-2">
+            {recentPastBookings.map((booking) => (
+              <div
+                key={booking.id}
+                className="flex flex-col gap-2 w-full p-4 bs-light rounded"
+              >
+                <p>
+                  <b>{booking.subject}</b>{" "}
+                  {booking.roomnumber
+                    ? "(Room " + booking.roomnumber + ")"
+                    : ""}
+                </p>
+                <p>
+                  <span className="my-text-blue">Email:</span> {booking.email}
+                </p>
+                <p>
+                  <span className="my-text-blue">Phone:</span>{" "}
+                  {booking.phone || "N/A"}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       {isAdmin === "Y" && (
         <div className="w-full flex flex-col gap-4 text-xs p-2">
           <div className="flex w-full items-center justify-center">
@@ -201,55 +215,61 @@ const AllBookings = () => {
           <div
             className={`${showOlderBookings ? "" : "hidden lg:hidden"} flex flex-col gap-4 lg:grid lg:grid-cols-2`}
           >
-            {olderBookings
-              .slice()
-              .reverse()
-              .map((booking) => (
-                <div
-                  key={booking.id}
-                  className="flex flex-col gap-2 w-full p-4 bs-light rounded"
-                >
-                  <div className="flex flex-col justify-between w-full gap-2">
+            {olderBookings.length === 0 ? (
+              <div className="mx-auto mt-4">
+                <p className="text-sm text-center">No Older Bookings.</p>
+              </div>
+            ) : (
+              olderBookings
+                .slice()
+                .reverse()
+                .map((booking) => (
+                  <div
+                    key={booking.id}
+                    className="flex flex-col gap-2 w-full p-4 bs-light rounded"
+                  >
+                    <div className="flex flex-col justify-between w-full gap-2">
+                      {isAdmin === "Y" && (
+                        <div>
+                          <p>
+                            <b>{booking.subject}</b>{" "}
+                            {booking.roomnumber
+                              ? "(Room " + booking.roomnumber + ")"
+                              : ""}
+                          </p>
+                        </div>
+                      )}
+                      <div className="flex gap-2 text-xs">
+                        <p>
+                          <b className="my-text-blue">
+                            {formatDate(booking.starttime)}
+                          </b>{" "}
+                          (3:00 P.M.)
+                        </p>
+                        <p>-</p>
+                        <p>
+                          <b className="my-text-blue">
+                            {formatDate(booking.endtime)}
+                          </b>{" "}
+                          (11:00 A.M.)
+                        </p>
+                      </div>
+                    </div>
                     {isAdmin === "Y" && (
                       <div>
                         <p>
-                          <b>{booking.subject}</b>{" "}
-                          {booking.roomnumber
-                            ? "(Room " + booking.roomnumber + ")"
-                            : ""}
+                          <span className="my-text-blue">Email:</span>{" "}
+                          {booking.email}
+                        </p>
+                        <p>
+                          <span className="my-text-blue">Phone:</span>{" "}
+                          {booking.phone || "N/A"}
                         </p>
                       </div>
                     )}
-                    <div className="flex gap-2 text-xs">
-                      <p>
-                        <b className="my-text-blue">
-                          {formatDate(booking.starttime)}
-                        </b>{" "}
-                        (3:00 P.M.)
-                      </p>
-                      <p>-</p>
-                      <p>
-                        <b className="my-text-blue">
-                          {formatDate(booking.endtime)}
-                        </b>{" "}
-                        (11:00 A.M.)
-                      </p>
-                    </div>
                   </div>
-                  {isAdmin === "Y" && (
-                    <div>
-                      <p>
-                        <span className="my-text-blue">Email:</span>{" "}
-                        {booking.email}
-                      </p>
-                      <p>
-                        <span className="my-text-blue">Phone:</span>{" "}
-                        {booking.phone || "N/A"}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              ))}
+                ))
+            )}
           </div>
         </div>
       )}
