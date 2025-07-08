@@ -1,6 +1,6 @@
 # Espaces Properties Parking App
 
-This is a Web App developed for Espaces Properties.\
+This is a Web App developed for Espaces Properties' https://www.maisonfrancoisdenis.com/.\
 It allows hotel clients to book a parking space and allows the administrator of the parking lot to manage the parking space.
 
 <div style="display: flex;">
