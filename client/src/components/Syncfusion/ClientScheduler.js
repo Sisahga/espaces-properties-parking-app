@@ -545,6 +545,12 @@ const ClientScheduler = () => {
               Departures are scheduled at the latest for <b>11:00 A.M.</b> on
               the last day of booking.
             </p>
+            <p>
+              <b>
+                All parking bookings are non-refundable. No refunds will be
+                issued for cancellations or unused reservations.
+              </b>
+            </p>
           </div>
         </div>
       </div>
